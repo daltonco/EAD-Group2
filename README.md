@@ -88,7 +88,6 @@ Diagrams
 # JSON Schema
 
 >{
-
 > \"\$schema\": \"http://json-schema.org/draft-07/schema#\",
 >
 > \"type\": \"object\",
@@ -103,7 +102,7 @@ Diagrams
 >>
 >> \"fullName\": {
 >>
->>>> \"type\": \"string\"
+>>> \"type\": \"string\"
 >>
 >> },
 >>
@@ -138,49 +137,48 @@ Diagrams
 >>> \"type\": \"function\",
 >>>
 >>> \"parameters\": \[
->
-> {
->
-> \"name\": \"dogId\",
->
-> \"type\": \"integer\"
+>>>
+>>>> {
+>>>>
+>>>>> \"name\": \"dogId\",
+>>>>>
+>>>>> \"type\": \"integer\"
+>>>>
+>>>> }
+>>>
+>>> \],
+>>>
+>>> \"returns\": \"string\"
+>>
+>> },
+>>
+>> \"setBreed\": {
+>>
+>>> \"type\": \"function\"
+>>
+>> },
+>>
+>> \"getBreed\": {
+>>
+>>> \"type\": \"function\",
+>>
+>>> \"parameters\": \[
+>>>
+>>>> {
+>>>>
+>>>>> \"name\": \"dogId\",
+>>>>>
+>>>>> \"type\": \"integer\"
+>>>>
+>>>> }
+>>>
+>>> \],
+>>>
+>>> \"returns\": \"string\"
+>>
+>> }
 >
 > }
->
-> \],
->
-> \"returns\": \"string\"
->
-> },
->
-> \"setBreed\": {
->
-> \"type\": \"function\"
->
-> },
->
-> \"getBreed\": {
->
-> \"type\": \"function\",
->
-> \"parameters\": \[
->
-> {
->
-> \"name\": \"dogId\",
->
-> \"type\": \"integer\"
->
-> }
->
-> \],
->
-> \"returns\": \"string\"
->
-> }
->
-> }
-
 >}
 
 # Scrum Roles
