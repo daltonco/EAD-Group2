@@ -186,17 +186,20 @@ Diagrams
 
 # Scrum Roles
 
--   Product Owner/Scrum Master: Colton Dalton
+Product Owner/Scrum Master: Colton Dalton
 
--   UI Specialist: Zach Thomas
+UI Specialist: Zach Thomas
 
--   Business Logic: Zach McIntosh
+Business Logic: Zach McIntosh
 
--   Tester: Brendan Payne
+Tester: Brendan Payne
 
 # Github Project
 
 <https://github.com/daltonco/EAD-Group2>
+
+# Milestones
+[Milestone 1](<https://github.com/daltonco/EAD-Group2/milestones>)
 
 # Meeting Time/Link
 
