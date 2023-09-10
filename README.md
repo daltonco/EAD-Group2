@@ -99,26 +99,26 @@ Diagrams
 >>
 >>> \"type\": \"integer\"
 >>
-> },
->
-> \"fullName\": {
->
-> \"type\": \"string\"
->
-> },
->
-> \"breed\": {
->
-> \"type\": \"string\"
->
-> },
->
-> \"age\": {
->
-> \"type\": \"integer\"
->
-> }
->
+>> },
+>>
+>> \"fullName\": {
+>>
+>>>> \"type\": \"string\"
+>>
+>> },
+>>
+>> \"breed\": {
+>>
+>>> \"type\": \"string\"
+>>
+>> },
+>>
+>> \"age\": {
+>>
+>>> \"type\": \"integer\"
+>>
+>> }
+>>
 > },
 >
 > \"required\": \[\"dogId\", \"fullName\", \"breed\", \"age\"\],
@@ -127,17 +127,17 @@ Diagrams
 >
 > \"methods\": {
 >
-> \"setName\": {
->
-> \"type\": \"function\"
->
-> },
->
-> \"getName\": {
->
-> \"type\": \"function\",
->
-> \"parameters\": \[
+>> \"setName\": {
+>>
+>>> \"type\": \"function\"
+>>
+>> },
+>>
+>> \"getName\": {
+>>
+>>> \"type\": \"function\",
+>>>
+>>> \"parameters\": \[
 >
 > {
 >
