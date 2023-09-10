@@ -3,11 +3,11 @@
 AdoptMe! Is a nationwide animal shelter that provides their locations with a web service to maintain their animals. They have created a web service called AdoptMe+ to host shelter functions. Each animal is required to have an ID but can be given pictures and notes on the characteristics, which each location can input. Animal data is obtained from SQL data generation. AdoptMe+ will provide functionality using REST endpoints or through a UI.
 
 # Storyboard
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/StoryBoard1.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/StoryBoard2.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/StoryBoard3.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/StoryBoard4.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/StoryBoard5.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMe.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeDogs.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeCats.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeSearch.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeContact.png" width=500px>
 
 # Functional Requirements
 
