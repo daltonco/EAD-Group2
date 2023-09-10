@@ -3,12 +3,11 @@
 AdoptMe! Is a nationwide animal shelter that provides their locations with a web service to maintain their animals. They have created a web service called AdoptMe+ to host shelter functions. Each animal is required to have an ID but can be given pictures and notes on the characteristics, which each location can input. Animal data is obtained from SQL data generation. AdoptMe+ will provide functionality using REST endpoints or through a UI.
 
 # Storyboard
-![AdoptMe+ Storyboard]
-(https://github.com/daltonco/EAD-Group2/blob/main/Storyboard1.png)
-(https://github.com/daltonco/EAD-Group2/blob/main/Storyboard2.png)
-(https://github.com/daltonco/EAD-Group2/blob/main/Storyboard3.png)
-(https://github.com/daltonco/EAD-Group2/blob/main/Storyboard4.png)
-(https://github.com/daltonco/EAD-Group2/blob/main/Storyboard5.png)
+![AdoptMe+ Storyboard Panel 1](https://github.com/daltonco/EAD-Group2/blob/main/Storyboard1.png)
+![AdoptMe+ Storyboard Panel 2](https://github.com/daltonco/EAD-Group2/blob/main/Storyboard2.png)
+![AdoptMe+ Storyboard Panel 3](https://github.com/daltonco/EAD-Group2/blob/main/Storyboard3.png)
+![AdoptMe+ Storyboard Panel 4](https://github.com/daltonco/EAD-Group2/blob/main/Storyboard4.png)
+![AdoptMe+ Storyboard Panel 5](https://github.com/daltonco/EAD-Group2/blob/main/Storyboard5.png)
 
 # Functional Requirements
 
