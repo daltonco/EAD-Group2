@@ -90,99 +90,61 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
 
 # JSON Schema
 
->{
-> \"\$schema\": \"http://json-schema.org/draft-07/schema#\",
->
-> \"type\": \"object\",
->
-> \"properties\": {
->
->> \"dogId\": {
->>
->>> \"type\": \"integer\"
->>
->> },
->>
->> \"fullName\": {
->>
->>> \"type\": \"string\"
->>
->> },
->>
->> \"breed\": {
->>
->>> \"type\": \"string\"
->>
->> },
->>
->> \"age\": {
->>
->>> \"type\": \"integer\"
->>
->> }
->>
-> },
->
-> \"required\": \[\"dogId\", \"fullName\", \"breed\", \"age\"\],
->
-> \"additionalProperties\": false,
->
-> \"methods\": {
->
->> \"setName\": {
->>
->>> \"type\": \"function\"
->>
->> },
->>
->> \"getName\": {
->>
->>> \"type\": \"function\",
->>>
->>> \"parameters\": \[
->>>
->>>> {
->>>>
->>>>> \"name\": \"dogId\",
->>>>>
->>>>> \"type\": \"integer\"
->>>>
->>>> }
->>>
->>> \],
->>>
->>> \"returns\": \"string\"
->>
->> },
->>
->> \"setBreed\": {
->>
->>> \"type\": \"function\"
->>
->> },
->>
->> \"getBreed\": {
->>
->>> \"type\": \"function\",
->>
->>> \"parameters\": \[
->>>
->>>> {
->>>>
->>>>> \"name\": \"dogId\",
->>>>>
->>>>> \"type\": \"integer\"
->>>>
->>>> }
->>>
->>> \],
->>>
->>> \"returns\": \"string\"
->>
->> }
->
-> }
->}
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "dogId": {
+      "type": "integer"
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "breed": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "dogId",
+    "fullName",
+    "breed",
+    "age"
+  ],
+  "additionalProperties": false,
+  "methods": {
+    "setName": {
+      "type": "function"
+    },
+    "getName": {
+      "type": "function",
+      "parameters": [
+        {
+          "name": "dogId",
+          "type": "integer"
+        }
+      ],
+      "returns": "string"
+    },
+    "setBreed": {
+      "type": "function"
+    },
+    "getBreed": {
+      "type": "function",
+      "parameters": [
+        {
+          "name": "dogId",
+          "type": "integer"
+        }
+      ],
+      "returns": "string"
+    }
+  }
+}
+```
 
 # Scrum Roles
 
