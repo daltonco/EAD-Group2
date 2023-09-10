@@ -3,8 +3,11 @@
 AdoptMe! Is a nationwide animal shelter that provides their locations with a web service to maintain their animals. They have created a web service called AdoptMe+ to host shelter functions. Each animal is required to have an ID but can be given pictures and notes on the characteristics, which each location can input. Animal data is obtained from SQL data generation. AdoptMe+ will provide functionality using REST endpoints or through a UI.
 
 # Storyboard
-
-
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/Storyboard1.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/Storyboard2.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/Storyboard3.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/Storyboard4.png" width=500px>
+<img src="https://github.com/daltonco/EAD-Group2/blob/main/Storyboard5.png" width=500px>
 
 # Functional Requirements
 
@@ -183,17 +186,20 @@ Diagrams
 
 # Scrum Roles
 
--   Product Owner/Scrum Master: Colton Dalton
+Product Owner/Scrum Master: Colton Dalton
 
--   UI Specialist: Zach Thomas
+UI Specialist: Zach Thomas
 
--   Business Logic: Zach McIntosh
+Business Logic: Zach McIntosh
 
--   Tester: Brendan Payne
+Tester: Brendan Payne
 
 # Github Project
 
 <https://github.com/daltonco/EAD-Group2>
+
+# Milestones
+[Milestone 1](<https://github.com/daltonco/EAD-Group2/milestones>)
 
 # Meeting Time/Link
 
