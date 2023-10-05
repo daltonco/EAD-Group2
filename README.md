@@ -3,82 +3,77 @@
 AdoptMe! Is a nationwide animal shelter that provides their locations with a web service to maintain their animals. They have created a web service called AdoptMe+ to host shelter functions. Each animal is required to have an ID but can be given pictures and notes on the characteristics, which each location can input. Animal data is obtained from SQL data generation. AdoptMe+ will provide functionality using REST endpoints or through a UI.
 
 # Storyboard
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMe.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeDogs.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeCats.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeSearch.png" width=500px>
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/AdoptMeContact.png" width=500px>
+
+<img src="README%20Assets/AdoptMe.png" width=575px alt="homepage mockup">
+<img src="README%20Assets/AdoptMeDogs.png" width=575px alt="dogs mockup">
+<img src="README%20Assets/AdoptMeSearch.png" width=575px alt="search mockup">
+<img src="README%20Assets/AdoptMeContact.png" width=575px alt="contact mockup">
 
 # Functional Requirements
 
-1.  As a shelter, we want to be able to catalog our animals, so that we can manage what we have available for adoption.
+1. As a shelter, we want to be able to catalog our animals, so that we can manage what we have available for adoption.
 
-       **Example 1**
+   **Example 1**
 
-       Given: A feed of animal data is available.
+   Given: A feed of animal data is available.
+   
+   When: The user selects animal "Dog".
 
-       When: The user selects animal "Dog".
+   When: The user adds name "Rico" to a "Dog" specimen.
 
-       When: The user adds name "Rico" to a "Dog" specimen.
+   Then: The user's Dog will be saved with a name of "Rico".
 
-       Then: The user's Dog will be saved with a name of "Rico".
+   **Example 2**
 
-       **Example 2**
+   When: The user searches for "aaaaaaaaaaaaaaaaaaaa".
 
-       Given: Animal data is available.
+   Then: AdoptMe+ will not return any results.
 
-       When: The user searches for "aaaaaaaaaaaaaaaaaaaa".
+   **Example 3**
 
-       Then: AdoptMe+ will not return any results.
+   Given: Animal data are available, and there is a "Dog" with the name "Charles".
 
-       **Example 3**
+   When: The user searches for animals with the name "Charles".
 
-       Given: Animal data are available, and there is a "Dog" with the name "Charles".
+   Then: AdoptMe+ will return at least one "Dog" with the name "Charles".
+2. As a shelter, we want to be able to view our animal data by tags, so that we can easily view all animals associated with that tag.
 
-       When: The user searches for animals with the name "Charles".
+   **Example 1**
 
-       Then: AdoptMe+ will return at least one "Dog" with the name "Charles".
+   Given: The tag "Family Friendly" is assigned to an animal.
 
+   When: The user selects the "Family Friendly" tag.
 
-2.  As a shelter, we want to be able to view our animal data by tags, so that we can easily view all animals associated with that tag.
+   Then: AdoptMe+ will return all animals assigned the "Family Friendly" tag.
 
-       **Example 1**
+   **Example 2**
 
-       Given: The tag "Family Friendly" is assigned to an animal.
+   Given: Animal data is available, and the tag "Family Friendly" exists.
 
-       When: The user selects the "Family Friendly" tag.
+   When: The user adds assigns the "Family Friendly" tag to some animal.
 
-       Then: AdoptMe+ will return all animals assigned the "Family Friendly" tag.
+   Then: The user's animal will be saved with the tag "Family Friendly".
+3. As a shelter, we want to be able to upload photos of our animals at any time.
 
-       **Example 2**
+   **Example 1**
 
-       Given: Animal data is available, and the tag "Family Friendly" exists.
+   Given: The user is logged in, and has selected a previously saved "Dog".
 
-       When: The user adds assigns the "Family Friendly" tag to some animal.
+   When: The user uploads a valid photo of a "Dog".
 
-       Then: The user's animal will be saved with the tag "Family Friendly".
+   Then: The photo of a Dog will be saved to the animal profile.
 
-3.  As a shelter, we want to be able to upload photos of our animals at any time.
+   **Example 2**
 
-       **Example 1**
+   Given: The user is logged in, and is adding a new "Dog".
 
-       Given: The user is logged in, and has selected a previously saved "Dog".
+   When: The user uploads a valid photo of a "Dog".
 
-       When: The user uploads a valid photo of a "Dog".
-
-       Then: The photo of a Dog will be saved to the animal profile.
-
-      **Example 2**
-
-       Given: The user is logged in, and is adding a new "Dog".
-
-       When: The user uploads a valid photo of a "Dog".
-
-       Then: The "Dog" specimen will be created and saved with the uploaded photo.
+   Then: The "Dog" specimen will be created and saved with the uploaded photo.
 
 # Class Diagram
 
-<img src="https://github.com/daltonco/EAD-Group2/blob/main/README%20Assets/ClassDiagram.png" width=500px>
+<img src="README%20Assets/ClassDiagram.png" width=1150px alt="uml diagram">
 
 # JSON Schema
 
@@ -150,10 +145,11 @@ Tester: Brendan Payne
 
 # Github Project
 
-<https://github.com/daltonco/EAD-Group2>
+[https://github.com/daltonco/EAD-Group2](https://github.com/daltonco/EAD-Group2)
 
 # Milestones
-[Milestone 1](<https://github.com/daltonco/EAD-Group2/milestones>)
+
+[Milestone 1](https://github.com/daltonco/EAD-Group2/milestones)
 
 # Meeting Time/Link
 
