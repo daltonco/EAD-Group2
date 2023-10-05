@@ -4,10 +4,10 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
 
 # Storyboard
 
-<img src="README%20Assets/AdoptMe.png" width=575px>
-<img src="README%20Assets/AdoptMeDogs.png" width=575px>
-<img src="README%20Assets/AdoptMeSearch.png" width=575px>
-<img src="README%20Assets/AdoptMeContact.png" width=575px>
+<img src="README%20Assets/AdoptMe.png" width=575px alt="homepage mockup">
+<img src="README%20Assets/AdoptMeDogs.png" width=575px alt="dogs mockup">
+<img src="README%20Assets/AdoptMeSearch.png" width=575px alt="search mockup">
+<img src="README%20Assets/AdoptMeContact.png" width=575px alt="contact mockup">
 
 # Functional Requirements
 
