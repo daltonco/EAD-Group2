@@ -1,17 +1,25 @@
 package com.adoptmeplus.enterprise;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AdoptMePlusController {
-
-    /**
-     * handle the REST endpoint and return index page
-     */
-    @RequestMapping("/")
+    @GetMapping("/")
     public String index() {
         return "index";
+    }
+    @GetMapping("/dogs")
+    public String dogs() {
+        return "dogs";
+    }
+    @GetMapping("/search")
+    public String search() {
+        return "search";
+    }
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
     }
 
 }
