@@ -16,30 +16,20 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
    **Example 1**
 
    Given: A feed of animal data is available.
+   
+   When: The user selects animal "Dog".
 
-   When: The user selects animal "Cat".
+   When: The user adds name "Rico" to a "Dog" specimen.
 
-   When: The user adds name "Rico" to a "Cat" specimen.
-
-   Then: The user's Cat will be saved with a name of "Rico".
+   Then: The user's Dog will be saved with a name of "Rico".
 
    **Example 2**
-
-   Given: Animal data is available.
 
    When: The user searches for "aaaaaaaaaaaaaaaaaaaa".
 
    Then: AdoptMe+ will not return any results.
 
    **Example 3**
-
-   Given: Animal data is available, and there is a "Cat".
-
-   When: The user searches for animals with the type "Cat".
-
-   Then: AdoptMe+ will return all animals with the type "Cat".
-
-   **Example 4**
 
    Given: Animal data are available, and there is a "Dog" with the name "Charles".
 
@@ -67,11 +57,11 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
 
    **Example 1**
 
-   Given: The user is logged in, and has selected a previously saved "Cat" specimen.
+   Given: The user is logged in, and has selected a previously saved "Dog".
 
-   When: The user uploads a valid photo of a "Cat".
+   When: The user uploads a valid photo of a "Dog".
 
-   Then: The photo of a "Cat" will be saved to the animal profile.
+   Then: The photo of a Dog will be saved to the animal profile.
 
    **Example 2**
 
@@ -79,7 +69,7 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
 
    When: The user uploads a valid photo of a "Dog".
 
-   Then: The "Dog" specimen will be created and saved with the uploaded photo.9
+   Then: The "Dog" specimen will be created and saved with the uploaded photo.
 
 # Class Diagram
 
