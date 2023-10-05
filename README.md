@@ -83,7 +83,7 @@ AdoptMe! Is a nationwide animal shelter that provides their locations with a web
 
 # Class Diagram
 
-<img src="README%20Assets/ClassDiagram.png" width=1150px>
+<img src="README%20Assets/ClassDiagram.png" width=1150px alt="uml diagram">
 
 # JSON Schema
 
