@@ -14,7 +14,7 @@ public class AdoptionDAOStub implements IAdoptionDAO{
     }
 
     @Override
-    public List<Dog> fetchAll() {
+    public List<Dog> fetchAllAdoptions() {
         return null;
     }
 }

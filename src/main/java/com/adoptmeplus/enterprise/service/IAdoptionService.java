@@ -9,5 +9,5 @@ public interface IAdoptionService {
 
 
     Adoption save(Adoption adoption);
-    List<Dog> fetchAll();
+    List<Dog> fetchAllAdoptions();
 }

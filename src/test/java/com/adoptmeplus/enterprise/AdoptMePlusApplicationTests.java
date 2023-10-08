@@ -51,7 +51,7 @@ class AdoptMePlusApplicationTests {
         AdoptionServiceStub adoptionService = new AdoptionServiceStub();
         adoptionService.save(adoption);
 
-        List<Dog> adoptions = adoptionService.fetchAll();
+        List<Dog> adoptions = adoptionService.fetchAllAdoptions();
         boolean adoptionPresent = false;
         for (Dog a : adoptions) {
             if (a.getDogId() == DogId && a.getDogId() == DogId) {

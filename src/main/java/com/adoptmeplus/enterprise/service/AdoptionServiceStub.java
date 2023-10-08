@@ -16,7 +16,7 @@ public class AdoptionServiceStub implements IAdoptionService{
     }
 
     @Override
-    public List<Dog> fetchAll() {
+    public List<Dog> fetchAllAdoptions() {
         return null;
     }
 }
