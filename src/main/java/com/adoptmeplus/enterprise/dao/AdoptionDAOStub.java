@@ -17,7 +17,6 @@ public class AdoptionDAOStub implements IAdoptionDAO{
     public Adoption save(Adoption adoption) {
         allAdoptions.add(adoption);
         return adoption;
-        return null;
     }
 
     @Override

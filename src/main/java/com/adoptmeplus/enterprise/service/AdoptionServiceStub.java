@@ -17,7 +17,8 @@ public class AdoptionServiceStub implements IAdoptionService{
     public AdoptionServiceStub(){}
     @Override
     public Adoption save(Adoption adoption) {
-        return null;
+
+        return adoptionDAO.save(adoption);
     }
 
 

@@ -8,19 +8,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class AdoptMePlusController {
 
     @Autowired
     IAdoptionService adoptionService;
-    @GetMapping("/")
+    @RequestMapping("/")
     public String index() {
         return "index";
     }
     @GetMapping("/")
-    public ResponseEntity fetchAllAdoptions(){
-        adoptionService.fetchAll();
-        return new ResponseEntity(HttpStatus.OK);
+    @ResponseBody
+    public List<Adoption> fetchAllAdoptions(){
+        return adoptionService.fetchAll();
     }
     @GetMapping("/{id}")
     public ResponseEntity fetchAdoptionsById(@PathVariable("adoptionID") String id){
