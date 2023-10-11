@@ -9,5 +9,5 @@ public interface IAdoptionDAO {
 
     Adoption save(Adoption adoption);
 
-    List<Dog> fetchAllAdoptions();
+    List<Adoption> fetchAll();
 }

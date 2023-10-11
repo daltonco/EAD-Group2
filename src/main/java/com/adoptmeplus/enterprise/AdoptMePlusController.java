@@ -19,15 +19,31 @@ public class AdoptMePlusController {
     }
     @GetMapping("/")
     public ResponseEntity fetchAllAdoptions(){
+        adoptionService.fetchAll();
         return new ResponseEntity(HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity fetchAdoptionsById(@PathVariable("adoptionID") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    /**
+     * Create a new adoption object, given the data provided.
+     * returns one of the following:
+     * - successfully created a new adoption
+     * - unable to create an adoption, it already exists
+     * @param adoption a JSON representation of an adoption object.
+     * @return the newly created adoption object
+     */
     @PostMapping(value="/", consumes="application/json", produces="application/json")
     public Adoption createAdoption(@RequestBody Adoption adoption){
-        return adoption;
+        Adoption newAdoption = null;
+        try{
+            newAdoption = adoptionService.save(adoption);
+        } catch (Exception e){
+            // TODO add logging
+        }
+        return newAdoption;
     }
     @DeleteMapping("/{id}/")
     public ResponseEntity deleteAdoption(@PathVariable("adoptionID") String id){
