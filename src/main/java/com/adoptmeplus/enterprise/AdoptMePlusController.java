@@ -8,17 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class AdoptMePlusController {
-
     @Autowired
     IAdoptionService adoptionService;
 
@@ -26,19 +25,10 @@ public class AdoptMePlusController {
      * handle the REST endpoint and return index page
      */
     @RequestMapping("/")
-=======
-import org.springframework.web.bind.annotation.*;
 
-@Controller
-public class AdoptMePlusController {
     @GetMapping("/")
->>>>>>> origin/main
     public String index() {
         return "index";
-    }
-    @GetMapping("/dogs")
-    public String dogs() {
-        return "dogs";
     }
     @GetMapping("/search")
     public String search() {
