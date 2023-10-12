@@ -5,12 +5,11 @@ import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Dog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -23,15 +22,19 @@ public class AdoptionServiceStub implements IAdoptionService{
     public AdoptionServiceStub(IAdoptionDAO adoptionDAO){
         this.adoptionDAO = adoptionDAO;
     }
-    public AdoptionServiceStub(){}
+  
     @Override
     public Adoption save(Adoption adoption) {
-        return null;
+
+        return adoptionDAO.save(adoption);
     }
 
+
+
     @Override
-    public List<Dog> fetchAll() {
-        return null;
+    public List<Adoption> fetchAll() {
+
+        return adoptionDAO.fetchAll();
     }
 
     @Override
