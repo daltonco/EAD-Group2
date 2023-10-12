@@ -11,6 +11,5 @@ public interface IAdoptionService {
     Adoption save(Adoption adoption);
 
     List<Adoption> fetchAll();
-    List<Dog> fetchAll();
     List<Dog> fetchDogs(String age) throws IOException;
 }
