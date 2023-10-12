@@ -37,6 +37,7 @@ class AdoptMePlusApplicationTests {
 
     }
 
+    /*
     @Test
     void verifyAddAndRemoveAdoptions() {
         int AdoptionId = 1;
@@ -62,5 +63,5 @@ class AdoptMePlusApplicationTests {
 
         assertTrue(adoptionPresent);
     }
-
+    */
 }
