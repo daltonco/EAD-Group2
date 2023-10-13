@@ -22,19 +22,19 @@ public class AdoptMePlusController {
     @Autowired
     IAdoptionService adoptionService;
   
-    @RequestMapping("/")
+    @GetMapping("/")
     public String index() {
         return "index";
     }
   
-    @GetMapping("/")
+    @GetMapping("/adoptions")
     @ResponseBody
     public List<Adoption> fetchAllAdoptions(){
         return adoptionService.fetchAll();
     }
   
-    @GetMapping("/{id}")
-    public ResponseEntity fetchAdoptionsById(@PathVariable("adoptionID") String id){
+    @GetMapping("/adoptions/{id}")
+    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -46,7 +46,8 @@ public class AdoptMePlusController {
      * @param adoption a JSON representation of an adoption object.
      * @return the newly created adoption object
      */
-    @PostMapping(value="/", consumes="application/json", produces="application/json")
+
+    @PostMapping(value="/adoptions/create", consumes="application/json", produces="application/json")
     public Adoption createAdoption(@RequestBody Adoption adoption){
         Adoption newAdoption = null;
         try{
@@ -56,8 +57,8 @@ public class AdoptMePlusController {
         }
         return newAdoption;
     }
-    @DeleteMapping("/{id}/")
-    public ResponseEntity deleteAdoption(@PathVariable("adoptionID") String id){
+    @DeleteMapping("/adoptions/delete/{id}")
+    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
   
@@ -72,6 +73,11 @@ public class AdoptMePlusController {
     }
 
     @GetMapping("/dogs")
+    public String dogs() {
+        return "dogs";
+    }
+
+    @GetMapping("/search/{searchTerm}")
     public ResponseEntity searchDogs(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
         try {
             List<Dog> dogs = adoptionService.fetchDogs(searchTerm);
