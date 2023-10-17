@@ -19,9 +19,13 @@ import java.util.List;
 @Controller
 public class AdoptMePlusController {
 
+
+    private final IAdoptionService adoptionService;
     @Autowired
-    IAdoptionService adoptionService;
-  
+    public AdoptMePlusController(IAdoptionService adoptionService) {
+        this.adoptionService = adoptionService;
+    }
+
     @GetMapping("/")
     public String index() {
         return "index";
@@ -48,6 +52,7 @@ public class AdoptMePlusController {
      */
 
     @PostMapping(value="/adoptions/create", consumes="application/json", produces="application/json")
+    @ResponseBody
     public Adoption createAdoption(@RequestBody Adoption adoption){
         Adoption newAdoption = null;
         try{
