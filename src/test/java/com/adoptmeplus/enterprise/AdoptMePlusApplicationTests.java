@@ -58,7 +58,7 @@ class AdoptMePlusApplicationTests {
         List<Adoption> adoptions = adoptionService.fetchAll();
         boolean adoptionPresent = false;
         for (Adoption a : adoptions) {
-            if (a.getDogId() == DogId && a.getDogId() == DogId {
+            if (a.getDogId() == DogId && a.getDogId() == DogId) {
                 adoptionPresent = true;
                 break;
             }
