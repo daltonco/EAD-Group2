@@ -2,7 +2,9 @@ package com.adoptmeplus.enterprise;
 
 import com.adoptmeplus.enterprise.dao.AdoptionDAOStub;
 import com.adoptmeplus.enterprise.service.AdoptionServiceStub;
+import com.adoptmeplus.enterprise.service.IAdoptionService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.adoptmeplus.enterprise.dto.*;
 
@@ -14,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class AdoptMePlusApplicationTests {
+
+    @Autowired
+    private IAdoptionService adoptionService;
 
     @Test
     void contextLoads() {
@@ -37,7 +42,6 @@ class AdoptMePlusApplicationTests {
 
     }
 
-    /*
     @Test
     void verifyAddAndRemoveAdoptions() {
         int AdoptionId = 1;
@@ -49,12 +53,11 @@ class AdoptMePlusApplicationTests {
         adoption.setDogId(DogId);
         adoption.setCustomerId(CustomerId);
 
-        AdoptionServiceStub adoptionService = new AdoptionServiceStub();
         adoptionService.save(adoption);
 
-        List<Dog> adoptions = adoptionService.fetchAll();
+        List<Adoption> adoptions = adoptionService.fetchAll();
         boolean adoptionPresent = false;
-        for (Dog a : adoptions) {
+        for (Adoption a : adoptions) {
             if (a.getDogId() == DogId && a.getDogId() == DogId) {
                 adoptionPresent = true;
                 break;
@@ -63,5 +66,5 @@ class AdoptMePlusApplicationTests {
 
         assertTrue(adoptionPresent);
     }
-    */
+
 }
