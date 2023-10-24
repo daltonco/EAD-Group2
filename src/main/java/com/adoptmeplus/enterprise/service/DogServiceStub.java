@@ -16,16 +16,17 @@ public class DogServiceStub implements IDogService {
     }
 
     @Override
-    public Dog save(Dog dog) {
+    public Dog save(Dog dog) throws Exception {
         return dogDAO.save(dog);
     }
 
     @Override
-    public List<Dog> fetchAll() {
-        return dogDAO.fetchAll();
+    public List<Dog> fetchAll(String breed) throws IOException {
+        return dogDAO.fetchAll(breed);
     }
+
     @Override
-    public List<Dog> fetchDog(String age) throws IOException {
-        return dogDAO.fetchDog(age);
+    public Dog fetchDog(int dogId) throws IOException {
+        return dogDAO.fetchDog(dogId);
     }
 }

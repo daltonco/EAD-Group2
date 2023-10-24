@@ -17,16 +17,17 @@ public class DogDAO implements IDogDAO {
         return dogRepository.save(dog);
     }
 
-    public List<Dog> fetchDog(String age) throws IOException {
+    public Dog fetchDog(int dogId) throws IOException {
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
         IDogRetrofitDAO dogRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
-        Call<List<Dog>> allDogs = dogRetrofitDAO.getDogs(age);
-        Response<List<Dog>> execute = allDogs.execute();
-        return execute.body();
+        Call<Dog> gotDog = dogRetrofitDAO.getDog(dogId);
+        Response<Dog> execute = gotDog.execute();
+        Dog dogs = execute.body();
+        return dogs;
     }
 
     @Override
-    public List<Dog> fetchAll() {
+    public List<Dog> fetchAll(String breed) {
         return null;
     }
 }

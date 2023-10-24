@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IDogService {
 
-    Dog save(Dog dog);
-    List<Dog> fetchAll();
-    List<Dog> fetchDog(String age) throws IOException;
+    Dog save(Dog dog) throws Exception;
+    List<Dog> fetchAll(String breed) throws IOException;
+    Dog fetchDog(int dogId) throws IOException;
 }

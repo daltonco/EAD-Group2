@@ -13,12 +13,12 @@ public class DogSQLDAO implements IDogDAO{
     DogRepository dogRepository;
 
     @Override
-    public Dog save (Dog dog) {
+    public Dog save (Dog dog) throws Exception {
         return dogRepository.save(dog);
     }
 
     @Override
-    public List<Dog> fetchDog(String age) {
+    public List<Dog> fetchAll(String breed) {
         List<Dog> allDogs = new ArrayList<>();
         Iterable<Dog> dogs = dogRepository.findAll();
         for (Dog dog: dogs) {
@@ -28,7 +28,7 @@ public class DogSQLDAO implements IDogDAO{
     }
 
     @Override
-    public List<Dog> fetchAll() {
-        return null;
+    public Dog fetchDog(int dogId) {
+        return dogRepository.findById(dogId).get();
     }
 }

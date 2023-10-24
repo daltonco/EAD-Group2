@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IDogDAO {
 
-    Dog save(Dog dog);
-    List<Dog> fetchDog(String age) throws IOException;
-    List<Dog> fetchAll();
+    Dog save(Dog dog) throws Exception;
+    Dog fetchDog(int dogId) throws IOException;
+    List<Dog> fetchAll(String breed) throws IOException;
 }
