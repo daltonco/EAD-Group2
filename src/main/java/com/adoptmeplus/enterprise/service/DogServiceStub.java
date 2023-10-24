@@ -53,7 +53,7 @@ public class DogServiceStub implements IDogService {
      */
     @Override
     public List<Dog> fetchByBreed(String breed) throws IOException {
-        return dogDAO.fetchAll(breed);
+        return dogDAO.fetchByBreed(breed);
     }
 
     /**
