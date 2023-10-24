@@ -21,8 +21,8 @@ public class DogServiceStub implements IDogService {
     }
 
     @Override
-    public List<Dog> fetchAll(String breed) throws IOException {
-        return dogDAO.fetchAll(breed);
+    public List<Dog> fetchAll() throws IOException {
+        return dogDAO.fetchAll();
     }
 
     @Override

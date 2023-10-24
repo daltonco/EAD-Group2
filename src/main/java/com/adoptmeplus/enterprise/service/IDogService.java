@@ -8,6 +8,6 @@ import java.util.List;
 public interface IDogService {
 
     Dog save(Dog dog) throws Exception;
-    List<Dog> fetchAll(String breed) throws IOException;
+    List<Dog> fetchAll() throws IOException;
     Dog fetchDog(int dogId) throws IOException;
 }
