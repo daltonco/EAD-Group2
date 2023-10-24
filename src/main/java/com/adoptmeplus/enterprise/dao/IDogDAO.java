@@ -9,5 +9,5 @@ public interface IDogDAO {
 
     Dog save(Dog dog) throws Exception;
     Dog fetchDog(int dogId) throws IOException;
-    List<Dog> fetchAll(String breed) throws IOException;
+    List<Dog> fetchAll() throws IOException;
 }

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Repository
-@Profile("test")
+@Profile("!test")
 public class DogDAO implements IDogDAO {
 
     @Autowired
@@ -29,7 +29,8 @@ public class DogDAO implements IDogDAO {
     }
 
     @Override
-    public List<Dog> fetchAll(String breed) {
+    public List<Dog> fetchAll() {
+
         return null;
     }
 }

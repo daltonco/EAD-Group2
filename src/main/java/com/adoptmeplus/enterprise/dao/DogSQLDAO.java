@@ -20,7 +20,7 @@ public class DogSQLDAO implements IDogDAO{
     }
 
     @Override
-    public List<Dog> fetchAll(String breed) {
+    public List<Dog> fetchAll() {
         List<Dog> allDogs = new ArrayList<>();
         Iterable<Dog> dogs = dogRepository.findAll();
         for (Dog dog: dogs) {
