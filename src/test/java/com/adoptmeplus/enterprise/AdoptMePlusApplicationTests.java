@@ -1,15 +1,11 @@
 package com.adoptmeplus.enterprise;
 
-import com.adoptmeplus.enterprise.dao.AdoptionDAOStub;
-import com.adoptmeplus.enterprise.service.AdoptionServiceStub;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.adoptmeplus.enterprise.dto.*;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

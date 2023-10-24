@@ -1,12 +1,15 @@
 package com.adoptmeplus.enterprise.dto;
 
 import com.google.gson.annotations.SerializedName;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
 
+@Entity
 public @Data class Dog {
-    @SerializedName("dogId")
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int dogId;
     @SerializedName("fullName")
     private String FullName;
