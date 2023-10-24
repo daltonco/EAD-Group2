@@ -1,13 +1,13 @@
-package com.adoptmeplus.enterprise.dao;
+package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Dog;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface IDogDAO {
+public interface IDogService {
 
     Dog save(Dog dog);
-    List<Dog> fetchDog(String age) throws IOException;
     List<Dog> fetchAll();
+    List<Dog> fetchDog(String age) throws IOException;
 }

@@ -1,16 +1,15 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Adoption;
-import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AdoptionDAOStub implements IAdoptionDAO{
+public class AdoptionDAO implements IAdoptionDAO{
 
-    List<Adoption> allAdoptions = new ArrayList<Adoption>();
+    List<Adoption> allAdoptions = new ArrayList<>();
 
 
     @Override
