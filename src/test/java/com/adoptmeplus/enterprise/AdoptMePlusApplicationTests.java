@@ -9,7 +9,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+/**
+ * The `AdoptMePlusApplicationTests` class contains unit tests for various aspects of the AdoptMePlus application.
+ *
+ * It uses JUnit 5 for testing and Spring Boot's `@SpringBootTest` annotation for testing within a Spring Boot context.
+ * The tests cover adoption properties, adding and removing adoptions, and more.
+ */
 @SpringBootTest
 class AdoptMePlusApplicationTests {
 
@@ -20,6 +25,9 @@ class AdoptMePlusApplicationTests {
     void contextLoads() {
     }
 
+    /**
+     * Verifies the properties of the `Adoption` object, including `adoptionId`, `dogId`, and `customerId`.
+     */
     @Test
     void verifyAdoptionProperties() {
         int AdoptionId = 1;
@@ -38,6 +46,9 @@ class AdoptMePlusApplicationTests {
 
     }
 
+    /**
+     * Verifies the process of adding and removing adoption records.
+     */
     @Test
     void verifyAddAndRemoveAdoptions() {
         int AdoptionId = 1;

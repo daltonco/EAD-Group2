@@ -6,6 +6,15 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * The `Dog` class represents a dog available for adoption in the AdoptMePlus enterprise system.
+ *
+ * This class stores information about dogs, including their identification, full name, breed, age,
+ * tags, location, arrival date, and an associated adoption record, if applicable.
+ *
+ * @author AdoptMePlusDevTeam
+ * @version 1.0
+ */
 @Entity
 public @Data class Dog {
     @Id
@@ -23,6 +32,9 @@ public @Data class Dog {
     private String location;
     @SerializedName("dateArrived")
     private Date dateArrived;
+    @SerializedName("adoption")
+    @OneToOne(mappedBy = "dog")
+    private Adoption adoption;
 }
 
 
