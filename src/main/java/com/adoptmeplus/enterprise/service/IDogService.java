@@ -31,7 +31,7 @@ public interface IDogService {
      * @return A list of dog records matching the given breed.
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
-    List<Dog> fetchAll(String breed) throws IOException;
+    List<Dog> fetchByBreed(String breed) throws IOException;
 
     /**
      * Retrieves a specific dog record by its unique identifier.

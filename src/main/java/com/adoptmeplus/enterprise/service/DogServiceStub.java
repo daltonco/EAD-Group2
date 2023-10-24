@@ -52,7 +52,7 @@ public class DogServiceStub implements IDogService {
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
     @Override
-    public List<Dog> fetchAll(String breed) throws IOException {
+    public List<Dog> fetchByBreed(String breed) throws IOException {
         return dogDAO.fetchAll(breed);
     }
 

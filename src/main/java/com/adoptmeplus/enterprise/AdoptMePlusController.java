@@ -69,14 +69,16 @@ public class AdoptMePlusController {
      */
     @PostMapping(value="/adoptions/create", consumes="application/json", produces="application/json")
     @ResponseBody
-    public Adoption createAdoption(@RequestBody Adoption adoption){
+    public ResponseEntity createAdoption(@RequestBody Adoption adoption){
         Adoption newAdoption = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         try{
             newAdoption = adoptionService.save(adoption);
         } catch (Exception e){
-            // TODO add logging
+            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return newAdoption;
+        return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
     }
     @DeleteMapping("/adoptions/delete/{id}")
     public ResponseEntity deleteAdoption(@PathVariable("id") String id){
@@ -151,18 +153,18 @@ public class AdoptMePlusController {
     /**
      * Handles a GET request to search for dogs based on a provided search term.
      *
-     * This method allows users to search for dogs based on a specified search term. The search term is passed as a query
+     * This method allows users to search for dogs based on a specified breed. The search term is passed as a query
      * parameter, and the method attempts to retrieve a list of dogs that match the search criteria using the `dogService`.
      * If dogs are found, it returns a response containing the list of dogs with an HTTP status of 200 (OK). If an error
      * occurs during the search operation, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
      *
-     * @param searchTerm The search term used to filter and find matching dogs (default is "None" if not provided).
+     * @param breed The search term used to filter and find matching dogs (default is "None" if not provided).
      * @return A ResponseEntity containing either the list of matching dogs or an error response.
      */
-    @GetMapping("/search/{searchTerm}")
-    public ResponseEntity searchDogs(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
+    @GetMapping("/search/{breed}")
+    public ResponseEntity searchDogsByBreed(@RequestParam(value="breed", required = false, defaultValue = "None") String breed) {
         try {
-            List<Dog> dogs = dogService.fetchAll(searchTerm);
+            List<Dog> dogs = dogService.fetchByBreed(breed);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity(dogs, headers, HttpStatus.OK);
