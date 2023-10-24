@@ -56,7 +56,7 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchAll(String breed) {
+    public List<Dog> fetchByBreed(String breed) {
         return null;
     }
 }

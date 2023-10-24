@@ -41,5 +41,5 @@ public interface IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      * @throws IOException if there's an issue with the data retrieval operation.
      */
-    List<Dog> fetchAll(String breed) throws IOException;
+    List<Dog> fetchByBreed(String breed) throws IOException;
 }
