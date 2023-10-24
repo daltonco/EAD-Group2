@@ -96,7 +96,6 @@ public class AdoptMePlusController {
         return new ResponseEntity(newDog, headers, HttpStatus.OK);
     }
     @GetMapping("/dogs/{dogId}")
-    @ResponseBody
     public ResponseEntity fetchDog(@PathVariable("dogId")int dogId) {
         try {
             Dog foundDog = dogService.fetchDog(dogId);
