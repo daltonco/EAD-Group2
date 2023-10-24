@@ -107,11 +107,11 @@ public class AdoptMePlusController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+/* need to build a fetchByBreed or something similar to get this working
     @GetMapping("/search/{searchTerm}")
     public ResponseEntity searchDogs(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
         try {
-            List<Dog> dogs = dogService.fetchAll(searchTerm);
+            List<Dog> dogs = dogService.fetchDog(searchTerm);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity(dogs, headers, HttpStatus.OK);
@@ -121,4 +121,6 @@ public class AdoptMePlusController {
         }
 
     }
+
+ */
 }
