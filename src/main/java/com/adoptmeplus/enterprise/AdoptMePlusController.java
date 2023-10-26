@@ -9,64 +9,66 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
 
 @Controller
+@RequestMapping("/adoptions")
 public class AdoptMePlusController {
 
     @Autowired
-    IAdoptionService adoptionService;
-  
+    private IAdoptionService adoptionService;
+
     @GetMapping("/")
     public String index() {
         return "index";
     }
-  
-    @GetMapping("/adoptions")
+
+    @GetMapping("/all")
     @ResponseBody
-    public List<Adoption> fetchAllAdoptions(){
+    public List<Adoption> fetchAllAdoptions() {
         return adoptionService.fetchAll();
     }
-  
-    @GetMapping("/adoptions/{id}")
-    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
+
+    @GetMapping("/{id}")
+    public ResponseEntity fetchAdoptionById(@PathVariable("id") String id) {
+        // TODO: Implement fetching an adoption by ID
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
      * Create a new adoption object, given the data provided.
-     * returns one of the following:
-     * - successfully created a new adoption
-     * - unable to create an adoption, it already exists
+     * Returns one of the following:
+     * - Successfully created a new adoption
+     * - Unable to create an adoption, it already exists
+     *
      * @param adoption a JSON representation of an adoption object.
      * @return the newly created adoption object
      */
-
-    @PostMapping(value="/adoptions/create", consumes="application/json", produces="application/json")
-    public Adoption createAdoption(@RequestBody Adoption adoption){
-        Adoption newAdoption = null;
-        try{
-            newAdoption = adoptionService.save(adoption);
-        } catch (Exception e){
-            // TODO add logging
+    @PostMapping("/create")
+    public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption) {
+        try {
+            Adoption newAdoption = adoptionService.save(adoption);
+            return new ResponseEntity<>(newAdoption, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // TODO: Implement proper error handling and logging
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return newAdoption;
     }
-    @DeleteMapping("/adoptions/delete/{id}")
-    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteAdoption(@PathVariable("id") String id) {
+        // TODO: Implement adoption deletion
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-  
+
     @GetMapping("/search")
     public String search() {
         return "search";
     }
-  
+
     @GetMapping("/contact")
     public String contact() {
         return "contact";
@@ -77,17 +79,16 @@ public class AdoptMePlusController {
         return "dogs";
     }
 
-    @GetMapping("/search/{searchTerm}")
-    public ResponseEntity searchDogs(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
+    @GetMapping("/searchDogs")
+    public ResponseEntity<List<Dog>> searchDogs(@RequestParam(value = "searchTerm", required = false, defaultValue = "None") String searchTerm) {
         try {
             List<Dog> dogs = adoptionService.fetchDogs(searchTerm);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity(dogs, headers, HttpStatus.OK);
+            return new ResponseEntity<>(dogs, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            // TODO: Implement proper error handling and logging
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 }
