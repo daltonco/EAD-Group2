@@ -162,7 +162,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the list of matching dogs or an error response.
      */
     @GetMapping("/search/{breed}")
-    public ResponseEntity searchDogsByBreed(@RequestParam(value="breed", required = false, defaultValue = "None") String breed) {
+    public ResponseEntity searchDogsByBreed(@PathVariable String breed) {
         try {
             List<Dog> dogs = dogService.fetchByBreed(breed);
             HttpHeaders headers = new HttpHeaders();
