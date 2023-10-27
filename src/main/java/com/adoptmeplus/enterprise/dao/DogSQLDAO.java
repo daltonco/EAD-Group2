@@ -57,6 +57,7 @@ public class DogSQLDAO implements IDogDAO{
      */
     @Override
     public Dog fetchDog(int dogId) {
+
         return dogRepository.findById(dogId).get();
     }
 }

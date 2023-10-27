@@ -29,6 +29,7 @@ public class DogDAO implements IDogDAO {
      */
     @Override
     public Dog save (Dog dog) {
+        
         return dogRepository.save(dog);
     }
 
@@ -41,12 +42,9 @@ public class DogDAO implements IDogDAO {
      * @throws IOException if there's an issue with the network communication.
      */
     public Dog fetchDog(int dogId) throws IOException {
-        Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
-        IDogRetrofitDAO dogRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
-        Call<Dog> gotDog = dogRetrofitDAO.getDog(dogId);
-        Response<Dog> execute = gotDog.execute();
-        Dog dogs = execute.body();
-        return dogs;
+        Dog dog = dogRepository.findById(dogId).get();
+        return dog;
+
     }
 
     /**
@@ -56,7 +54,5 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) {
-        return null;
-    }
+    public List<Dog> fetchByBreed(String breed) { return null; }
 }
