@@ -29,7 +29,6 @@ public class DogDAO implements IDogDAO {
      */
     @Override
     public Dog save (Dog dog) {
-        
         return dogRepository.save(dog);
     }
 
@@ -54,5 +53,8 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) { return null; }
+    public List<Dog> fetchByBreed(String breed) {
+
+        return dogRepository.findByBreed(breed);
+    }
 }
