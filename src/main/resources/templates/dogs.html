@@ -10,7 +10,9 @@
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
         <h1>Dogs</h1>
-        <p><i>This is a placeholder for the dogs page.</i></p>
+        <a class="nav-link" aria-current="page" th:href="@{/dogs/create}">
+            <button class="btn btn-primary" type="submit">Create</button>
+        </a>
     </div>
 </div>
 </body>
