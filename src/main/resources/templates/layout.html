@@ -28,13 +28,13 @@
                     <a class="nav-link" aria-current="page" th:href="@{/dogs}">Dogs</a>
                 </li>
                 <li class="nav-item mx-4">
-                    <a class="nav-link" aria-current="page" th:href="@{/search}">Search</a>
+                    <a class="nav-link" aria-current="page" th:href="@{/customers}">Customers</a>
                 </li>
                 <li class="nav-item mx-4">
-                    <a class="nav-link" aria-current="page" th:href="@{/contact}">Contact</a>
+                    <a class="nav-link" aria-current="page" th:href="@{/adoptions}">Adoptions</a>
                 </li>
             </ul>
-            <form class="d-flex" action="#" th:action="@{/search}" method="GET">
+            <form class="d-flex" action="#" th:action="@{/dogs}" method="GET">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="Term" id="Term">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>

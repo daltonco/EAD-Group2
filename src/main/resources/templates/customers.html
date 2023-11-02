@@ -4,13 +4,15 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>AdoptMe+ - Contact</title>
+    <title>AdoptMe+ - Customers</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-        <h1>Contact</h1>
-        <p><i>This is a placeholder for the contact page.</i></p>
+        <h1>Customers</h1>
+        <a class="nav-link" aria-current="page" th:href="@{/customers/create}">
+            <button class="btn btn-primary" type="submit">Create</button>
+        </a>
     </div>
 </div>
 </body>

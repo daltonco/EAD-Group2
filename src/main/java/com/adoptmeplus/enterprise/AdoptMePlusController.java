@@ -38,67 +38,37 @@ public class AdoptMePlusController {
         this.dogService = dogService;
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-    @GetMapping("/adoptions")
-    public String adoptions(){
-        return "adoptions";
-    }
-    @GetMapping("/adoptions/all")
-    @ResponseBody
-    public List<Adoption> fetchAllAdoptions(){
-        return adoptionService.fetchAll();
-    }
+    /*
 
-    @GetMapping("/adoptions/{id}")
-    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
+    Everything under this section is for page mapping.
 
-    /**
-     * Handles a POST request to create a new adoption record.
-     *
-     * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
-     * the `adoptionService`. If the adoption record is successfully created, it returns the newly created adoption object
-     * with an HTTP status of 200 (OK). If an error occurs during the creation process, it returns an error response.
-     *
-     * @param adoption The JSON representation of the adoption object to be created.
-     * @return A ResponseEntity containing either the newly created adoption object or an error response.
      */
-    @PostMapping(value="/adoptions/create", consumes="application/json", produces="application/json")
-    @ResponseBody
-    public ResponseEntity createAdoption(@RequestBody Adoption adoption){
-        Adoption newAdoption = null;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        try{
-            newAdoption = adoptionService.save(adoption);
-        } catch (Exception e){
-            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
-    }
-    @DeleteMapping("/adoptions/delete/{id}")
-    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping("/search")
-    public String search() {
-        return "search";
-    }
-
-    @GetMapping("/contact")
-    public String contact() {
-        return "contact";
-    }
+    @GetMapping("/")
+    public String index() { return "index"; }
 
     @GetMapping("/dogs")
-    public String dogs() {
-        return "dogs";
-    }
+    public String dogs() { return "dogs"; }
+
+    @GetMapping("/customers")
+    public String customers() { return "customers"; }
+
+    @GetMapping("/adoptions")
+    public String adoptions(){ return "adoptions"; }
+
+    @GetMapping("/dogs/create")
+    public String createdog() { return "createdog"; }
+
+    @GetMapping("/customers/create")
+    public String createcustomer() { return "createcustomer"; }
+
+    @GetMapping("/adoptions/create")
+    public String createadoption() { return "createadoption"; }
+
+    /*
+
+    Everything under this section is for REST services.
+
+     */
 
     /**
      * Handles a POST request to add a new dog to the system.
@@ -151,6 +121,46 @@ public class AdoptMePlusController {
     }
 
     /**
+     * Handles a POST request to create a new adoption record.
+     *
+     * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
+     * the `adoptionService`. If the adoption record is successfully created, it returns the newly created adoption object
+     * with an HTTP status of 200 (OK). If an error occurs during the creation process, it returns an error response.
+     *
+     * @param adoption The JSON representation of the adoption object to be created.
+     * @return A ResponseEntity containing either the newly created adoption object or an error response.
+     */
+    @PostMapping(value="/adoptions/add", consumes="application/json", produces="application/json")
+    @ResponseBody
+    public ResponseEntity createAdoption(@RequestBody Adoption adoption){
+        Adoption newAdoption = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        try{
+            newAdoption = adoptionService.save(adoption);
+        } catch (Exception e){
+            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/adoptions/all")
+    @ResponseBody
+    public List<Adoption> fetchAllAdoptions(){
+        return adoptionService.fetchAll();
+    }
+
+    @GetMapping("/adoptions/{id}")
+    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/adoptions/delete/{id}")
+    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
      * Handles a GET request to search for dogs based on a provided search term.
      *
      * This method allows users to search for dogs based on a specified breed. The search term is passed as a query
@@ -161,7 +171,7 @@ public class AdoptMePlusController {
      * @param breed The search term used to filter and find matching dogs (default is "None" if not provided).
      * @return A ResponseEntity containing either the list of matching dogs or an error response.
      */
-    @GetMapping("/search/{breed}")
+    @GetMapping("/dogs/{breed}")
     public ResponseEntity searchDogsByBreed(@PathVariable String breed) {
         try {
             List<Dog> dogs = dogService.fetchByBreed(breed);
