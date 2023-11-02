@@ -29,5 +29,5 @@ public interface IAdoptionDAO {
      *
      * @return A List of Adoption objects representing all available Adoption records.
      */
-    List<Adoption> fetchAll();
+    List<Adoption> findAll();
 }

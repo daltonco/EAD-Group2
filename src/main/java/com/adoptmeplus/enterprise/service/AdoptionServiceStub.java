@@ -48,8 +48,8 @@ public class AdoptionServiceStub implements IAdoptionService{
      * @return A list of adoption records.
      */
     @Override
-    public List<Adoption> fetchAll() {
+    public List<Adoption> findAll() {
 
-        return adoptionDAO.fetchAll();
+        return adoptionDAO.findAll();
     }
 }

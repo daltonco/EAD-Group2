@@ -17,6 +17,14 @@ import java.util.List;
 public interface IDogDAO {
 
     /**
+     * Retrieves a list of all Dog records
+     *
+     * @return A List of Dog objects representing all available dogs
+     * @throws IOException if there's an issue with the data retrieval operation.
+     */
+    List<Dog> findAll();
+
+    /**
      * Saves a Dog record.
      *
      * @param dog The Dog object to be saved.
@@ -24,6 +32,15 @@ public interface IDogDAO {
      * @throws Exception if there is an issue with the data access operation.
      */
     Dog save(Dog dog) throws Exception;
+
+    /**
+     * Deletes a Dog record.
+     *
+     * @param dog The Dog object to be deleted.
+     * @return The deleted Dog object.
+     * @throws Exception if there is an issue with the data access operation.
+     */
+    void delete(Dog dog) throws Exception;
 
     /**
      * Retrieves a Dog record by its unique identifier.

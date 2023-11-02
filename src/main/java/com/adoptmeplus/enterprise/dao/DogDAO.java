@@ -22,6 +22,16 @@ public class DogDAO implements IDogDAO {
     private DogRepository dogRepository;
 
     /**
+     * Fetches a list of all Dog records.
+     *
+     * @return A List of Dog objects representing all available dogs of the specified breed.
+     */
+    @Override
+    public List<Dog> findAll(){
+        return dogRepository.findAll();
+    }
+
+    /**
      * Saves a Dog record to the data source.
      *
      * @param dog The Dog object to be saved.
@@ -32,6 +42,19 @@ public class DogDAO implements IDogDAO {
         return dogRepository.save(dog);
     }
 
+
+
+    /**
+     * Deletes a Dog record from the data source.
+     *
+     * @param dog The Dog object to be deleted.
+     * @return The delete Dog object.
+     */
+
+    @Override
+    public void delete(Dog dog){
+        dogRepository.delete(dog);
+    }
 
     /**
      * Fetches a Dog by its unique identifier.

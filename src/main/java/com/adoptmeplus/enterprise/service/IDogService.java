@@ -25,6 +25,14 @@ public interface IDogService {
     Dog save(Dog dog) throws Exception;
 
     /**
+     * Retrieves a list of all dog records
+     *
+     * @return A list of dog records matching the given breed.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
+    List<Dog> findAll() throws IOException;
+
+    /**
      * Retrieves a list of dog records based on a specified breed.
      *
      * @param breed The breed of dogs to fetch.
@@ -41,4 +49,12 @@ public interface IDogService {
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
     Dog fetchDog(int dogId) throws IOException;
+    /**
+     * Deletes a dog record from the underlying data source by its unique identifier.
+     *
+     * @param dog The unique identifier of the dog to be deleted.
+     * @throws IOException If an I/O error occurs during the deletion operation.
+     * @throws Exception If an error occurs during the deletion operation.
+     */
+    void delete(Dog dog) throws IOException, Exception;
 }

@@ -41,7 +41,7 @@ public class AdoptionDAO implements IAdoptionDAO{
      * @return A List of Adoption objects representing all available Adoption records.
      */
     @Override
-    public List<Adoption> fetchAll() {
+    public List<Adoption> findAll() {
 
         return allAdoptions;
     }

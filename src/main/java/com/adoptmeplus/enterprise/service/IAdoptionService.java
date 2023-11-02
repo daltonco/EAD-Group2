@@ -26,5 +26,5 @@ public interface IAdoptionService {
      *
      * @return A list of adoption records.
      */
-    List<Adoption> fetchAll();
+    List<Adoption> findAll();
 }
