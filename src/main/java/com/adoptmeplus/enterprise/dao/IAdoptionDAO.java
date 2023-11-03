@@ -3,6 +3,7 @@ package com.adoptmeplus.enterprise.dao;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Dog;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,5 +30,24 @@ public interface IAdoptionDAO {
      *
      * @return A List of Adoption objects representing all available Adoption records.
      */
-    List<Adoption> fetchAll();
+    List<Adoption> findAll();
+
+    /**
+     * Deletes an Adoption record from the SQL database.
+     *
+     * @param adoption The Adoption object to be deleted.
+     * @return The deleted Adoption object.
+     * @throws Exception if there is an issue with the database operation.
+     */
+    void delete(Adoption adoption) throws Exception;
+
+
+    /**
+     * Retrieves a Adoption record by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to be fetched.
+     * @return The Adoption object with the specified adoptionId, or null if not found.
+     * @throws IOException if there's an issue with the data retrieval operation.
+     */
+    Adoption fetchAdoption(int adoptionId) throws IOException;
 }

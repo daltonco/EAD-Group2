@@ -16,4 +16,10 @@ import java.util.List;
  */
 public interface DogRepository extends CrudRepository<Dog, Integer> {
     List<Dog> findByBreed(String breed);
+    void delete(Dog dog);
+
+    Dog save(Dog dog);
+
+
+    List<Dog> findAll();
 }

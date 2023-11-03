@@ -1,6 +1,9 @@
 package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Adoption;
+import com.adoptmeplus.enterprise.dto.Dog;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,5 +29,14 @@ public interface IAdoptionService {
      *
      * @return A list of adoption records.
      */
-    List<Adoption> fetchAll();
+    List<Adoption> findAll();
+
+    /**
+     * Retrieves a specific adoption record by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to fetch.
+     * @return The adoption record with the specified identifier.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
+    Adoption fetchAdoption(int adoptionId) throws IOException;
 }

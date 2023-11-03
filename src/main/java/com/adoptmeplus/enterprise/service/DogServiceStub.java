@@ -1,4 +1,5 @@
 package com.adoptmeplus.enterprise.service;
+import com.adoptmeplus.enterprise.dao.DogRepository;
 import com.adoptmeplus.enterprise.dao.IDogDAO;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 public class DogServiceStub implements IDogService {
 
+    private final DogRepository dogRepository;
     private final IDogDAO dogDAO;
 
     /**
@@ -28,8 +30,10 @@ public class DogServiceStub implements IDogService {
      * @param dogDAO The data access object for managing dog records.
      */
     @Autowired
-    public DogServiceStub(IDogDAO dogDAO){
+    public DogServiceStub(IDogDAO dogDAO, DogRepository dogRepository){
+
         this.dogDAO = dogDAO;
+        this.dogRepository = dogRepository;
     }
 
     /**
@@ -42,6 +46,11 @@ public class DogServiceStub implements IDogService {
     @Override
     public Dog save(Dog dog) throws Exception {
         return dogDAO.save(dog);
+    }
+
+    @Override
+    public List<Dog> findAll() throws IOException {
+        return dogDAO.findAll();
     }
 
     /**
@@ -66,5 +75,14 @@ public class DogServiceStub implements IDogService {
     @Override
     public Dog fetchDog(int dogId) throws IOException {
         return dogDAO.fetchDog(dogId);
+    }
+
+    @Override
+    public void delete(Dog dog) throws Exception {
+        if (dog != null) {
+            dogRepository.delete(dog);
+        } else {
+            throw new Exception("Dog not found");
+        }
     }
 }
