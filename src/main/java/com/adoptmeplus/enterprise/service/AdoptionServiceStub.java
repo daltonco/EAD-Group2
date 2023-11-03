@@ -1,8 +1,11 @@
 package com.adoptmeplus.enterprise.service;
 import com.adoptmeplus.enterprise.dao.IAdoptionDAO;
 import com.adoptmeplus.enterprise.dto.Adoption;
+import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,5 +54,17 @@ public class AdoptionServiceStub implements IAdoptionService{
     public List<Adoption> findAll() {
 
         return adoptionDAO.findAll();
+    }
+
+    /**
+     * Retrieves a specific adoption record by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to fetch.
+     * @return The adoption record with the specified identifier.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
+    @Override
+    public Adoption fetchAdoption(int adoptionId) throws IOException {
+        return adoptionDAO.fetchAdoption(adoptionId);
     }
 }

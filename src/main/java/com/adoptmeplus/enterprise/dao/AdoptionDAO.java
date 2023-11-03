@@ -1,8 +1,11 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Adoption;
+import com.adoptmeplus.enterprise.dto.Dog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +21,8 @@ import java.util.List;
 @Repository
 public class AdoptionDAO implements IAdoptionDAO{
 
-    /**
-     * A list to store all Adoption records in memory.
-     */
-    List<Adoption> allAdoptions = new ArrayList<>();
+    @Autowired
+    private AdoptionRepository adoptionRepository;
 
     /**
      * Saves an Adoption record to the data source.
@@ -30,9 +31,8 @@ public class AdoptionDAO implements IAdoptionDAO{
      * @return The saved Adoption object.
      */
     @Override
-    public Adoption save(Adoption adoption) {
-        allAdoptions.add(adoption);
-        return adoption;
+    public Adoption save (Adoption adoption) {
+        return adoptionRepository.save(adoption);
     }
 
     /**
@@ -41,8 +41,32 @@ public class AdoptionDAO implements IAdoptionDAO{
      * @return A List of Adoption objects representing all available Adoption records.
      */
     @Override
-    public List<Adoption> findAll() {
+    public List<Adoption> findAll(){
+        return adoptionRepository.findAll();
+    }
 
-        return allAdoptions;
+    /**
+     * Deletes an adoption record from the data source.
+     *
+     * @param adoption The Adoption object to be deleted.
+     * @return The delete Adoption object.
+     */
+
+    @Override
+    public void delete(Adoption adoption){
+        adoptionRepository.delete(adoption);
+    }
+
+    /**
+     * Fetches a Adoption by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to be fetched.
+     * @return The adoption object with the specified adoptionId, or null if not found.
+     * @throws IOException if there's an issue with the network communication.
+     */
+    @Override
+    public Adoption fetchAdoption(int adoptionId) throws IOException {
+        Adoption adoption = adoptionRepository.findById(adoptionId).get();
+        return adoption;
     }
 }

@@ -42,8 +42,6 @@ public class DogDAO implements IDogDAO {
         return dogRepository.save(dog);
     }
 
-
-
     /**
      * Deletes a Dog record from the data source.
      *
