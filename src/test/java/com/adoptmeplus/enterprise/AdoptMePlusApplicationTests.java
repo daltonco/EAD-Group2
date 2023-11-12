@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.adoptmeplus.enterprise.dto.*;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * It uses JUnit 5 for testing and Spring Boot's `@SpringBootTest` annotation for testing within a Spring Boot context.
  * The tests cover adoption properties, adding and removing adoptions, and more.
  */
-@SpringBootTest
+@SpringBootTest(classes = AdoptMePlusApplication.class)
 class AdoptMePlusApplicationTests {
 
-    @Autowired
+    @MockBean
     private IAdoptionService adoptionService;
 
     @Test
@@ -31,19 +33,21 @@ class AdoptMePlusApplicationTests {
     @Test
     void verifyAdoptionProperties() {
         int AdoptionId = 1;
-        int DogId = 1;
-        String CustomerId = "1";
-
         Adoption adoption = new Adoption();
         adoption.setAdoptionId(AdoptionId);
         assertEquals(AdoptionId, adoption.getAdoptionId());
 
-        adoption.setDogId(DogId);
-        assertEquals(DogId, adoption.getDogId());
+        int DogId = 1;
+        Dog dog = new Dog();
+        dog.setDogId(DogId);
+        adoption.setDog(dog);
+        assertEquals(DogId, adoption.getDog().getDogId());
 
-        adoption.setCustomerId(CustomerId);
-        assertEquals(CustomerId, adoption.getCustomerId());
-
+        int CustomerId = 1;
+        Customer customer = new Customer();
+        customer.setCustomerId(CustomerId);
+        adoption.setCustomer(customer);
+        assertEquals(CustomerId, adoption.getCustomer().getCustomerId());
     }
 
     /**
@@ -53,19 +57,19 @@ class AdoptMePlusApplicationTests {
     void verifyAddAndRemoveAdoptions() {
         int AdoptionId = 1;
         int DogId = 1;
-        String CustomerId = "1";
+        int CustomerId = 1;
 
         Adoption adoption = new Adoption();
         adoption.setAdoptionId(AdoptionId);
-        adoption.setDogId(DogId);
-        adoption.setCustomerId(CustomerId);
+        adoption.getDog().setDogId(DogId);
+        adoption.getCustomer().setCustomerId(CustomerId);
 
         adoptionService.save(adoption);
 
-        List<Adoption> adoptions = adoptionService.fetchAll();
+        List<Adoption> adoptions = adoptionService.findAll();
         boolean adoptionPresent = false;
         for (Adoption a : adoptions) {
-            if (a.getDogId() == DogId && a.getDogId() == DogId) {
+            if (a.getDog().getDogId() == DogId && a.getCustomer().getCustomerId() == CustomerId) {
                 adoptionPresent = true;
                 break;
             }
