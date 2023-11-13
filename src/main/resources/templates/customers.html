@@ -10,9 +10,14 @@
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
         <h1>Customers</h1>
-        <a class="nav-link" aria-current="page" th:href="@{/customers/create}">
-            <button class="btn btn-primary" type="submit">Create</button>
-        </a>
+        <div class="d-inline-flex mx-auto gap-2">
+            <a class="nav-link" aria-current="page" th:href="@{/customers/create}">
+                <button class="btn btn-primary" type="submit">Create</button>
+            </a>
+            <a class="nav-link" aria-current="page" th:href="@{/customers/edit}">
+                <button class="btn btn-primary" type="submit">Edit</button>
+            </a>
+        </div>
     </div>
 </div>
 </body>
