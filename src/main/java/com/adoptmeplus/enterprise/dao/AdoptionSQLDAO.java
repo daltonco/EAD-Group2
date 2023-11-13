@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository("adoptionDAO")
 @Profile("dev")
 public class AdoptionSQLDAO implements IAdoptionDAO{
     @Autowired
