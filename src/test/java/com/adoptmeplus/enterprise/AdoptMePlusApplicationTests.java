@@ -57,11 +57,15 @@ class AdoptMePlusApplicationTests {
     void verifyAddAndRemoveAdoptions() {
         int AdoptionId = 1;
         int DogId = 1;
+        Dog dog = new Dog();
         int CustomerId = 1;
+        Customer customer = new Customer();
 
         Adoption adoption = new Adoption();
         adoption.setAdoptionId(AdoptionId);
+        adoption.setDog(dog);
         adoption.getDog().setDogId(DogId);
+        adoption.setCustomer(customer);
         adoption.getCustomer().setCustomerId(CustomerId);
 
         adoptionService.save(adoption);
