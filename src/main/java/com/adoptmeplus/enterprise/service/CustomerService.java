@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-public class CustomerServiceStub implements ICustomerService {
+public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
     private final ICustomerDAO customerDAO;
@@ -30,7 +30,7 @@ public class CustomerServiceStub implements ICustomerService {
      * @param customerDAO The data access object for managing customer records.
      */
     @Autowired
-    public CustomerServiceStub(ICustomerDAO customerDAO, CustomerRepository customerRepository){
+    public CustomerService(ICustomerDAO customerDAO, CustomerRepository customerRepository){
 
         this.customerDAO = customerDAO;
         this.customerRepository = customerRepository;
