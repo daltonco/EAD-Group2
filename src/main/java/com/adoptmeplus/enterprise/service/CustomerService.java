@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * The `CustomerServiceStub` class provides a stub implementation of the `ICustomerService` interface
+ * The `CustomerService` class provides the implementation of the `ICustomerService` interface
  * for managing customer-related operations in the AdoptMePlus enterprise system.
  *
  * This class is responsible for saving and fetching customer records using an underlying `ICustomerDAO`
@@ -19,18 +19,18 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-public class CustomerServiceStub implements ICustomerService {
+public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
     private final ICustomerDAO customerDAO;
 
     /**
-     * Constructs a `CustomerServiceStub` with the specified `ICustomerDAO`.
+     * Constructs a `CustomerService` with the specified `ICustomerDAO`.
      *
      * @param customerDAO The data access object for managing customer records.
      */
     @Autowired
-    public CustomerServiceStub(ICustomerDAO customerDAO, CustomerRepository customerRepository){
+    public CustomerService(ICustomerDAO customerDAO, CustomerRepository customerRepository){
 
         this.customerDAO = customerDAO;
         this.customerRepository = customerRepository;
