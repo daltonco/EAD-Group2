@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The `AdoptionServiceStub` class provides a stub implementation of the `IAdoptionService` interface
+ * The `AdoptionService` class provides the implementation of the `IAdoptionService` interface
  * for managing adoption records in the AdoptMePlus enterprise system.
  *
  * This class is responsible for saving and fetching adoption records using an underlying `IAdoptionDAO`
@@ -23,7 +23,7 @@ public class AdoptionService implements IAdoptionService{
     private final IAdoptionDAO adoptionDAO;
 
     /**
-     * Constructs an `AdoptionServiceStub` with the specified `IAdoptionDAO`.
+     * Constructs an `AdoptionService` with the specified `IAdoptionDAO`.
      *
      * @param adoptionDAO The data access object for managing adoption records.
      */
