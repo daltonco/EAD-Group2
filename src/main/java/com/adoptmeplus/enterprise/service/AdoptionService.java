@@ -1,7 +1,6 @@
 package com.adoptmeplus.enterprise.service;
 import com.adoptmeplus.enterprise.dao.IAdoptionDAO;
 import com.adoptmeplus.enterprise.dto.Adoption;
-import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The `AdoptionServiceStub` class provides a stub implementation of the `IAdoptionService` interface
+ * The `AdoptionService` class provides the implementation of the `IAdoptionService` interface
  * for managing adoption records in the AdoptMePlus enterprise system.
  *
  * This class is responsible for saving and fetching adoption records using an underlying `IAdoptionDAO`
@@ -19,17 +18,17 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-public class AdoptionServiceStub implements IAdoptionService{
+public class AdoptionService implements IAdoptionService{
 
     private final IAdoptionDAO adoptionDAO;
 
     /**
-     * Constructs an `AdoptionServiceStub` with the specified `IAdoptionDAO`.
+     * Constructs an `AdoptionService` with the specified `IAdoptionDAO`.
      *
      * @param adoptionDAO The data access object for managing adoption records.
      */
     @Autowired
-    public AdoptionServiceStub(IAdoptionDAO adoptionDAO){
+    public AdoptionService(IAdoptionDAO adoptionDAO){
         this.adoptionDAO = adoptionDAO;
     }
 

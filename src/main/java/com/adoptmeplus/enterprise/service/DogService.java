@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * The `DogServiceStub` class provides a stub implementation of the `IDogService` interface
+ * The `DogService` class provides the implementation of the `IDogService` interface
  * for managing dog-related operations in the AdoptMePlus enterprise system.
  *
  * This class is responsible for saving and fetching dog records using an underlying `IDogDAO`
@@ -19,18 +19,18 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-public class DogServiceStub implements IDogService {
+public class DogService implements IDogService {
 
     private final DogRepository dogRepository;
     private final IDogDAO dogDAO;
 
     /**
-     * Constructs a `DogServiceStub` with the specified `IDogDAO`.
+     * Constructs a `DogService` with the specified `IDogDAO`.
      *
      * @param dogDAO The data access object for managing dog records.
      */
     @Autowired
-    public DogServiceStub(IDogDAO dogDAO, DogRepository dogRepository){
+    public DogService(IDogDAO dogDAO, DogRepository dogRepository){
 
         this.dogDAO = dogDAO;
         this.dogRepository = dogRepository;

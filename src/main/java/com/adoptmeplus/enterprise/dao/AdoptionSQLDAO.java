@@ -3,15 +3,13 @@ package com.adoptmeplus.enterprise.dao;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository("adoptionDAO")
-@Profile("dev")
+@Repository("adoptionSQLDAO")
 public class AdoptionSQLDAO implements IAdoptionDAO{
     @Autowired
     AdoptionRepository adoptionRepository;

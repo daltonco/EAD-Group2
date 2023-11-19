@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>AdoptMe+ - Update Adoption</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <form>
+      <div class="form-group my-2">
+        <h1>
+        <label for="dog">Adoptions: Customer 1</label>
+        </h1>
+        <select class="form-select" multiple size="3" name="dog" id="dog">
+          <option value="1">Dog 1</option>
+          <option value="2">Dog 2</option>
+          <option value="3">Dog 3</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-danger my-2">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

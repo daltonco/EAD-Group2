@@ -68,6 +68,24 @@ public class AdoptMePlusController {
     @GetMapping("/adoptions/create")
     public String createadoption() { return "createadoption"; }
 
+    @GetMapping("/dogs/edit")
+    public String editdogs() { return "editdogs"; }
+
+    @GetMapping("/customers/edit")
+    public String editcustomers() { return "editcustomers"; }
+
+    @GetMapping("/adoptions/edit")
+    public String editadoptions() { return "editadoptions"; }
+
+    @GetMapping("/dogs/update")
+    public String updatedogs() { return "updatedogs"; }
+
+    @GetMapping("/customers/update")
+    public String updatecustomers() { return "updatecustomers"; }
+
+    @GetMapping("/adoptions/update")
+    public String updateadoptions() { return "updateadoptions"; }
+
     /*
 
     Everything under this section is for REST services.
