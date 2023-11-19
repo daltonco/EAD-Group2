@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 import java.util.Map;
 
-@Profile("test")
+@Profile("!test")
 public interface AdoptionRepository extends CrudRepository<Adoption, Integer> {
     List<Adoption> findAll();
 

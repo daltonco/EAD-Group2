@@ -18,6 +18,7 @@ import java.util.List;
  * @version 1.0
  */
 @Repository("adoptionDAO")
+@Profile("test")
 public class AdoptionDAOStub implements IAdoptionDAO{
 
     /**

@@ -20,7 +20,7 @@ import java.util.List;
  * @version 1.0
  */
 @Repository
-@Profile("test")
+@Profile("dev")
 public class AdoptionDAO implements IAdoptionDAO{
 
     @Autowired
