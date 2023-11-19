@@ -9,14 +9,27 @@
 <body>
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-        <h1>Customers</h1>
-        <div class="d-inline-flex mx-auto gap-2">
-            <a class="nav-link" aria-current="page" th:href="@{/customers/create}">
-                <button class="btn btn-primary" type="submit">Create</button>
-            </a>
-            <a class="nav-link" aria-current="page" th:href="@{/customers/edit}">
-                <button class="btn btn-primary" type="submit">Edit</button>
-            </a>
+        <div class="border border-2 rounded bg-light shadow-lg p-5">
+            <div class="pb-2">
+                <h2>Customers</h2>
+            </div>
+            <hr>
+            <div class="p-2 pt-3 px-5">
+                <p>Would you like to create a new Customer entry or edit an existing one?</p>
+            </div>
+            <hr>
+            <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+                <div class="">
+                    <a class="nav-link" aria-current="page" th:href="@{/customer/create}">
+                        <button class="btn btn-primary btn-sm" type="submit">Create</button>
+                    </a>
+                </div>
+                <div>
+                    <a class="nav-link" aria-current="page" th:href="@{/customer/edit}">
+                        <button class="btn btn-primary btn-sm" type="submit">Edit</button>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

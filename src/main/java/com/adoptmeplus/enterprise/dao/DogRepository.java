@@ -20,6 +20,5 @@ public interface DogRepository extends CrudRepository<Dog, Integer> {
 
     Dog save(Dog dog);
 
-
     List<Dog> findAll();
 }
