@@ -4,9 +4,10 @@ import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import retrofit2.*;
+
 import java.io.IOException;
 import java.util.List;
+
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
  * for Dog entities in the AdoptMePlus application.
@@ -16,12 +17,9 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
-@Repository
-@Profile("dev")
-public class DogDAO implements IDogDAO {
-
-    @Autowired
-    private DogRepository dogRepository;
+@Repository("dogDAO")
+@Profile("test")
+public class DogDAOStub implements IDogDAO {
 
     /**
      * Fetches a list of all Dog records.
@@ -30,7 +28,7 @@ public class DogDAO implements IDogDAO {
      */
     @Override
     public List<Dog> findAll(){
-        return dogRepository.findAll();
+        return null;
     }
 
     /**
@@ -41,7 +39,7 @@ public class DogDAO implements IDogDAO {
      */
     @Override
     public Dog save (Dog dog) {
-        return dogRepository.save(dog);
+        return null;
     }
 
     /**
@@ -53,7 +51,7 @@ public class DogDAO implements IDogDAO {
 
     @Override
     public void delete(Dog dog){
-        dogRepository.delete(dog);
+        return;
     }
 
     /**
@@ -64,9 +62,7 @@ public class DogDAO implements IDogDAO {
      * @throws IOException if there's an issue with the network communication.
      */
     public Dog fetchDog(int dogId) throws IOException {
-        Dog dog = dogRepository.findById(dogId).get();
-        return dog;
-
+        return null;
     }
 
     /**
@@ -77,7 +73,6 @@ public class DogDAO implements IDogDAO {
      */
     @Override
     public List<Dog> fetchByBreed(String breed) {
-
-        return dogRepository.findByBreed(breed);
+        return null;
     }
 }

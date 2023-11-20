@@ -66,4 +66,13 @@ public class AdoptionService implements IAdoptionService{
     public Adoption fetchAdoption(int adoptionId) throws IOException {
         return adoptionDAO.fetchAdoption(adoptionId);
     }
+
+    @Override
+    public void delete(Adoption adoption) throws Exception {
+        if (adoption != null) {
+            adoptionDAO.delete(adoption);
+        } else {
+            throw new Exception("Adoption not found");
+        }
+    }
 }

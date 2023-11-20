@@ -1,6 +1,7 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Dog;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+@Profile("!test")
 public interface DogRepository extends CrudRepository<Dog, Integer> {
     List<Dog> findByBreed(String breed);
     void delete(Dog dog);

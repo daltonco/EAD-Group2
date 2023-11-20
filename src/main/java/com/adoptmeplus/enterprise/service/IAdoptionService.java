@@ -1,7 +1,6 @@
 package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Adoption;
-import com.adoptmeplus.enterprise.dto.Dog;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,4 +38,6 @@ public interface IAdoptionService {
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
     Adoption fetchAdoption(int adoptionId) throws IOException;
+
+    void delete(Adoption adoption) throws IOException, Exception;
 }

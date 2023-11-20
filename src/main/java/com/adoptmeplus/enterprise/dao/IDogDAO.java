@@ -1,6 +1,7 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Dog;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+@Repository
 public interface IDogDAO {
 
     /**

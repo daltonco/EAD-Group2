@@ -1,5 +1,4 @@
 package com.adoptmeplus.enterprise.service;
-import com.adoptmeplus.enterprise.dao.DogRepository;
 import com.adoptmeplus.enterprise.dao.IDogDAO;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.List;
 @Service
 public class DogService implements IDogService {
 
-    private final DogRepository dogRepository;
     private final IDogDAO dogDAO;
 
     /**
@@ -30,10 +28,9 @@ public class DogService implements IDogService {
      * @param dogDAO The data access object for managing dog records.
      */
     @Autowired
-    public DogService(IDogDAO dogDAO, DogRepository dogRepository){
+    public DogService(IDogDAO dogDAO){
 
         this.dogDAO = dogDAO;
-        this.dogRepository = dogRepository;
     }
 
     /**
@@ -54,18 +51,6 @@ public class DogService implements IDogService {
     }
 
     /**
-     * Retrieves a list of dog records based on a specified breed.
-     *
-     * @param breed The breed of dogs to fetch.
-     * @return A list of dog records matching the given breed.
-     * @throws IOException If an I/O error occurs during the fetch operation.
-     */
-    @Override
-    public List<Dog> fetchByBreed(String breed) throws IOException {
-        return dogDAO.fetchByBreed(breed);
-    }
-
-    /**
      * Retrieves a specific dog record by its unique identifier.
      *
      * @param dogId The unique identifier of the dog to fetch.
@@ -77,10 +62,21 @@ public class DogService implements IDogService {
         return dogDAO.fetchDog(dogId);
     }
 
+    /**
+     * Retrieves a list of dog records based on a specified breed.
+     *
+     * @param breed The breed of dogs to fetch.
+     * @return A list of dog records matching the given breed.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
+    @Override
+    public List<Dog> fetchByBreed(String breed) throws IOException {
+        return dogDAO.fetchByBreed(breed);
+    }
     @Override
     public void delete(Dog dog) throws Exception {
         if (dog != null) {
-            dogRepository.delete(dog);
+            dogDAO.delete(dog);
         } else {
             throw new Exception("Dog not found");
         }

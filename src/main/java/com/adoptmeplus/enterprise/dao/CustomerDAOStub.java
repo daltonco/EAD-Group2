@@ -4,9 +4,10 @@ import com.adoptmeplus.enterprise.dto.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import retrofit2.*;
+
 import java.io.IOException;
 import java.util.List;
+
 /**
  * The CustomerDAO class is responsible for managing and interacting with the data sources
  * for Customer entities in the AdoptMePlus application.
@@ -16,12 +17,9 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
-@Repository
-@Profile("dev")
-public class CustomerDAO implements ICustomerDAO {
-
-    @Autowired
-    private CustomerRepository customerRepository;
+@Repository("customerDAO")
+@Profile("test")
+public class CustomerDAOStub implements ICustomerDAO {
 
     /**
      * Fetches a list of all Customer records.
@@ -30,7 +28,7 @@ public class CustomerDAO implements ICustomerDAO {
      */
     @Override
     public List<Customer> findAll(){
-        return customerRepository.findAll();
+        return null;
     }
 
     /**
@@ -41,7 +39,7 @@ public class CustomerDAO implements ICustomerDAO {
      */
     @Override
     public Customer save (Customer customer) {
-        return customerRepository.save(customer);
+        return null;
     }
 
     /**
@@ -53,7 +51,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public void delete(Customer customer){
-        customerRepository.delete(customer);
+        return;
     }
 
     /**
@@ -64,8 +62,7 @@ public class CustomerDAO implements ICustomerDAO {
      * @throws IOException if there's an issue with the network communication.
      */
     public Customer fetchCustomer(int customerId) throws IOException {
-        Customer customer = customerRepository.findById(customerId).get();
-        return customer;
+        return null;
 
     }
 
@@ -78,6 +75,6 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public Customer findByEmail(String email) {
 
-        return customerRepository.findByEmail(email);
+        return null;
     }
 }
