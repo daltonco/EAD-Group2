@@ -74,8 +74,8 @@ public class AdoptMePlusController {
     @GetMapping("/customers/edit")
     public String editcustomers() { return "editcustomers"; }
 
-    @GetMapping("/adoptions/edit")
-    public String editadoptions() { return "editadoptions"; }
+    @GetMapping("/adoptions/selectcustomer")
+    public String selectcustomer() { return "selectcustomer"; }
 
     @GetMapping("/dogs/update")
     public String updatedogs() { return "updatedogs"; }
@@ -83,8 +83,14 @@ public class AdoptMePlusController {
     @GetMapping("/customers/update")
     public String updatecustomers() { return "updatecustomers"; }
 
+    @GetMapping("/adoptions/edit")
+    public String editadoptions() { return "editadoptions"; }
+
     @GetMapping("/adoptions/update")
     public String updateadoptions() { return "updateadoptions"; }
+
+    @GetMapping("/adoptions/modify")
+    public String modifyadoption() { return "modifyadoption"; }
 
     /*
 

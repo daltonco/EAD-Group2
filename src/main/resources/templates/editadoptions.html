@@ -3,30 +3,40 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>AdoptMe+ - Editing Adoptions</title>
+  <meta charset="UTF-8">
+  <title>AdoptMe+ - Editing Adoptions</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-        <form>
-            <div class="form-group my-2">
-                <h1>
-                <label for="customers">Avaiable Adoptions:</label>
-                </h1>
-                <select class="form-select" size="3" name="customers" id="customers">
-                    <option value="1">Customer 1</option>
-                    <option value="2">Customer 2</option>
-                    <option value="3">Customer 3</option>
-                </select>
-            </div>
-        </form>
-        <div class="d-inline-flex mx-auto gap-2">
-            <a class="nav-link" aria-current="page" th:href="@{/adoptions/update}">
-                <button class="btn btn-primary" type="submit">Select</button>
-            </a>
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <div class="border border-2 rounded bg-light shadow-lg p-5">
+      <div class="pb-2">
+        <h2>Available Adoptions</h2>
+        <i>Select an adoption to update or delete.</i>
+      </div>
+      <form>
+        <hr>
+        <div class="p-2 pt-3 px-5 d-flex flex-row-3 justify-content-center">
+          <div class="px-5 pb-2 col-sm">
+            <select class="form-select text-center" size="3" aria-label="Adoption select" name="adoption" id="adoptionList">
+              <option value="1">Adoption 1</option>
+              <option value="2">Adoption 2</option>
+              <option value="3">Adoption 3</option>
+            </select>
+          </div>
         </div>
+        <hr>
+      </form>
+      <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+        <a class="nav-link" aria-current="page" th:href="@{/adoptions/update}">
+          <button class="btn btn-sm btn-primary" type="submit">Select</button>
+        </a>
+        <a class="nav-link" aria-current="page" th:href="@{/adoptions/delete}">
+          <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+        </a>
+      </div>
     </div>
+  </div>
 </div>
 </body>
 </html>
