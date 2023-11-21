@@ -6,6 +6,8 @@ import com.adoptmeplus.enterprise.dto.Dog;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class AdoptMePlusController {
     private final IAdoptionService adoptionService;
     private final IDogService dogService;
     private final ICustomerService customerService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Constructs an `AdoptMePlusController` with the specified services for adoption and dog management.
@@ -138,7 +141,7 @@ public class AdoptMePlusController {
         try {
             newDog = dogService.save(dog);
         } catch (Exception e) {
-
+            log.error("Unable save dog with id " + dog.getDogId(), e);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(newDog, headers, HttpStatus.OK);
@@ -180,10 +183,11 @@ public class AdoptMePlusController {
 
             return new ResponseEntity(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException trying to update dog with id " + updatedDog.getDogId(), e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Exception trying to update dog with id " + updatedDog.getDogId(), e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -207,7 +211,7 @@ public class AdoptMePlusController {
             headers.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity(foundDog, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException trying to fetch dog with id " + dogId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -239,10 +243,11 @@ public class AdoptMePlusController {
 
             return new ResponseEntity("Dog deleted successfully", headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException deleting dog with id " + dogId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Exception deleting dog with id " + dogId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -272,10 +277,12 @@ public class AdoptMePlusController {
 
                 return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
             } else {
+                log.error("Error creating adoption for email: " + customerEmail);
                 return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
             }
         }
         catch (Exception e){
+            log.error("Exception creating adoption for email: " + customerEmail);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -314,10 +321,11 @@ public class AdoptMePlusController {
 
             return new ResponseEntity(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException updating adoption with adoptionId " + adoptionId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Exception updating adoption with adoptionId " + adoptionId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -368,7 +376,7 @@ public class AdoptMePlusController {
             headers.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity(dogs, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException searching breed " + breed, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -401,7 +409,7 @@ public class AdoptMePlusController {
             newCustomer = customerService.save(customer);
 
         } catch (Exception e) {
-
+            log.error("Exception adding customer with ID " + customer.getCustomerId(), e);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(newCustomer, headers, HttpStatus.OK);
@@ -451,10 +459,11 @@ public class AdoptMePlusController {
 
             return new ResponseEntity("Customer deleted successfully", headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException deleting customer with ID " + customerId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Exception deleting customer with ID " + customerId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -501,10 +510,11 @@ public class AdoptMePlusController {
 
             return new ResponseEntity(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException updating customer with ID " + customerId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Exception updating customer with ID " + customerId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
