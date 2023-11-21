@@ -9,29 +9,38 @@
 <body>
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-        <h1>Adoption Information:</h1>
-        <form>
-            <div class="form-group my-2">
-                <label for="customer">Customer:</label>
-                <select class="form-select" name="customer" id="customer">
-                    <option selected>Select a Customer..</option>
-                    <option value="1">Customer 1</option>
-                    <option value="2">Customer 2</option>
-                    <option value="3">Customer 3</option>
-                </select>
+        <div class="border border-2 rounded bg-light shadow-lg p-5">
+            <div class="pb-2">
+                <h2>Adoption Information</h2>
+                <i>Select customer and dogs for new adoption.</i>
             </div>
-            <div class="form-group my-2">
-                <label for="dog">Dog:</label>
-                <select class="form-select" multiple name="dog" id="dog">
-                    <option value="1">Dog 1</option>
-                    <option value="2">Dog 2</option>
-                    <option value="3">Dog 3</option>
-                </select>
+            <form>
+            <hr>
+            <div class="p-2 pt-3 px-3 d-flex flex-row-3 justify-content-center">
+                <div class="px-3 pb-5 col-sm">
+                    <label for="customerList" class="h3">Customer</label>
+                    <select class="form-select text-center" size="3" aria-label="Customer select" name="customer" id="customerList">
+                        <option value="1">Customer 1</option>
+                        <option value="2">Customer 2</option>
+                        <option value="3">Customer 3</option>
+                    </select>
+                </div>
+                <div class="vr mx-5"></div>
+                <div class="px-3 pb-5 col-sm">
+                    <label for="dogList" class="h3">Dogs</label>
+                    <select class="form-select text-center" multiple size="3" aria-label="Dog select" name="dog" id="dogList">
+                        <option value="1">Dog 1</option>
+                        <option value="2">Dog 2</option>
+                        <option value="3">Dog 3</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <button type="submit" class="btn btn-primary my-2">Submit</button>
+            <hr>
+            <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 </body>

@@ -1,5 +1,4 @@
 package com.adoptmeplus.enterprise.service;
-import com.adoptmeplus.enterprise.dao.CustomerRepository;
 import com.adoptmeplus.enterprise.dao.ICustomerDAO;
 import com.adoptmeplus.enterprise.dto.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.List;
 @Service
 public class CustomerService implements ICustomerService {
 
-    private final CustomerRepository customerRepository;
     private final ICustomerDAO customerDAO;
 
     /**
@@ -30,10 +28,8 @@ public class CustomerService implements ICustomerService {
      * @param customerDAO The data access object for managing customer records.
      */
     @Autowired
-    public CustomerService(ICustomerDAO customerDAO, CustomerRepository customerRepository){
-
+    public CustomerService(ICustomerDAO customerDAO){
         this.customerDAO = customerDAO;
-        this.customerRepository = customerRepository;
     }
 
     /**
@@ -80,7 +76,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void delete(Customer customer) throws Exception {
         if (customer != null) {
-            customerRepository.delete(customer);
+            customerDAO.delete(customer);
         } else {
             throw new Exception("Customer not found");
         }

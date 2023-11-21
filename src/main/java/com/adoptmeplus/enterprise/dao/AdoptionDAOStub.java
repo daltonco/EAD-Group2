@@ -17,12 +17,9 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
-@Repository
-@Profile("dev")
-public class AdoptionDAO implements IAdoptionDAO{
-
-    @Autowired
-    private AdoptionRepository adoptionRepository;
+@Repository("adoptionDAO")
+@Profile("test")
+public class AdoptionDAOStub implements IAdoptionDAO{
 
     /**
      * Saves an Adoption record to the data source.
@@ -32,7 +29,7 @@ public class AdoptionDAO implements IAdoptionDAO{
      */
     @Override
     public Adoption save (Adoption adoption) {
-        return adoptionRepository.save(adoption);
+        return null;
     }
 
     /**
@@ -42,7 +39,7 @@ public class AdoptionDAO implements IAdoptionDAO{
      */
     @Override
     public List<Adoption> findAll(){
-        return adoptionRepository.findAll();
+        return null;
     }
 
     /**
@@ -54,7 +51,7 @@ public class AdoptionDAO implements IAdoptionDAO{
 
     @Override
     public void delete(Adoption adoption){
-        adoptionRepository.delete(adoption);
+        return;
     }
 
     /**
@@ -66,7 +63,6 @@ public class AdoptionDAO implements IAdoptionDAO{
      */
     @Override
     public Adoption fetchAdoption(int adoptionId) throws IOException {
-        Adoption adoption = adoptionRepository.findById(adoptionId).get();
-        return adoption;
+        return null;
     }
 }

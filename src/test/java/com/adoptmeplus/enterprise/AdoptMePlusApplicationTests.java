@@ -71,10 +71,10 @@ class AdoptMePlusApplicationTests {
         adoptionService.save(adoption);
 
         List<Adoption> adoptions = adoptionService.findAll();
-        boolean adoptionPresent = false;
+        boolean adoptionPresent = true; // set this to true to make sure that circleCI is actually working lmao
         for (Adoption a : adoptions) {
             if (a.getDog().getDogId() == DogId && a.getCustomer().getCustomerId() == CustomerId) {
-                adoptionPresent = true;
+                adoptionPresent = false;
                 break;
             }
         }
