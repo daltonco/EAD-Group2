@@ -29,7 +29,7 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> findAll(){
+    public List<Dog> findAll() {
         return dogRepository.findAll();
     }
 
@@ -40,7 +40,7 @@ public class DogDAO implements IDogDAO {
      * @return The saved Dog object.
      */
     @Override
-    public Dog save (Dog dog) {
+    public Dog save(Dog dog) {
         return dogRepository.save(dog);
     }
 
@@ -52,7 +52,7 @@ public class DogDAO implements IDogDAO {
      */
 
     @Override
-    public void delete(Dog dog){
+    public void delete(Dog dog) {
         dogRepository.delete(dog);
     }
 
@@ -76,8 +76,12 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) {
+    public List<Dog> fetchByBreed(String breed) throws IOException {
+        Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
+        IDogRetrofitDAO plantRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
+        Call<List<Dog>> allDogBreeds = plantRetrofitDAO.getDogs(breed);
+        Response<List<Dog>> execute = allDogBreeds.execute();
+        return execute.body();
 
-        return dogRepository.findByBreed(breed);
     }
 }

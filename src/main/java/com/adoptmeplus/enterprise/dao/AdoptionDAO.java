@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * The AdoptionDAO class is responsible for managing and interacting with the database or data source
  * for the Adoption entities in the AdoptMePlus application.
- *
  * This class implements the IAdoptionDAO interface and provides methods for saving and retrieving Adoption records.
  *
  * @author AdoptMePlusDevTeam
@@ -62,11 +61,9 @@ public class AdoptionDAO implements IAdoptionDAO{
      *
      * @param adoptionId The unique identifier of the adoption to be fetched.
      * @return The adoption object with the specified adoptionId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
      */
     @Override
-    public Adoption fetchAdoption(int adoptionId) throws IOException {
-        Adoption adoption = adoptionRepository.findById(adoptionId).get();
-        return adoption;
+    public Adoption fetchAdoption(int adoptionId) {
+        return adoptionRepository.findById(adoptionId).get();
     }
 }

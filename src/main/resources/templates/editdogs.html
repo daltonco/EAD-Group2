@@ -8,7 +8,7 @@
     <script type="text/javascript">
         $(function() {
             $("#dog").autocomplete({
-                source: "dogNamesAutocomplete",
+                source: "/dogNamesAutocomplete",
                 minLength: 1,
                 select: function(event, ui) {
                     this.value = ui.item.label;
