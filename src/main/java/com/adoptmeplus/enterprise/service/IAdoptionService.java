@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * The `IAdoptionService` interface defines the contract for managing adoption records in the AdoptMePlus enterprise system.
- *
  * This interface outlines the methods for saving and fetching adoption records.
  *
  * @author AdoptMePlusDevTeam
@@ -39,5 +38,5 @@ public interface IAdoptionService {
      */
     Adoption fetchAdoption(int adoptionId) throws IOException;
 
-    void delete(Adoption adoption) throws IOException, Exception;
+    void delete(Adoption adoption) throws Exception;
 }
