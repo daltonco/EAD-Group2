@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +21,13 @@ import java.util.List;
 @Profile("dev")
 public class DogSQLDAO implements IDogDAO{
 
+
+    private final DogRepository dogRepository;
+
     @Autowired
-    DogRepository dogRepository;
+    public DogSQLDAO(DogRepository dogRepository) {
+        this.dogRepository = dogRepository;
+    }
 
     /**
      * Saves a Dog record to the SQL database.
