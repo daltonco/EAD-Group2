@@ -5,13 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
  * The AdoptionDAO class is responsible for managing and interacting with the database or data source
  * for the Adoption entities in the AdoptMePlus application.
- *
  * This class implements the IAdoptionDAO interface and provides methods for saving and retrieving Adoption records.
  *
  * @author AdoptMePlusDevTeam
@@ -49,7 +47,6 @@ public class AdoptionDAO implements IAdoptionDAO{
      * Deletes an adoption record from the data source.
      *
      * @param adoption The Adoption object to be deleted.
-     * @return The delete Adoption object.
      */
 
     @Override
@@ -62,11 +59,9 @@ public class AdoptionDAO implements IAdoptionDAO{
      *
      * @param adoptionId The unique identifier of the adoption to be fetched.
      * @return The adoption object with the specified adoptionId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
      */
     @Override
-    public Adoption fetchAdoption(int adoptionId) throws IOException {
-        Adoption adoption = adoptionRepository.findById(adoptionId).get();
-        return adoption;
+    public Adoption fetchAdoption(int adoptionId) {
+        return adoptionRepository.findById(adoptionId).get();
     }
 }

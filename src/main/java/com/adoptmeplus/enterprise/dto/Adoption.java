@@ -1,12 +1,10 @@
 package com.adoptmeplus.enterprise.dto;
 
-import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
 import lombok.Data;
 
 /**
  * The Adoption class represents the adoption of a dog by a customer in the AdoptMePlus application.
- *
  * This class is a Data Transfer Object (DTO) and includes properties such as AdoptionId, DogId, and CustomerId
  * to capture relevant information about an adoption record.
  *
@@ -19,9 +17,9 @@ public @Data class Adoption {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int adoptionId;
     @OneToOne
-    @JoinColumn(name = "dogId")
+    @JoinColumn(name = "dog_id")
     private Dog dog;
     @OneToOne
-    @JoinColumn(name = "customerId")
+    @JoinColumn(name = "customer_Id")
     private Customer customer;
 }

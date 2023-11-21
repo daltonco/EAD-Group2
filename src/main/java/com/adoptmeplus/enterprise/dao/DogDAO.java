@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
  * for Dog entities in the AdoptMePlus application.
- *
  * This class implements the IDogDAO interface and provides methods for saving and retrieving Dog records.
  *
  * @author AdoptMePlusDevTeam
@@ -29,7 +28,7 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> findAll(){
+    public List<Dog> findAll() {
         return dogRepository.findAll();
     }
 
@@ -40,7 +39,7 @@ public class DogDAO implements IDogDAO {
      * @return The saved Dog object.
      */
     @Override
-    public Dog save (Dog dog) {
+    public Dog save(Dog dog) {
         return dogRepository.save(dog);
     }
 
@@ -48,11 +47,10 @@ public class DogDAO implements IDogDAO {
      * Deletes a Dog record from the data source.
      *
      * @param dog The Dog object to be deleted.
-     * @return The delete Dog object.
      */
 
     @Override
-    public void delete(Dog dog){
+    public void delete(Dog dog) {
         dogRepository.delete(dog);
     }
 
@@ -61,11 +59,9 @@ public class DogDAO implements IDogDAO {
      *
      * @param dogId The unique identifier of the Dog to be fetched.
      * @return The Dog object with the specified dogId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
      */
-    public Dog fetchDog(int dogId) throws IOException {
-        Dog dog = dogRepository.findById(dogId).get();
-        return dog;
+    public Dog fetchDog(int dogId) {
+        return dogRepository.findById(dogId).get();
 
     }
 
@@ -76,8 +72,12 @@ public class DogDAO implements IDogDAO {
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) {
+    public List<Dog> fetchByBreed(String breed) throws IOException {
+        Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
+        IDogRetrofitDAO plantRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
+        Call<List<Dog>> allDogBreeds = plantRetrofitDAO.getDogs(breed);
+        Response<List<Dog>> execute = allDogBreeds.execute();
+        return execute.body();
 
-        return dogRepository.findByBreed(breed);
     }
 }

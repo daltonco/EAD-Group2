@@ -3,6 +3,7 @@ package com.adoptmeplus.enterprise;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Customer;
 import com.adoptmeplus.enterprise.dto.Dog;
+import com.adoptmeplus.enterprise.dto.LabelValue;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
@@ -11,11 +12,11 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The `AdoptMePlusController` class serves as the controller for managing the AdoptMePlus enterprise system's web application.
- *
  * This class handles requests related to adoptions, dog management, searching, and general pages such as the index, contact, and search pages.
  *
  * @author AdoptMePlusDevTeam
@@ -106,7 +107,7 @@ public class AdoptMePlusController {
     @GetMapping("/dogs/all")
     @ResponseBody
     public ResponseEntity<List<Dog>> findAllDogs() {
-        List<Dog> allDogs = null;
+        List<Dog> allDogs;
         try {
             allDogs = dogService.findAll();
         } catch (IOException e) {
@@ -121,9 +122,7 @@ public class AdoptMePlusController {
 
     /**
      * Handles a POST request to add a new dog to the system.
-     *
      * This method receives a JSON representation of a dog object in the request body and attempts to save it using the `dogService`.
-     *
      * If the dog is successfully added, it returns a response containing the newly created dog with an HTTP status of 200 (OK).
      * If an error occurs during the addition process, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
      *
@@ -131,22 +130,21 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the newly created dog or an error response.
      */
     @PostMapping(value="/dogs/add", consumes="application/json", produces="application/json")
-    public ResponseEntity addDog(@RequestBody Dog dog) {
-        Dog newDog = null;
+    public ResponseEntity<Dog> addDog(@RequestBody Dog dog) {
+        Dog newDog;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         try {
             newDog = dogService.save(dog);
         } catch (Exception e) {
 
-            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(newDog, headers, HttpStatus.OK);
+        return new ResponseEntity<>(newDog, headers, HttpStatus.OK);
     }
 
     /**
      * Updates an existing Dog resource with the provided information.
-     *
      * This method handles a PUT request to update a Dog by its unique identifier. It retrieves the existing Dog from the database,
      * and if the Dog is found, it updates the specified fields with the new values provided in the request body. Only the fields
      * with updated values are modified, and the others remain unchanged. If the Dog is not found, a 404 Not Found response is returned.
@@ -157,7 +155,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the updated Dog resource or an error response.
      */
     @PutMapping("/dogs/update/{dogId}")
-    public ResponseEntity updateDog(@PathVariable("dogId") int dogId, @RequestBody Dog updatedDog) {
+    public ResponseEntity<Dog> updateDog(@PathVariable("dogId") int dogId, @RequestBody Dog updatedDog) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -165,7 +163,7 @@ public class AdoptMePlusController {
             Dog foundDog = dogService.fetchDog(dogId);
 
             if (foundDog == null){
-                return new ResponseEntity("Dog not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(updatedDog, HttpStatus.NOT_FOUND);
             }
 
             foundDog.setAge(updatedDog.getAge());
@@ -178,10 +176,9 @@ public class AdoptMePlusController {
             Dog updated = dogService.save(foundDog);
 
 
-            return new ResponseEntity(updated, headers, HttpStatus.OK);
+            return new ResponseEntity<>(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -189,7 +186,6 @@ public class AdoptMePlusController {
 
     /**
      * Handles a GET request to fetch information about a specific dog by its unique identifier.
-     *
      * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
      * using the `dogService`. If the dog is found, it returns a response containing the dog's information with an
      * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
@@ -200,21 +196,19 @@ public class AdoptMePlusController {
      */
     @GetMapping("/dogs/{dogId}")
     @ResponseBody
-    public ResponseEntity fetchDog(@PathVariable("dogId")int dogId) {
+    public ResponseEntity<Dog> fetchDog(@PathVariable("dogId")int dogId) {
         try {
             Dog foundDog = dogService.fetchDog(dogId);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity(foundDog, headers, HttpStatus.OK);
+            return new ResponseEntity<>(foundDog, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Deletes a Dog resource by its unique identifier.
-     *
      * This method handles a DELETE request to delete a Dog by its unique identifier. It attempts to retrieve the existing Dog from
      * the database and, if found, deletes the Dog. If the Dog is not found, a 404 Not Found response is returned. If an error occurs
      * during the deletion, a 500 Internal Server Error response is returned.
@@ -223,7 +217,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
     @DeleteMapping("/dogs/delete/{dogId}")
-    public ResponseEntity deleteDog(@PathVariable("dogId") int dogId) {
+    public ResponseEntity<String> deleteDog(@PathVariable("dogId") int dogId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -231,16 +225,15 @@ public class AdoptMePlusController {
             Dog existingDog = dogService.fetchDog(dogId);
 
             if (existingDog == null) {
-                return new ResponseEntity("Dog not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             // Delete the Dog
             dogService.delete(existingDog);
 
-            return new ResponseEntity("Dog deleted successfully", headers, HttpStatus.OK);
+            return new ResponseEntity<>("Dog deleted successfully", headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -248,7 +241,6 @@ public class AdoptMePlusController {
 
     /**
      * Handles a POST request to create a new adoption record.
-     *
      * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
      * the `adoptionService`. If the adoption record is successfully created, it returns the newly created adoption object
      * with an HTTP status of 200 (OK). If an error occurs during the creation process, it returns an error response.
@@ -258,8 +250,8 @@ public class AdoptMePlusController {
      */
     @PostMapping(value="/adoptions/add", consumes="application/json", produces="application/json")
     @ResponseBody
-    public ResponseEntity createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
-        Adoption newAdoption = null;
+    public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
+        Adoption newAdoption;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         try{
@@ -270,13 +262,13 @@ public class AdoptMePlusController {
 
                 newAdoption = adoptionService.save(adoption);
 
-                return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
+                return new ResponseEntity<>(newAdoption, headers, HttpStatus.OK);
             } else {
-                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
         catch (Exception e){
-            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -284,7 +276,6 @@ public class AdoptMePlusController {
 
     /**
      * Updates an existing Adoption resource with the provided information.
-     *
      * This method handles a PUT request to update an Adoption by its unique identifier. It retrieves the existing Adoption from the database,
      * and if an Adoption is found, it updates the specified fields with the new values provided in the request body. Only the fields
      * with updated values are modified, and the others remain unchanged. If an Adoption is not found, a 404 Not Found response is returned.
@@ -295,7 +286,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the updated Adoption resource or an error response.
      */
     @PutMapping("/adoption/update/{adoptionId}")
-    public ResponseEntity updateAdoption(@PathVariable("adoptionId") int adoptionId, @RequestBody Adoption updatedAdoption) {
+    public ResponseEntity<Adoption> updateAdoption(@PathVariable("adoptionId") int adoptionId, @RequestBody Adoption updatedAdoption) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -303,7 +294,7 @@ public class AdoptMePlusController {
             Adoption foundAdoption = adoptionService.fetchAdoption(adoptionId);
 
             if (foundAdoption == null){
-                return new ResponseEntity("Adoption not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(updatedAdoption, HttpStatus.NOT_FOUND);
             }
 
             foundAdoption.setDog(updatedAdoption.getDog());
@@ -312,10 +303,9 @@ public class AdoptMePlusController {
             Adoption updated = adoptionService.save(foundAdoption);
 
 
-            return new ResponseEntity(updated, headers, HttpStatus.OK);
+            return new ResponseEntity<>(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -329,7 +319,7 @@ public class AdoptMePlusController {
     @GetMapping("/adoptions/all")
     @ResponseBody
     public ResponseEntity<List<Adoption>> findAllAdoptions() {
-        List<Adoption> allAdoptions = null;
+        List<Adoption> allAdoptions;
 
         allAdoptions = adoptionService.findAll();
 
@@ -340,18 +330,42 @@ public class AdoptMePlusController {
     }
 
     @GetMapping("/adoptions/{id}")
-    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Adoption> fetchAdoptionsById(@PathVariable("id") int id){
+        try {
+            Adoption adoptions = adoptionService.fetchAdoption(id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity<>(adoptions, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/adoptions/delete/{id}")
-    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<String> deleteAdoption(@PathVariable("id") int id){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            Adoption existingAdoption = adoptionService.fetchAdoption(id);
+
+            if (existingAdoption == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            // Delete adoption
+            adoptionService.delete(existingAdoption);
+
+            return new ResponseEntity<>("Adoption deleted successfully", headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Handles a GET request to search for dogs based on a provided search term.
-     *
      * This method allows users to search for dogs based on a specified breed. The search term is passed as a query
      * parameter, and the method attempts to retrieve a list of dogs that match the search criteria using the `dogService`.
      * If dogs are found, it returns a response containing the list of dogs with an HTTP status of 200 (OK). If an error
@@ -360,25 +374,21 @@ public class AdoptMePlusController {
      * @param breed The search term used to filter and find matching dogs (default is "None" if not provided).
      * @return A ResponseEntity containing either the list of matching dogs or an error response.
      */
-    @GetMapping("/dogs/{breed}")
-    public ResponseEntity searchDogsByBreed(@PathVariable String breed) {
+    @GetMapping("/dogs/find/{breed}")
+    public ResponseEntity<List<Dog>> searchDogsByBreed(@PathVariable String breed) {
         try {
             List<Dog> dogs = dogService.fetchByBreed(breed);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity(dogs, headers, HttpStatus.OK);
+            return new ResponseEntity<>(dogs, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     /**
      * Handles a POST request to add a new customer to the system.
-     *
      * This method receives a JSON representation of a customer object in the request body and attempts to save it using the `customerService`.
-     *
      * If the customer is successfully added, it returns a response containing the newly created customer with an HTTP status of 200 (OK).
      * If an error occurs during the addition process, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
      *
@@ -386,8 +396,8 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the newly created customer or an error response.
      */
     @PostMapping(value="/customer/add", consumes="application/json", produces="application/json")
-    public ResponseEntity addCustomer(@RequestBody Customer customer) {
-        Customer newCustomer = null;
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+        Customer newCustomer;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         try {
@@ -395,16 +405,16 @@ public class AdoptMePlusController {
             Customer existingCustomer = customerService.findByEmail(customer.getEmail());
 
             if (existingCustomer != null) {
-                return new ResponseEntity("Customer with the same email already exists", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(customer, HttpStatus.BAD_REQUEST);
             }
 
             newCustomer = customerService.save(customer);
 
         } catch (Exception e) {
 
-            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(newCustomer, headers, HttpStatus.OK);
+        return new ResponseEntity<>(newCustomer, headers, HttpStatus.OK);
     }
 
     /**
@@ -415,7 +425,7 @@ public class AdoptMePlusController {
     @GetMapping("/customers/all")
     @ResponseBody
     public ResponseEntity<List<Customer>> findAllCustomers() throws IOException {
-        List<Customer> allCustomers = null;
+        List<Customer> allCustomers;
 
         allCustomers = customerService.findAll();
 
@@ -427,7 +437,6 @@ public class AdoptMePlusController {
 
     /**
      * Deletes a Customer resource by its unique identifier.
-     *
      * This method handles a DELETE request to delete a Customer by its unique identifier. It attempts to retrieve the existing Customer from
      * the database and, if found, deletes the Customer. If the Customer is not found, a 404 Not Found response is returned. If an error occurs
      * during the deletion, a 500 Internal Server Error response is returned.
@@ -436,7 +445,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
     @DeleteMapping("/customers/delete/{customerId}")
-    public ResponseEntity deleteCustomer(@PathVariable("customerId") int customerId) {
+    public ResponseEntity<String> deleteCustomer(@PathVariable("customerId") int customerId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -444,23 +453,39 @@ public class AdoptMePlusController {
             Customer existingCustomer = customerService.fetchCustomer(customerId);
 
             if (existingCustomer == null) {
-                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
             }
 
             customerService.delete(existingCustomer);
 
-            return new ResponseEntity("Customer deleted successfully", headers, HttpStatus.OK);
+            return new ResponseEntity<>("Customer deleted successfully", headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @GetMapping("/dogNamesAutocomplete")
+    @ResponseBody
+    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
+        List<LabelValue> allDogBreeds = new ArrayList<>();
+        try {
+            List<Dog> dogs = dogService.fetchByBreed(term);
+            for (Dog dog: dogs) {
+                LabelValue labelValue = new LabelValue();
+                labelValue.setValue(dog.getDogId());
+                labelValue.setLabel(dog.toString());
+                allDogBreeds.add(labelValue);
+            }
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
+        return allDogBreeds;
+    }
+
     /**
      * Updates an existing Customer resource with the provided information.
-     *
      * This method handles a PUT request to update a Customer by its unique identifier. It retrieves the existing Customer from the database,
      * and if the Customer is found, it updates the specified fields with the new values provided in the request body. Only the fields
      * with updated values are modified, and the others remain unchanged. If the Customer is not found, a 404 Not Found response is returned.
@@ -471,7 +496,7 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the updated Customer resource or an error response.
      */
     @PutMapping("/customers/update/{customerId}")
-    public ResponseEntity updateCustomer(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -479,14 +504,14 @@ public class AdoptMePlusController {
             Customer foundCustomer = customerService.fetchCustomer(customerId);
 
             if (foundCustomer == null){
-                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(updatedCustomer, HttpStatus.NOT_FOUND);
             }
 
             if(!updatedCustomer.getEmail().equals(foundCustomer.getEmail())) {
                 Customer existingCustomer = customerService.findByEmail(updatedCustomer.getEmail());
 
                 if (existingCustomer != null) {
-                    return new ResponseEntity("Customer with the same email already exists", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(updatedCustomer, HttpStatus.BAD_REQUEST);
                 }
             }
 
@@ -499,10 +524,9 @@ public class AdoptMePlusController {
             Customer updated = customerService.save(foundCustomer);
 
 
-            return new ResponseEntity(updated, headers, HttpStatus.OK);
+            return new ResponseEntity<>(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
