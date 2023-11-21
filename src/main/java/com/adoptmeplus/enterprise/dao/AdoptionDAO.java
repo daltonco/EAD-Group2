@@ -47,7 +47,6 @@ public class AdoptionDAO implements IAdoptionDAO{
      * Deletes an adoption record from the data source.
      *
      * @param adoption The Adoption object to be deleted.
-     * @return The delete Adoption object.
      */
 
     @Override
