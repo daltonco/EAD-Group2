@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
  * for Dog entities in the AdoptMePlus application.
- *
  * This class implements the IDogDAO interface and provides methods for saving and retrieving Dog records.
  *
  * @author AdoptMePlusDevTeam
@@ -48,7 +47,6 @@ public class DogDAO implements IDogDAO {
      * Deletes a Dog record from the data source.
      *
      * @param dog The Dog object to be deleted.
-     * @return The delete Dog object.
      */
 
     @Override
@@ -61,11 +59,9 @@ public class DogDAO implements IDogDAO {
      *
      * @param dogId The unique identifier of the Dog to be fetched.
      * @return The Dog object with the specified dogId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
      */
-    public Dog fetchDog(int dogId) throws IOException {
-        Dog dog = dogRepository.findById(dogId).get();
-        return dog;
+    public Dog fetchDog(int dogId) {
+        return dogRepository.findById(dogId).get();
 
     }
 
