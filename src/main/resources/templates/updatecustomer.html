@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>AdoptMe+ - Update Customer</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <div class="border border-2 rounded bg-light shadow-lg p-5 mt-5">
+            <div class="pb-2">
+                <h2>Customer Information</h2>
+                <i>Input information to update: <span th:text="${customer.firstName}"></span></i>
+            </div>
+            <form method="post" th:action="@{'/customers/update/' + ${customer.customerId}}" th:object="${customer}">
+
+                <input type="hidden" th:field="*{customerId}" />
+
+
+                <div class="form-group my-2">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" placeholder="John" id="firstName">
+                </div>
+                <div class="form-group my-2">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" th:field="*{lastName}" placeholder="Doe" id="lastName">
+                </div>
+                <div class="form-group my-2">
+                    <label for="email">Email:</label>
+                    <input type="text" class="form-control" th:field="*{email}" placeholder="johndoe@exampleemail.com" id="email">
+                </div>
+                <div class="form-group my-2">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" th:field="*{address}" placeholder="123 Customer Street" id="address">
+                </div>
+
+
+                <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+                    <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

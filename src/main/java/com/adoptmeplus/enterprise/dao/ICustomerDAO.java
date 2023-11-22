@@ -61,4 +61,6 @@ public interface ICustomerDAO {
      * @throws IOException if there's an issue with the data retrieval operation.
      */
     Customer findByEmail(String email) throws IOException;
+
+    List<Customer> findAutocompleteByEmail(String email);
 }

@@ -84,7 +84,7 @@ public class AdoptMePlusController {
     public String updatedogs() { return "updatedog"; }
 
     @RequestMapping("/customers/update")
-    public String updatecustomers() { return "updatecustomers"; }
+    public String updatecustomers() { return "updatecustomer"; }
 
     @RequestMapping("/adoptions/edit")
     public String editadoptions() { return "editadoptions"; }
@@ -203,10 +203,8 @@ public class AdoptMePlusController {
 
         Dog dog = dogService.fetchDog(dogId);
 
-        // Add the retrieved dog information to the model to be used in Thymeleaf
         model.addAttribute("dog", dog);
 
-        // Redirect to the update form with the specific dog ID in the path
         return "updatedog";
     }
 
@@ -482,6 +480,58 @@ public class AdoptMePlusController {
         return new ResponseEntity<>(allCustomers, headers, HttpStatus.OK);
     }
 
+    @GetMapping("customers/customerNamesAutocomplete")
+    @ResponseBody
+    public List<LabelValue> customerNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
+        List<LabelValue> allEmails = new ArrayList<>();
+        List<Customer> customers = customerService.findAutocompleteByEmail(term);
+        for (Customer customer: customers) {
+            LabelValue labelValue = new LabelValue();
+            labelValue.setLabel(customer.getEmail() + " (" + customer.getLastName() + ", " + customer.getFirstName() + ")");
+            labelValue.setValue(customer.getCustomerId());
+            allEmails.add(labelValue);
+            allEmails.sort(Comparator.comparing(LabelValue::getLabel));
+        }
+        return allEmails;
+    }
+
+    @GetMapping("/customers")
+    public String showCustomer(Model model) {
+        try {
+            List<Customer> customerList = customerService.findAll();
+            model.addAttribute("customerList", customerList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "customers";
+    }
+
+    @PostMapping(value="/customers/add")
+    public String addCustomer(@ModelAttribute Customer customer, RedirectAttributes redirectAttributes) {
+        try {
+            Customer newCustomer = customerService.save(customer);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
+        }
+
+        return "redirect:/customers";
+    }
+
+    @GetMapping("/updatecustomer/{customerId}")
+    public String updateCustomerPage(@PathVariable(value = "customerId") int customerId, Model model) throws IOException {
+
+        Customer customer = customerService.fetchCustomer(customerId);
+
+        model.addAttribute("customer", customer);
+
+        return "updatecustomer";
+    }
+
     /**
      * Deletes a Customer resource by its unique identifier.
      * This method handles a DELETE request to delete a Customer by its unique identifier. It attempts to retrieve the existing Customer from
@@ -542,8 +592,8 @@ public class AdoptMePlusController {
      * @param updatedCustomer The JSON representation of the Customer with updated fields.
      * @return A ResponseEntity containing either the updated Customer resource or an error response.
      */
-    @PutMapping("/customers/update/{customerId}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
+    @PutMapping("api/customers/update/{customerId}")
+    public ResponseEntity<Customer> updateCustomerAPI(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -577,5 +627,47 @@ public class AdoptMePlusController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/customers/update/{customerId}")
+    public String updateCustomer(@PathVariable("customerId") int customerId, @ModelAttribute Customer customer) {
+        try {
+
+            Customer existingCustomer = customerService.fetchCustomer(customerId);
+
+
+            existingCustomer.setFirstName(customer.getFirstName());
+            existingCustomer.setLastName(customer.getLastName());
+            existingCustomer.setEmail(customer.getEmail());
+            existingCustomer.setAddress(customer.getAddress());
+
+
+            customerService.save(existingCustomer);
+
+            return "redirect:/customers";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error-page";
+        }
+    }
+
+    @GetMapping("/deletecustomer/{customerId}")
+    public String deleteCustomerPage(@PathVariable(value = "customerId") int customerId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+        Customer customer = customerService.fetchCustomer(customerId);
+
+        model.addAttribute("customer", customer);
+        if (customer == null) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Customer not found");
+            return "redirect:/customers";
+        }
+
+        customerService.delete(customer);
+
+
+        redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully");
+        return "redirect:/customers";
+
     }
 }
