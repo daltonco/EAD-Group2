@@ -16,12 +16,14 @@
                     this.value = ui.item.label;
                     selectedDogId = ui.item.value;
                     $("#dogId").val(selectedDogId);
-
+                    const deleteButton = document.getElementById("deleteButton");
                     const submitButton = document.getElementById("submitButton");
                     if (selectedDogId !== null) {
                         submitButton.href = "/updatedog/" + selectedDogId;
+                        deleteButton.href = "/deletedog/" + selectedDogId;
                     } else {
-                        submitButton.href = "#"; // Set default href if no dog is selected
+                        submitButton.href = "#";
+                        deleteButton.href = "#";
                     }
 
                     return false;
@@ -29,15 +31,7 @@
 
             });
 
-            document.addEventListener("DOMContentLoaded", function() {
-                const submitButton = document.getElementById("submitButton");
-                submitButton.addEventListener("click", function(e) {
-                    e.preventDefault(); // Prevent default link behavior
-                    if (selectedDogId !== null) {
-                        window.location.href = "/updatedog/" + selectedDogId;
-                    }
-                });
-            });
+
         });
     </script>
 </head>
@@ -64,8 +58,8 @@
                 <a class="nav-link" aria-current="page" href="#" id="submitButton">
                     <button class="btn btn-sm btn-primary" type="button">Submit</button>
                 </a>
-                <a class="nav-link" aria-current="page" th:href="@{/dogs/delete}">
-                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                <a class="nav-link" aria-current="page" href="#" id="deleteButton">
+                    <button class="btn btn-sm btn-danger" type="button">Delete</button>
                 </a>
             </div>
         </div>

@@ -7,7 +7,6 @@ import com.adoptmeplus.enterprise.dto.LabelValue;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.ui.Model;
@@ -179,24 +178,23 @@ public class AdoptMePlusController {
     @PostMapping("/dogs/update/{dogId}")
     public String updateDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog) {
         try {
-            // Retrieve the dog by ID from the database
+
             Dog existingDog = dogService.fetchDog(dogId);
 
-            // Update the fields of the existing dog with the submitted data
+
             existingDog.setFullName(dog.getFullName());
             existingDog.setAge(dog.getAge());
             existingDog.setBreed(dog.getBreed());
             existingDog.setLocation(dog.getLocation());
             existingDog.setTags(dog.getTags());
 
-            // Save the updated dog
+
             dogService.save(existingDog);
 
-            return "redirect:/dogs"; // Redirect to the dogs page after update
+            return "redirect:/dogs";
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle exception
-            return "error-page"; // Return an error page or handle the error as needed
+            return "error-page";
         }
     }
 
@@ -210,6 +208,27 @@ public class AdoptMePlusController {
 
         // Redirect to the update form with the specific dog ID in the path
         return "updatedog";
+    }
+
+    @GetMapping("/deletedog/{dogId}")
+    public String deleteDogPage(@PathVariable(value = "dogId") int dogId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+        Dog dog = dogService.fetchDog(dogId);
+
+        // Add the retrieved dog information to the model to be used in Thymeleaf
+        model.addAttribute("dog", dog);
+        if (dog == null) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Dog not found");
+            return "redirect:/dogs";
+        }
+
+        dogService.delete(dog);
+
+
+        redirectAttributes.addFlashAttribute("successMessage", "Dog deleted successfully");
+        return "redirect:/dogs";
+
     }
 
     /**
@@ -244,8 +263,8 @@ public class AdoptMePlusController {
      * @param dogId The unique identifier of the Dog to be deleted.
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
-    @DeleteMapping("/dogs/delete/{dogId}")
-    public ResponseEntity<String> deleteDog(@PathVariable("dogId") int dogId) {
+    @DeleteMapping("api/dogs/delete/{dogId}")
+    public ResponseEntity<String> deleteDogAPI(@PathVariable("dogId") int dogId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -267,6 +286,28 @@ public class AdoptMePlusController {
         }
     }
 
+    @PostMapping("/dogs/delete/{dogId}")
+    public String deleteDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog, RedirectAttributes redirectAttributes) {
+        try {
+            Dog existingDog = dogService.fetchDog(dogId);
+
+            if (existingDog == null) {
+
+                redirectAttributes.addFlashAttribute("errorMessage", "Dog not found");
+                return "redirect:/dogs";
+            }
+
+            dogService.delete(existingDog);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog deleted successfully");
+            return "redirect:/dogs";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete dog");
+            return "redirect:/dogs";
+        }
+    }
     /**
      * Handles a POST request to create a new adoption record.
      * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
