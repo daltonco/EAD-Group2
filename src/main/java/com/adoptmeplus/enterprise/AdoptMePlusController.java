@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -48,49 +49,49 @@ public class AdoptMePlusController {
     Everything under this section is for page mapping.
 
      */
-    @GetMapping("/")
+    @RequestMapping("/")
     public String index() { return "index"; }
 
-    @GetMapping("/dogs")
+    @RequestMapping("/dogs")
     public String dogs() { return "dogs"; }
 
-    @GetMapping("/customers")
+    @RequestMapping("/customers")
     public String customers() { return "customers"; }
 
-    @GetMapping("/adoptions")
+    @RequestMapping("/adoptions")
     public String adoptions(){ return "adoptions"; }
 
-    @GetMapping("/dogs/create")
+    @RequestMapping("/dogs/create")
     public String createdog() { return "createdog"; }
 
-    @GetMapping("/customers/create")
+    @RequestMapping("/customers/create")
     public String createcustomer() { return "createcustomer"; }
 
-    @GetMapping("/adoptions/create")
+    @RequestMapping("/adoptions/create")
     public String createadoption() { return "createadoption"; }
 
-    @GetMapping("/dogs/edit")
+    @RequestMapping("/dogs/edit")
     public String editdogs() { return "editdogs"; }
 
-    @GetMapping("/customers/edit")
+    @RequestMapping("/customers/edit")
     public String editcustomers() { return "editcustomers"; }
 
-    @GetMapping("/adoptions/selectcustomer")
+    @RequestMapping("/adoptions/selectcustomer")
     public String selectcustomer() { return "selectcustomer"; }
 
-    @GetMapping("/dogs/update")
+    @RequestMapping("/dogs/update")
     public String updatedogs() { return "updatedogs"; }
 
-    @GetMapping("/customers/update")
+    @RequestMapping("/customers/update")
     public String updatecustomers() { return "updatecustomers"; }
 
-    @GetMapping("/adoptions/edit")
+    @RequestMapping("/adoptions/edit")
     public String editadoptions() { return "editadoptions"; }
 
-    @GetMapping("/adoptions/update")
+    @RequestMapping("/adoptions/update")
     public String updateadoptions() { return "updateadoptions"; }
 
-    @GetMapping("/adoptions/modify")
+    @RequestMapping("/adoptions/modify")
     public String modifyadoption() { return "modifyadoption"; }
 
     /*
@@ -365,28 +366,6 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a GET request to search for dogs based on a provided search term.
-     * This method allows users to search for dogs based on a specified breed. The search term is passed as a query
-     * parameter, and the method attempts to retrieve a list of dogs that match the search criteria using the `dogService`.
-     * If dogs are found, it returns a response containing the list of dogs with an HTTP status of 200 (OK). If an error
-     * occurs during the search operation, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
-     *
-     * @param breed The search term used to filter and find matching dogs (default is "None" if not provided).
-     * @return A ResponseEntity containing either the list of matching dogs or an error response.
-     */
-    @GetMapping("/dogs/find/{breed}")
-    public ResponseEntity<List<Dog>> searchDogsByBreed(@PathVariable String breed) {
-        try {
-            List<Dog> dogs = dogService.fetchByBreed(breed);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity<>(dogs, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * Handles a POST request to add a new customer to the system.
      * This method receives a JSON representation of a customer object in the request body and attempts to save it using the `customerService`.
      * If the customer is successfully added, it returns a response containing the newly created customer with an HTTP status of 200 (OK).
@@ -465,25 +444,25 @@ public class AdoptMePlusController {
             throw new RuntimeException(e);
         }
     }
-
-    @GetMapping("/dogNamesAutocomplete")
+    @GetMapping("dogs/dogNamesAutocomplete")
     @ResponseBody
-    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
+    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
         List<LabelValue> allDogBreeds = new ArrayList<>();
         try {
-            List<Dog> dogs = dogService.fetchByBreed(term);
-            for (Dog dog: dogs) {
-                LabelValue labelValue = new LabelValue();
-                labelValue.setValue(dog.getDogId());
-                labelValue.setLabel(dog.toString());
-                allDogBreeds.add(labelValue);
-            }
-        } catch (IOException e) {
-            return new ArrayList<>();
+        List<Dog> dogs = dogService.fetchByBreed(term);
+        for (Dog dog: dogs) {
+            LabelValue labelValue = new LabelValue();
+            labelValue.setLabel(dog.getBreed());
+            labelValue.setValue(dog.getDogId());
+            allDogBreeds.add(labelValue);
+            allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
         }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+            }
         return allDogBreeds;
     }
-
     /**
      * Updates an existing Customer resource with the provided information.
      * This method handles a PUT request to update a Customer by its unique identifier. It retrieves the existing Customer from the database,
