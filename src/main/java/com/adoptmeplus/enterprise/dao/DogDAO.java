@@ -20,8 +20,11 @@ import java.util.List;
 @Profile("dev")
 public class DogDAO implements IDogDAO {
 
-    @Autowired
-    private DogRepository dogRepository;
+    private final DogRepository dogRepository;
+
+    public DogDAO(DogRepository dogRepository) {
+        this.dogRepository = dogRepository;
+    }
 
     /**
      * Fetches a list of all Dog records.

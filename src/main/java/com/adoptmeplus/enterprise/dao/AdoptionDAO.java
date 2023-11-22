@@ -21,8 +21,11 @@ import java.util.List;
 @Profile("dev")
 public class AdoptionDAO implements IAdoptionDAO{
 
-    @Autowired
-    private AdoptionRepository adoptionRepository;
+    private final AdoptionRepository adoptionRepository;
+
+    public AdoptionDAO(AdoptionRepository adoptionRepository) {
+        this.adoptionRepository = adoptionRepository;
+    }
 
     /**
      * Saves an Adoption record to the data source.

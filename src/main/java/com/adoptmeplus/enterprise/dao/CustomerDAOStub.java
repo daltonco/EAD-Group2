@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ import java.util.List;
 @Profile("test")
 public class CustomerDAOStub implements ICustomerDAO {
 
+    List<Customer> Customers = new ArrayList<>();
     /**
      * Fetches a list of all Customer records.
      *
@@ -28,7 +30,8 @@ public class CustomerDAOStub implements ICustomerDAO {
      */
     @Override
     public List<Customer> findAll(){
-        return null;
+
+        return Customers;
     }
 
     /**
@@ -39,7 +42,9 @@ public class CustomerDAOStub implements ICustomerDAO {
      */
     @Override
     public Customer save (Customer customer) {
-        return null;
+
+        Customers.add(customer);
+        return customer;
     }
 
     /**
@@ -51,7 +56,7 @@ public class CustomerDAOStub implements ICustomerDAO {
 
     @Override
     public void delete(Customer customer){
-        return;
+        Customers.remove(customer);
     }
 
     /**
@@ -62,8 +67,7 @@ public class CustomerDAOStub implements ICustomerDAO {
      * @throws IOException if there's an issue with the network communication.
      */
     public Customer fetchCustomer(int customerId) throws IOException {
-        return null;
-
+        return Customers.get(customerId);
     }
 
     /**
