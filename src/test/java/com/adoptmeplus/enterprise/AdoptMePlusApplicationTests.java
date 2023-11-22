@@ -32,21 +32,28 @@ class AdoptMePlusApplicationTests {
      */
     @Test
     void verifyAdoptionProperties() {
+        // Given
         int AdoptionId = 1;
-        Adoption adoption = new Adoption();
-        adoption.setAdoptionId(AdoptionId);
-        assertEquals(AdoptionId, adoption.getAdoptionId());
 
         int DogId = 1;
         Dog dog = new Dog();
-        dog.setDogId(DogId);
-        adoption.setDog(dog);
-        assertEquals(DogId, adoption.getDog().getDogId());
 
         int CustomerId = 1;
         Customer customer = new Customer();
-        customer.setCustomerId(CustomerId);
+
+        // When
+        Adoption adoption = new Adoption();
+        adoption.setAdoptionId(AdoptionId);
+
+        adoption.setDog(dog);
+        adoption.getDog().setDogId(DogId);
+
         adoption.setCustomer(customer);
+        adoption.getCustomer().setCustomerId(CustomerId);
+
+        // Then
+        assertEquals(AdoptionId, adoption.getAdoptionId());
+        assertEquals(DogId, adoption.getDog().getDogId());
         assertEquals(CustomerId, adoption.getCustomer().getCustomerId());
     }
 
@@ -55,21 +62,26 @@ class AdoptMePlusApplicationTests {
      */
     @Test
     void verifyAddAndRemoveAdoptions() {
+
+        // Given
         int AdoptionId = 1;
         int DogId = 1;
         Dog dog = new Dog();
         int CustomerId = 1;
-        Customer customer = new Customer();
 
+        // When
+        Customer customer = new Customer();
         Adoption adoption = new Adoption();
         adoption.setAdoptionId(AdoptionId);
         adoption.setDog(dog);
         adoption.getDog().setDogId(DogId);
+
         adoption.setCustomer(customer);
         adoption.getCustomer().setCustomerId(CustomerId);
 
         adoptionService.save(adoption);
 
+        // Then
         List<Adoption> adoptions = adoptionService.findAll();
         boolean adoptionPresent = true; // set this to true to make sure that circleCI is actually working lmao
         for (Adoption a : adoptions) {
@@ -81,5 +93,4 @@ class AdoptMePlusApplicationTests {
 
         assertTrue(adoptionPresent);
     }
-
 }
