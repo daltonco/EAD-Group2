@@ -41,6 +41,8 @@ public interface IDogService {
      */
     List<Dog> fetchByBreed(String breed) throws IOException;
 
+    List<Dog> findAutocompleteByBreed(String breed) throws IOException;
+
     /**
      * Retrieves a specific dog record by its unique identifier.
      *

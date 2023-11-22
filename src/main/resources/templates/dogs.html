@@ -30,6 +30,31 @@
                         </a>
                     </div>
                 </div>
+            <div class="mt-4">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Breed</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Tags</th>
+                        <!-- Add more columns as needed -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Iterate over dogsList and display each dog -->
+                    <tr th:each="dog : ${dogsList}">
+                        <td th:text="${dog.fullName}"></td>
+                        <td th:text="${dog.breed}"></td>
+                        <td th:text="${dog.age}"></td>
+                        <td th:text="${dog.location}"></td>
+                        <td th:text="${dog.tags}"></td>
+                        <!-- Add more columns as needed -->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

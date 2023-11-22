@@ -8,6 +8,6 @@ import retrofit2.http.Query;
 import java.util.List;
 
 public interface IDogRetrofitDAO {
-    @GET("/dogNamesAutocomplete?term=")
-    Call<List<Dog>> getDogs(@Query("#dog") String term);
+    @GET("/dogs/all")
+    Call<List<Dog>> getDogs(@Query("breed") String breed);
 }

@@ -1,6 +1,7 @@
 package com.adoptmeplus.enterprise.service;
 import com.adoptmeplus.enterprise.dao.ICustomerDAO;
 import com.adoptmeplus.enterprise.dto.Customer;
+import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
@@ -80,5 +81,13 @@ public class CustomerService implements ICustomerService {
         } else {
             throw new Exception("Customer not found");
         }
+    }
+
+
+    public List<Customer> findAutocompleteByEmail(String email) throws IOException {
+
+
+        return customerDAO.findAutocompleteByEmail(email);
+
     }
 }

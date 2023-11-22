@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import retrofit2.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
@@ -64,20 +65,32 @@ public class DogDAO implements IDogDAO {
         return dogRepository.findById(dogId).get();
 
     }
-
     /**
      * Fetches a list of Dog records based on a specified breed.
      *
      * @param breed The breed of dogs to retrieve.
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
-    @Override
-    public List<Dog> fetchByBreed(String breed) throws IOException {
-        Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
-        IDogRetrofitDAO plantRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
-        Call<List<Dog>> allDogBreeds = plantRetrofitDAO.getDogs(breed);
-        Response<List<Dog>> execute = allDogBreeds.execute();
-        return execute.body();
+        @Override
+        public List<Dog> fetchByBreed(String breed) throws IOException {
+            Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
+            IDogRetrofitDAO dogRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
+            Call<List<Dog>> allDogs = dogRetrofitDAO.getDogs(breed);
+            Response<List<Dog>> execute = allDogs.execute();
+            List<Dog> dogs = execute.body();
+            return dogs;
 
+        }
+
+    @Override
+    public List<Dog> findAutocompleteByBreed(String breed) {
+        List<Dog> dogs = findAll();
+        List<Dog> filteredDogs = new ArrayList<>();
+        for (Dog dog : dogs) {
+            if (dog.getBreed().toLowerCase().startsWith(breed.toLowerCase())) {
+                filteredDogs.add(dog);
+            }
+        }
+        return filteredDogs;
     }
 }

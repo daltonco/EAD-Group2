@@ -77,4 +77,9 @@ public class CustomerDAOStub implements ICustomerDAO {
 
         return null;
     }
+
+    @Override
+    public List<Customer> findAutocompleteByEmail(String email) {
+        return null;
+    }
 }
