@@ -4,6 +4,7 @@ import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,6 +73,13 @@ public class DogService implements IDogService {
     @Override
     public List<Dog> fetchByBreed(String breed) throws IOException {
         return dogDAO.fetchByBreed(breed);
+    }
+
+    public List<Dog> findAutocompleteByBreed(String breed) throws IOException {
+
+
+        return dogDAO.findAutocompleteByBreed(breed);
+
     }
     @Override
     public void delete(Dog dog) throws Exception {

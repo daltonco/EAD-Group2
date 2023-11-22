@@ -7,14 +7,36 @@
     <title>AdoptMe+ - Editing Dogs</title>
     <script type="text/javascript">
         $(function() {
+            var selectedDogId = null;
+
             $("#breed").autocomplete({
                 source: "dogNamesAutocomplete",
                 minLength: 1,
                 select: function(event, ui) {
                     this.value = ui.item.label;
-                    $("#dogId").val(ui.item.value);
+                    selectedDogId = ui.item.value;
+                    $("#dogId").val(selectedDogId);
+
+                    const submitButton = document.getElementById("submitButton");
+                    if (selectedDogId !== null) {
+                        submitButton.href = "/updatedog/" + selectedDogId;
+                    } else {
+                        submitButton.href = "#"; // Set default href if no dog is selected
+                    }
+
                     return false;
                 }
+
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const submitButton = document.getElementById("submitButton");
+                submitButton.addEventListener("click", function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    if (selectedDogId !== null) {
+                        window.location.href = "/updatedog/" + selectedDogId;
+                    }
+                });
             });
         });
     </script>
@@ -31,7 +53,7 @@
                 <hr>
                 <div class="p-2 pt-3 px-5 d-flex flex-row-3 justify-content-center">
                     <div class="px-5 pb-2 col-sm">
-                            <label for="breed">Name:</label>
+                            <label for="breed">Breed:</label>
                             <input id="breed" type="text" class="form-control" name="breed">
                     </div>
                 </div>
@@ -39,8 +61,8 @@
                 <input id="dogId" type="hidden" class="form-control" name="dogId">
             </form>
             <div class="d-flex flex-row justify-content-end gap-2 pt-3">
-                <a class="nav-link" aria-current="page" th:href="@{/dogs/update}">
-                    <button class="btn btn-sm btn-primary" type="submit">Select</button>
+                <a class="nav-link" aria-current="page" href="#" id="submitButton">
+                    <button class="btn btn-sm btn-primary" type="button">Submit</button>
                 </a>
                 <a class="nav-link" aria-current="page" th:href="@{/dogs/delete}">
                     <button class="btn btn-sm btn-danger" type="submit">Delete</button>

@@ -61,4 +61,6 @@ public interface IDogDAO {
      * @throws IOException if there's an issue with the data retrieval operation.
      */
     List<Dog> fetchByBreed(String breed) throws IOException;
+
+    List<Dog> findAutocompleteByBreed(String breed);
 }

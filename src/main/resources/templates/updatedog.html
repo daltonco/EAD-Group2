@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>AdoptMe+ - Update Dog</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <div class="border border-2 rounded bg-light shadow-lg p-5 mt-5">
+      <div class="pb-2">
+        <h2>Dog Information</h2>
+        <i>Input information to update: <span th:text="${dog.fullName}"></span></i>
+      </div>
+      <form method="post" th:action="@{'/dogs/update/' + ${dog.dogId}}" th:object="${dog}">
+        <!-- Hidden input field to store the dogId -->
+        <input type="hidden" th:field="*{dogId}" />
+
+        <!-- Other form fields for dog information -->
+        <div class="form-group my-2">
+          <label for="fullName">Name:</label>
+          <input type="text" class="form-control" th:field="*{fullName}" placeholder="Dog 1" id="fullName">
+        </div>
+        <div class="form-group my-2">
+          <label for="age">Age:</label>
+          <input type="text" class="form-control" th:field="*{age}" placeholder="5" id="age">
+        </div>
+        <div class="form-group my-2">
+          <label for="breed">Breed:</label>
+          <input type="text" class="form-control" th:field="*{breed}" placeholder="Golden Retriever" id="breed">
+        </div>
+        <div class="form-group my-2">
+          <label for="location">Location:</label>
+          <input type="text" class="form-control" th:field="*{location}" placeholder="123 Dog Street" id="location">
+        </div>
+        <div class="form-group my-2">
+          <label for="tags">Tags:</label>
+          <input type="text" class="form-control" th:field="*{tags}" placeholder="friendly" id="tags">
+        </div>
+
+        <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+          <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

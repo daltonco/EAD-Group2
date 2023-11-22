@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import retrofit2.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
@@ -80,4 +81,16 @@ public class DogDAO implements IDogDAO {
             return dogs;
 
         }
+
+    @Override
+    public List<Dog> findAutocompleteByBreed(String breed) {
+        List<Dog> dogs = findAll();
+        List<Dog> filteredDogs = new ArrayList<>();
+        for (Dog dog : dogs) {
+            if (dog.getBreed().toLowerCase().startsWith(breed.toLowerCase())) {
+                filteredDogs.add(dog);
+            }
+        }
+        return filteredDogs;
     }
+}

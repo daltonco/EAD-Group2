@@ -74,4 +74,9 @@ public class DogDAOStub implements IDogDAO {
     public List<Dog> fetchByBreed(String breed) {
         return null;
     }
+
+    @Override
+    public List<Dog> findAutocompleteByBreed(String breed) {
+        return null;
+    }
 }

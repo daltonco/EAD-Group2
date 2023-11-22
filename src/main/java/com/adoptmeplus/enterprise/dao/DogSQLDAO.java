@@ -65,6 +65,18 @@ public class DogSQLDAO implements IDogDAO{
         return allDogs;
     }
 
+    @Override
+    public List<Dog> findAutocompleteByBreed(String breed) {
+        List<Dog> dogs = findAll();
+        List<Dog> filteredDogs = new ArrayList<>();
+        for (Dog dog : dogs) {
+            if (dog.getBreed().toLowerCase().startsWith(breed.toLowerCase())) {
+                filteredDogs.add(dog);
+            }
+        }
+        return filteredDogs;
+    }
+
 
     /**
      * Fetches a list of all Dog records

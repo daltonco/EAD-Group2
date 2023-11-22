@@ -7,14 +7,16 @@ import com.adoptmeplus.enterprise.dto.LabelValue;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * The `AdoptMePlusController` class serves as the controller for managing the AdoptMePlus enterprise system's web application.
@@ -80,7 +82,7 @@ public class AdoptMePlusController {
     public String selectcustomer() { return "selectcustomer"; }
 
     @RequestMapping("/dogs/update")
-    public String updatedogs() { return "updatedogs"; }
+    public String updatedogs() { return "updatedog"; }
 
     @RequestMapping("/customers/update")
     public String updatecustomers() { return "updatecustomers"; }
@@ -107,10 +109,16 @@ public class AdoptMePlusController {
      */
     @GetMapping("/dogs/all")
     @ResponseBody
-    public ResponseEntity<List<Dog>> findAllDogs() {
-        List<Dog> allDogs;
+    public ResponseEntity<List<Dog>> findAllDogs(@RequestParam(value = "breed", required = false) String breed) {
+        List<Dog> filteredDogs;
         try {
-            allDogs = dogService.findAll();
+            if (breed != null && !breed.isEmpty()) {
+                // If a breed parameter is provided, filter dogs by breed
+                filteredDogs = dogService.fetchByBreed(breed);
+            } else {
+                // If no breed parameter provided, return all dogs
+                filteredDogs = dogService.findAll();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -118,8 +126,20 @@ public class AdoptMePlusController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<>(allDogs, headers, HttpStatus.OK);
+        return new ResponseEntity<>(filteredDogs, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/dogs")
+    public String showDogs(Model model) {
+        try {
+            List<Dog> dogsList = dogService.findAll();
+            model.addAttribute("dogsList", dogsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "dogs";
+    }
+
 
     /**
      * Handles a POST request to add a new dog to the system.
@@ -130,18 +150,20 @@ public class AdoptMePlusController {
      * @param dog The JSON representation of the dog to be added.
      * @return A ResponseEntity containing either the newly created dog or an error response.
      */
-    @PostMapping(value="/dogs/add", consumes="application/json", produces="application/json")
-    public ResponseEntity<Dog> addDog(@RequestBody Dog dog) {
-        Dog newDog;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping(value="/dogs/add")
+    public String addDog(@ModelAttribute Dog dog, RedirectAttributes redirectAttributes) {
         try {
-            newDog = dogService.save(dog);
-        } catch (Exception e) {
+            Dog newDog = dogService.save(dog);
 
-            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
         }
-        return new ResponseEntity<>(newDog, headers, HttpStatus.OK);
+
+        return "redirect:/dogs";
     }
 
     /**
@@ -152,37 +174,42 @@ public class AdoptMePlusController {
      * If an error occurs during the update, a 500 Internal Server Error response is returned.
      *
      * @param dogId The unique identifier of the Dog to be updated.
-     * @param updatedDog The JSON representation of the Dog with updated fields.
      * @return A ResponseEntity containing either the updated Dog resource or an error response.
      */
-    @PutMapping("/dogs/update/{dogId}")
-    public ResponseEntity<Dog> updateDog(@PathVariable("dogId") int dogId, @RequestBody Dog updatedDog) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping("/dogs/update/{dogId}")
+    public String updateDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog) {
+        try {
+            // Retrieve the dog by ID from the database
+            Dog existingDog = dogService.fetchDog(dogId);
 
-        try{
-            Dog foundDog = dogService.fetchDog(dogId);
+            // Update the fields of the existing dog with the submitted data
+            existingDog.setFullName(dog.getFullName());
+            existingDog.setAge(dog.getAge());
+            existingDog.setBreed(dog.getBreed());
+            existingDog.setLocation(dog.getLocation());
+            existingDog.setTags(dog.getTags());
 
-            if (foundDog == null){
-                return new ResponseEntity<>(updatedDog, HttpStatus.NOT_FOUND);
-            }
+            // Save the updated dog
+            dogService.save(existingDog);
 
-            foundDog.setAge(updatedDog.getAge());
-            foundDog.setBreed(updatedDog.getBreed());
-            foundDog.setFullName(updatedDog.getFullName());
-            foundDog.setDateArrived(updatedDog.getDateArrived());
-            foundDog.setLocation(updatedDog.getLocation());
-            foundDog.setTags(updatedDog.getTags());
-
-            Dog updated = dogService.save(foundDog);
-
-
-            return new ResponseEntity<>(updated, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return "redirect:/dogs"; // Redirect to the dogs page after update
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            // Handle exception
+            return "error-page"; // Return an error page or handle the error as needed
         }
+    }
+
+    @GetMapping("/updatedog/{dogId}")
+    public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) throws IOException {
+
+        Dog dog = dogService.fetchDog(dogId);
+
+        // Add the retrieved dog information to the model to be used in Thymeleaf
+        model.addAttribute("dog", dog);
+
+        // Redirect to the update form with the specific dog ID in the path
+        return "updatedog";
     }
 
     /**
@@ -449,10 +476,10 @@ public class AdoptMePlusController {
     public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
         List<LabelValue> allDogBreeds = new ArrayList<>();
         try {
-        List<Dog> dogs = dogService.fetchByBreed(term);
+        List<Dog> dogs = dogService.findAutocompleteByBreed(term);
         for (Dog dog: dogs) {
             LabelValue labelValue = new LabelValue();
-            labelValue.setLabel(dog.getBreed());
+            labelValue.setLabel(dog.getBreed() + " (Name: " + dog.getFullName() + ", Age: " + dog.getAge() + ", Location: " + dog.getLocation() + ")");
             labelValue.setValue(dog.getDogId());
             allDogBreeds.add(labelValue);
             allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
