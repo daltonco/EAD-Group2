@@ -4,6 +4,7 @@ import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Customer;
 import com.adoptmeplus.enterprise.dto.Dog;
 import com.adoptmeplus.enterprise.dto.LabelValue;
+import com.adoptmeplus.enterprise.service.DogService;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
@@ -112,10 +113,8 @@ public class AdoptMePlusController {
         List<Dog> filteredDogs;
         try {
             if (breed != null && !breed.isEmpty()) {
-                // If a breed parameter is provided, filter dogs by breed
                 filteredDogs = dogService.fetchByBreed(breed);
             } else {
-                // If no breed parameter provided, return all dogs
                 filteredDogs = dogService.findAll();
             }
         } catch (IOException e) {
@@ -306,6 +305,18 @@ public class AdoptMePlusController {
             return "redirect:/dogs";
         }
     }
+
+    @GetMapping("/adoptions")
+    public String showAdoptions(
+            Model model) {
+        try {
+            List<Adoption> adoptionsList = adoptionService.findAll();
+            model.addAttribute("adoptionsList", adoptionsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "adoptions";
+    }
     /**
      * Handles a POST request to create a new adoption record.
      * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
@@ -315,9 +326,9 @@ public class AdoptMePlusController {
      * @param adoption The JSON representation of the adoption object to be created.
      * @return A ResponseEntity containing either the newly created adoption object or an error response.
      */
-    @PostMapping(value="/adoptions/add", consumes="application/json", produces="application/json")
+    @PostMapping(value="/api/adoptions/add", consumes="application/json", produces="application/json")
     @ResponseBody
-    public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
+    public ResponseEntity<Adoption> createAdoptionAPI(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
         Adoption newAdoption;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -352,8 +363,8 @@ public class AdoptMePlusController {
      * @param updatedAdoption The JSON representation of an Adoption with updated fields.
      * @return A ResponseEntity containing either the updated Adoption resource or an error response.
      */
-    @PutMapping("/adoption/update/{adoptionId}")
-    public ResponseEntity<Adoption> updateAdoption(@PathVariable("adoptionId") int adoptionId, @RequestBody Adoption updatedAdoption) {
+    @PutMapping("/api/adoption/update/{adoptionId}")
+    public ResponseEntity<Adoption> updateAdoptionAPI(@PathVariable("adoptionId") int adoptionId, @RequestBody Adoption updatedAdoption) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -669,5 +680,73 @@ public class AdoptMePlusController {
         redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully");
         return "redirect:/customers";
 
+    }
+
+    @GetMapping(value="/adoptions/add/{dogId}/{customerId}")
+    public String addAdoption(@PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId, RedirectAttributes redirectAttributes) {
+        try {
+
+            Dog saveDog = dogService.fetchDog(dogId);
+            Customer saveCustomer = customerService.fetchCustomer(customerId);
+
+            Adoption newAdoption = new Adoption();
+            newAdoption.setCustomer(saveCustomer);
+            newAdoption.setDog(saveDog);
+
+            adoptionService.save(newAdoption);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Adoption added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
+        }
+
+        return "adoptions";
+    }
+
+    @GetMapping("/adoptions/edit")
+    public String adoptionsEdit(RedirectAttributes redirectAttributes, Model model) {
+        List<Adoption> adoptionsList = adoptionService.findAll();
+        model.addAttribute("adoptionsList", adoptionsList);
+        return "editadoptions";
+    }
+
+    @PostMapping("/adoptions/update/{adoptionId}/{dogId}/{customerId}")
+    public String updateAdoption(@PathVariable("adoptionId") int adoptionId, @PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId, @ModelAttribute Adoption adoption) {
+        try {
+
+            Dog getDog = dogService.fetchDog(dogId);
+            Customer getCustomer = customerService.fetchCustomer(customerId);
+            Adoption existingAdoption = adoptionService.fetchAdoption(adoptionId);
+
+
+            existingAdoption.setCustomer(getCustomer);
+            existingAdoption.setDog(getDog);
+
+
+            adoptionService.save(existingAdoption);
+
+            return "redirect:/adoptions";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error-page";
+        }
+    }
+
+    @PostMapping("/adoptions/adoptionupdate/{adoptionId}")
+    public String updateAdoption(@PathVariable("adoptionId") int adoptionId, Model model) {
+        try {
+
+            Adoption existingAdoption = adoptionService.fetchAdoption(adoptionId);
+
+            model.addAttribute("adoption", existingAdoption);
+
+            return "/updateadoptions";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error-page";
+        }
     }
 }
