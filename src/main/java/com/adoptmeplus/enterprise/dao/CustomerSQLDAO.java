@@ -60,6 +60,11 @@ public class CustomerSQLDAO implements ICustomerDAO{
         return customerRepository.findByEmail(email);
     }
 
+    @Override
+    public List<Customer> findAutocompleteByEmail(String email) {
+        return null;
+    }
+
 
     /**
      * Fetches a list of all Customer records

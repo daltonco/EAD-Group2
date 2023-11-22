@@ -9,12 +9,13 @@ import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * The `AdoptMePlusController` class serves as the controller for managing the AdoptMePlus enterprise system's web application.
@@ -80,10 +81,10 @@ public class AdoptMePlusController {
     public String selectcustomer() { return "selectcustomer"; }
 
     @RequestMapping("/dogs/update")
-    public String updatedogs() { return "updatedogs"; }
+    public String updatedogs() { return "updatedog"; }
 
     @RequestMapping("/customers/update")
-    public String updatecustomers() { return "updatecustomers"; }
+    public String updatecustomers() { return "updatecustomer"; }
 
     @RequestMapping("/adoptions/edit")
     public String editadoptions() { return "editadoptions"; }
@@ -107,10 +108,16 @@ public class AdoptMePlusController {
      */
     @GetMapping("/dogs/all")
     @ResponseBody
-    public ResponseEntity<List<Dog>> findAllDogs() {
-        List<Dog> allDogs;
+    public ResponseEntity<List<Dog>> findAllDogs(@RequestParam(value = "breed", required = false) String breed) {
+        List<Dog> filteredDogs;
         try {
-            allDogs = dogService.findAll();
+            if (breed != null && !breed.isEmpty()) {
+                // If a breed parameter is provided, filter dogs by breed
+                filteredDogs = dogService.fetchByBreed(breed);
+            } else {
+                // If no breed parameter provided, return all dogs
+                filteredDogs = dogService.findAll();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -118,8 +125,20 @@ public class AdoptMePlusController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<>(allDogs, headers, HttpStatus.OK);
+        return new ResponseEntity<>(filteredDogs, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/dogs")
+    public String showDogs(Model model) {
+        try {
+            List<Dog> dogsList = dogService.findAll();
+            model.addAttribute("dogsList", dogsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "dogs";
+    }
+
 
     /**
      * Handles a POST request to add a new dog to the system.
@@ -130,18 +149,20 @@ public class AdoptMePlusController {
      * @param dog The JSON representation of the dog to be added.
      * @return A ResponseEntity containing either the newly created dog or an error response.
      */
-    @PostMapping(value="/dogs/add", consumes="application/json", produces="application/json")
-    public ResponseEntity<Dog> addDog(@RequestBody Dog dog) {
-        Dog newDog;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping(value="/dogs/add")
+    public String addDog(@ModelAttribute Dog dog, RedirectAttributes redirectAttributes) {
         try {
-            newDog = dogService.save(dog);
-        } catch (Exception e) {
+            Dog newDog = dogService.save(dog);
 
-            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
         }
-        return new ResponseEntity<>(newDog, headers, HttpStatus.OK);
+
+        return "redirect:/dogs";
     }
 
     /**
@@ -152,37 +173,60 @@ public class AdoptMePlusController {
      * If an error occurs during the update, a 500 Internal Server Error response is returned.
      *
      * @param dogId The unique identifier of the Dog to be updated.
-     * @param updatedDog The JSON representation of the Dog with updated fields.
      * @return A ResponseEntity containing either the updated Dog resource or an error response.
      */
-    @PutMapping("/dogs/update/{dogId}")
-    public ResponseEntity<Dog> updateDog(@PathVariable("dogId") int dogId, @RequestBody Dog updatedDog) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping("/dogs/update/{dogId}")
+    public String updateDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog) {
+        try {
 
-        try{
-            Dog foundDog = dogService.fetchDog(dogId);
-
-            if (foundDog == null){
-                return new ResponseEntity<>(updatedDog, HttpStatus.NOT_FOUND);
-            }
-
-            foundDog.setAge(updatedDog.getAge());
-            foundDog.setBreed(updatedDog.getBreed());
-            foundDog.setFullName(updatedDog.getFullName());
-            foundDog.setDateArrived(updatedDog.getDateArrived());
-            foundDog.setLocation(updatedDog.getLocation());
-            foundDog.setTags(updatedDog.getTags());
-
-            Dog updated = dogService.save(foundDog);
+            Dog existingDog = dogService.fetchDog(dogId);
 
 
-            return new ResponseEntity<>(updated, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            existingDog.setFullName(dog.getFullName());
+            existingDog.setAge(dog.getAge());
+            existingDog.setBreed(dog.getBreed());
+            existingDog.setLocation(dog.getLocation());
+            existingDog.setTags(dog.getTags());
+
+
+            dogService.save(existingDog);
+
+            return "redirect:/dogs";
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return "error-page";
         }
+    }
+
+    @GetMapping("/updatedog/{dogId}")
+    public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) throws IOException {
+
+        Dog dog = dogService.fetchDog(dogId);
+
+        model.addAttribute("dog", dog);
+
+        return "updatedog";
+    }
+
+    @GetMapping("/deletedog/{dogId}")
+    public String deleteDogPage(@PathVariable(value = "dogId") int dogId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+        Dog dog = dogService.fetchDog(dogId);
+
+        // Add the retrieved dog information to the model to be used in Thymeleaf
+        model.addAttribute("dog", dog);
+        if (dog == null) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Dog not found");
+            return "redirect:/dogs";
+        }
+
+        dogService.delete(dog);
+
+
+        redirectAttributes.addFlashAttribute("successMessage", "Dog deleted successfully");
+        return "redirect:/dogs";
+
     }
 
     /**
@@ -217,8 +261,8 @@ public class AdoptMePlusController {
      * @param dogId The unique identifier of the Dog to be deleted.
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
-    @DeleteMapping("/dogs/delete/{dogId}")
-    public ResponseEntity<String> deleteDog(@PathVariable("dogId") int dogId) {
+    @DeleteMapping("api/dogs/delete/{dogId}")
+    public ResponseEntity<String> deleteDogAPI(@PathVariable("dogId") int dogId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -240,6 +284,28 @@ public class AdoptMePlusController {
         }
     }
 
+    @PostMapping("/dogs/delete/{dogId}")
+    public String deleteDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog, RedirectAttributes redirectAttributes) {
+        try {
+            Dog existingDog = dogService.fetchDog(dogId);
+
+            if (existingDog == null) {
+
+                redirectAttributes.addFlashAttribute("errorMessage", "Dog not found");
+                return "redirect:/dogs";
+            }
+
+            dogService.delete(existingDog);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog deleted successfully");
+            return "redirect:/dogs";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete dog");
+            return "redirect:/dogs";
+        }
+    }
     /**
      * Handles a POST request to create a new adoption record.
      * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
@@ -414,6 +480,58 @@ public class AdoptMePlusController {
         return new ResponseEntity<>(allCustomers, headers, HttpStatus.OK);
     }
 
+    @GetMapping("customers/customerNamesAutocomplete")
+    @ResponseBody
+    public List<LabelValue> customerNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
+        List<LabelValue> allEmails = new ArrayList<>();
+        List<Customer> customers = customerService.findAutocompleteByEmail(term);
+        for (Customer customer: customers) {
+            LabelValue labelValue = new LabelValue();
+            labelValue.setLabel(customer.getEmail() + " (" + customer.getLastName() + ", " + customer.getFirstName() + ")");
+            labelValue.setValue(customer.getCustomerId());
+            allEmails.add(labelValue);
+            allEmails.sort(Comparator.comparing(LabelValue::getLabel));
+        }
+        return allEmails;
+    }
+
+    @GetMapping("/customers")
+    public String showCustomer(Model model) {
+        try {
+            List<Customer> customerList = customerService.findAll();
+            model.addAttribute("customerList", customerList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "customers";
+    }
+
+    @PostMapping(value="/customers/add")
+    public String addCustomer(@ModelAttribute Customer customer, RedirectAttributes redirectAttributes) {
+        try {
+            Customer newCustomer = customerService.save(customer);
+
+
+            redirectAttributes.addFlashAttribute("successMessage", "Dog added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
+        }
+
+        return "redirect:/customers";
+    }
+
+    @GetMapping("/updatecustomer/{customerId}")
+    public String updateCustomerPage(@PathVariable(value = "customerId") int customerId, Model model) throws IOException {
+
+        Customer customer = customerService.fetchCustomer(customerId);
+
+        model.addAttribute("customer", customer);
+
+        return "updatecustomer";
+    }
+
     /**
      * Deletes a Customer resource by its unique identifier.
      * This method handles a DELETE request to delete a Customer by its unique identifier. It attempts to retrieve the existing Customer from
@@ -449,10 +567,10 @@ public class AdoptMePlusController {
     public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
         List<LabelValue> allDogBreeds = new ArrayList<>();
         try {
-        List<Dog> dogs = dogService.fetchByBreed(term);
+        List<Dog> dogs = dogService.findAutocompleteByBreed(term);
         for (Dog dog: dogs) {
             LabelValue labelValue = new LabelValue();
-            labelValue.setLabel(dog.getBreed());
+            labelValue.setLabel(dog.getBreed() + " (Name: " + dog.getFullName() + ", Age: " + dog.getAge() + ", Location: " + dog.getLocation() + ")");
             labelValue.setValue(dog.getDogId());
             allDogBreeds.add(labelValue);
             allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
@@ -474,8 +592,8 @@ public class AdoptMePlusController {
      * @param updatedCustomer The JSON representation of the Customer with updated fields.
      * @return A ResponseEntity containing either the updated Customer resource or an error response.
      */
-    @PutMapping("/customers/update/{customerId}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
+    @PutMapping("api/customers/update/{customerId}")
+    public ResponseEntity<Customer> updateCustomerAPI(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -509,5 +627,47 @@ public class AdoptMePlusController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/customers/update/{customerId}")
+    public String updateCustomer(@PathVariable("customerId") int customerId, @ModelAttribute Customer customer) {
+        try {
+
+            Customer existingCustomer = customerService.fetchCustomer(customerId);
+
+
+            existingCustomer.setFirstName(customer.getFirstName());
+            existingCustomer.setLastName(customer.getLastName());
+            existingCustomer.setEmail(customer.getEmail());
+            existingCustomer.setAddress(customer.getAddress());
+
+
+            customerService.save(existingCustomer);
+
+            return "redirect:/customers";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error-page";
+        }
+    }
+
+    @GetMapping("/deletecustomer/{customerId}")
+    public String deleteCustomerPage(@PathVariable(value = "customerId") int customerId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+        Customer customer = customerService.fetchCustomer(customerId);
+
+        model.addAttribute("customer", customer);
+        if (customer == null) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", "Customer not found");
+            return "redirect:/customers";
+        }
+
+        customerService.delete(customer);
+
+
+        redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully");
+        return "redirect:/customers";
+
     }
 }

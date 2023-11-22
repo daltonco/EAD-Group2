@@ -1,9 +1,12 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Customer;
+import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 import java.util.List;
 /**
  * The CustomerDAO class is responsible for managing and interacting with the data sources
@@ -75,5 +78,17 @@ public class CustomerDAO implements ICustomerDAO {
     public Customer findByEmail(String email) {
 
         return customerRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<Customer> findAutocompleteByEmail(String email) {
+        List<Customer> customers = findAll();
+        List<Customer> filteredCustomers = new ArrayList<>();
+        for (Customer customer : customers) {
+            if (customer.getEmail().toLowerCase().startsWith(email.toLowerCase())) {
+                filteredCustomers.add(customer);
+            }
+        }
+        return filteredCustomers;
     }
 }

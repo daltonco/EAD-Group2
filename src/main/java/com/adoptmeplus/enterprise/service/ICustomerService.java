@@ -1,6 +1,7 @@
 package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Customer;
+import com.adoptmeplus.enterprise.dto.Dog;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,4 +58,7 @@ public interface ICustomerService {
      * @throws Exception If an error occurs during the deletion operation.
      */
     void delete(Customer customer) throws IOException, Exception;
+
+    List<Customer> findAutocompleteByEmail(String term) throws IOException;
+
 }
