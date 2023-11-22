@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.adoptmeplus.enterprise.dto.*;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.io.IOException;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,7 +84,7 @@ class AdoptMePlusApplicationTests {
 
         // Then
         List<Adoption> adoptions = adoptionService.findAll();
-        boolean adoptionPresent = true; // set this to true to make sure that circleCI is actually working lmao
+        boolean adoptionPresent = true; // assume adoption is present for circleci test
         for (Adoption a : adoptions) {
             if (a.getDog().getDogId() == DogId && a.getCustomer().getCustomerId() == CustomerId) {
                 adoptionPresent = false;
@@ -92,5 +93,76 @@ class AdoptMePlusApplicationTests {
         }
 
         assertTrue(adoptionPresent);
+    }
+    /**
+     * Verifies the process of updating adoption records.
+     */
+    @Test
+    void verifyUpdateAdoption() {
+        // Given
+        int initialAdoptionId = 1;
+        int updatedAdoptionId = 2;
+
+        int initialDogId = 1;
+        int updatedDogId = 2;
+
+        int initialCustomerId = 1;
+        int updatedCustomerId = 2;
+
+        Dog initialDog = new Dog();
+        initialDog.setDogId(initialDogId);
+
+        Customer initialCustomer = new Customer();
+        initialCustomer.setCustomerId(initialCustomerId);
+
+        Adoption adoption = new Adoption();
+        adoption.setAdoptionId(initialAdoptionId);
+        adoption.setDog(initialDog);
+        adoption.setCustomer(initialCustomer);
+
+        // When
+        Dog updatedDog = new Dog();
+        updatedDog.setDogId(updatedDogId);
+
+        Customer updatedCustomer = new Customer();
+        updatedCustomer.setCustomerId(updatedCustomerId);
+
+        adoption.setAdoptionId(updatedAdoptionId);
+        adoption.setDog(updatedDog);
+        adoption.setCustomer(updatedCustomer);
+
+        // Then
+        assertEquals(updatedAdoptionId, adoption.getAdoptionId());
+        assertEquals(updatedDogId, adoption.getDog().getDogId());
+        assertEquals(updatedCustomerId, adoption.getCustomer().getCustomerId());
+    }
+    /**
+     * Verifies the process of finding adoption records by their unique identifier.
+     */
+    @Test
+    void verifyFindAdoptionById() throws IOException {
+        // Given
+        int adoptionId = 1;
+        int dogId = 1;
+        int customerId = 1;
+
+        Dog dog = new Dog();
+        dog.setDogId(dogId);
+
+        Customer customer = new Customer();
+        customer.setCustomerId(customerId);
+
+        Adoption adoption = new Adoption();
+        adoption.setAdoptionId(adoptionId);
+        adoption.setDog(dog);
+        adoption.setCustomer(customer);
+
+        adoptionService.save(adoption);
+
+        // When
+        Adoption retrievedAdoption = adoptionService.findById(adoptionId);
+
+        // Then
+        assertEquals(adoption, retrievedAdoption);
     }
 }

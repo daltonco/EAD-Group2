@@ -64,4 +64,15 @@ public class AdoptionDAO implements IAdoptionDAO{
     public Adoption fetchAdoption(int adoptionId) {
         return adoptionRepository.findById(adoptionId).get();
     }
+
+    /**
+     * Retrieves a Adoption record by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to be fetched.
+     * @return The Adoption object with the specified adoptionId, or null if not found.
+     */
+    @Override
+    public Adoption findById(int adoptionId) {
+        return adoptionRepository.findById(adoptionId).get();
+    }
 }

@@ -75,4 +75,9 @@ public class AdoptionService implements IAdoptionService{
             throw new Exception("Adoption not found");
         }
     }
+
+    @Override
+    public Adoption findById(int adoptionId) throws IOException {
+        return adoptionDAO.findById(adoptionId);
+    }
 }
