@@ -1,6 +1,7 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Adoption;
+import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
