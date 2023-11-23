@@ -15,7 +15,7 @@
       </div>
       <hr>
       <div class="p-2 pt-3 px-5">
-        <p>Would you like to create a new Adoptions entry or edit an existing one?</p>
+        <p>Would you like to create a new Adoption entry or edit an existing one?</p>
       </div>
       <hr>
       <div class="d-flex flex-row justify-content-end gap-2 pt-3">
@@ -25,13 +25,29 @@
           </a>
         </div>
         <div>
-          <a class="nav-link" aria-current="page" th:href="@{/adoptions/selectcustomer}">
+          <a class="nav-link" aria-current="page" th:href="@{/adoptions/edit}">
             <button class="btn btn-primary btn-sm" type="submit">Edit</button>
           </a>
         </div>
       </div>
-    </div>
+      <div class="mt-4">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Dog</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="adoption : ${adoptionsList}">
+            <td th:text="${adoption.customer.firstName}"></td>
+            <td th:text="${adoption.dog.fullName}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</div>
 </body>
 </html>

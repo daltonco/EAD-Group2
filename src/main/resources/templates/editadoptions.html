@@ -18,11 +18,30 @@
         <hr>
         <div class="p-2 pt-3 px-5 d-flex flex-row-3 justify-content-center">
           <div class="px-5 pb-2 col-sm">
-            <select class="form-select text-center" size="3" aria-label="Adoption select" name="adoption" id="adoptionList">
-              <option value="1">Adoption 1</option>
-              <option value="2">Adoption 2</option>
-              <option value="3">Adoption 3</option>
-            </select>
+            <div class="mt-4">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th scope="col">Customer</th>
+                  <th scope="col">Dog</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="adoption : ${adoptionsList}">
+                  <td th:text="${adoption.customer.firstName}"></td>
+                  <td th:text="${adoption.dog.fullName}"></td>
+                  <td>
+                    <form th:action="@{/adoptions/adoptionupdate/{adoptionId}(adoptionId=${adoption.adoptionId})}" method="post">
+                      <button type="submit">Select</button>
+                    </form>
+                    <!--<form th:action="@{/adoptions/update/{adoptionId}/{dogId}/{customerId}(adoptionId=${adoption.adoptionId},customerId=${adoption.customer.getCustomerId()},dogId=${adoption.dog.dogId})}" method="post">
+                      <button type="submit">Select</button>
+                    </form>-->
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <hr>

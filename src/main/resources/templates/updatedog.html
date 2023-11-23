@@ -15,10 +15,8 @@
         <i>Input information to update: <span th:text="${dog.fullName}"></span></i>
       </div>
       <form method="post" th:action="@{'/dogs/update/' + ${dog.dogId}}" th:object="${dog}">
-        <!-- Hidden input field to store the dogId -->
         <input type="hidden" th:field="*{dogId}" />
 
-        <!-- Other form fields for dog information -->
         <div class="form-group my-2">
           <label for="fullName">Name:</label>
           <input type="text" class="form-control" th:field="*{fullName}" placeholder="Dog 1" id="fullName">
