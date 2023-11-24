@@ -37,7 +37,7 @@ public class AdoptMePlusController {
      * Constructs an `AdoptMePlusController` with the specified services for adoption and dog management.
      *
      * @param adoptionService The service for managing adoption records.
-     * @param dogService The service for managing dog-related operations.
+     * @param dogService      The service for managing dog-related operations.
      */
     @Autowired
     public AdoptMePlusController(IAdoptionService adoptionService, IDogService dogService, ICustomerService customerService) {
@@ -52,49 +52,79 @@ public class AdoptMePlusController {
 
      */
     @RequestMapping("/")
-    public String index() { return "index"; }
+    public String index() {
+        return "index";
+    }
 
     @RequestMapping("/dogs")
-    public String dogs() { return "dogs"; }
+    public String dogs() {
+        return "dogs";
+    }
 
     @RequestMapping("/customers")
-    public String customers() { return "customers"; }
+    public String customers() {
+        return "customers";
+    }
 
     @RequestMapping("/adoptions")
-    public String adoptions(){ return "adoptions"; }
+    public String adoptions() {
+        return "adoptions";
+    }
 
     @RequestMapping("/dogs/create")
-    public String createdog() { return "createdog"; }
+    public String createdog() {
+        return "createdog";
+    }
 
     @RequestMapping("/customers/create")
-    public String createcustomer() { return "createcustomer"; }
+    public String createcustomer() {
+        return "createcustomer";
+    }
 
     @RequestMapping("/adoptions/create")
-    public String createadoption() { return "createadoption"; }
+    public String createadoption() {
+        return "createadoption";
+    }
 
     @RequestMapping("/dogs/edit")
-    public String editdogs() { return "editdogs"; }
+    public String editdogs() {
+        return "editdogs";
+    }
 
     @RequestMapping("/customers/edit")
-    public String editcustomers() { return "editcustomers"; }
+    public String editcustomers() {
+        return "editcustomers";
+    }
 
     @RequestMapping("/adoptions/selectcustomer")
-    public String selectcustomer() { return "selectcustomer"; }
+    public String selectcustomer() {
+        return "selectcustomer";
+    }
 
     @RequestMapping("/dogs/update")
-    public String updatedogs() { return "updatedog"; }
+    public String updatedogs() {
+        return "updatedog";
+    }
 
     @RequestMapping("/customers/update")
-    public String updatecustomers() { return "updatecustomer"; }
+    public String updatecustomers() {
+        return "updatecustomer";
+    }
 
     @RequestMapping("/adoptions/edit")
-    public String editadoptions() { return "editadoptions"; }
+    public String editadoptions() {
+        return "editadoptions";
+    }
 
     @RequestMapping("/adoptions/update")
-    public String updateadoptions() { return "updateadoptions"; }
+    public String updateadoptions() {
+        return "updateadoptions";
+    }
 
     @RequestMapping("/adoptions/modify")
-    public String modifyadoption() { return "modifyadoption"; }
+    public String modifyadoption() {
+        return "modifyadoption";
+    }
 
     /*
 
@@ -148,7 +178,7 @@ public class AdoptMePlusController {
      * @param dog The JSON representation of the dog to be added.
      * @return A ResponseEntity containing either the newly created dog or an error response.
      */
-    @PostMapping(value="/dogs/add")
+    @PostMapping(value = "/dogs/add")
     public String addDog(@ModelAttribute Dog dog, RedirectAttributes redirectAttributes) {
         try {
             Dog newDog = dogService.save(dog);
@@ -240,7 +270,7 @@ public class AdoptMePlusController {
      */
     @GetMapping("/dogs/{dogId}")
     @ResponseBody
-    public ResponseEntity<Dog> fetchDog(@PathVariable("dogId")int dogId) {
+    public ResponseEntity<Dog> fetchDog(@PathVariable("dogId") int dogId) {
         try {
             Dog foundDog = dogService.fetchDog(dogId);
             HttpHeaders headers = new HttpHeaders();
@@ -317,6 +347,7 @@ public class AdoptMePlusController {
         }
         return "adoptions";
     }
+
     /**
      * Handles a POST request to create a new adoption record.
      * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
@@ -326,13 +357,13 @@ public class AdoptMePlusController {
      * @param adoption The JSON representation of the adoption object to be created.
      * @return A ResponseEntity containing either the newly created adoption object or an error response.
      */
-    @PostMapping(value="/api/adoptions/add", consumes="application/json", produces="application/json")
+    @PostMapping(value = "/api/adoptions/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Adoption> createAdoptionAPI(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
+    public ResponseEntity<Adoption> createAdoptionAPI(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail) {
         Adoption newAdoption;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        try{
+        try {
             Customer customer = customerService.findByEmail(customerEmail);
             if (customer != null) {
 
@@ -344,8 +375,7 @@ public class AdoptMePlusController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -359,7 +389,7 @@ public class AdoptMePlusController {
      * with updated values are modified, and the others remain unchanged. If an Adoption is not found, a 404 Not Found response is returned.
      * If an error occurs during the update, a 500 Internal Server Error response is returned.
      *
-     * @param adoptionId The unique identifier of the Adoption to be updated.
+     * @param adoptionId      The unique identifier of the Adoption to be updated.
      * @param updatedAdoption The JSON representation of an Adoption with updated fields.
      * @return A ResponseEntity containing either the updated Adoption resource or an error response.
      */
@@ -368,10 +398,10 @@ public class AdoptMePlusController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        try{
+        try {
             Adoption foundAdoption = adoptionService.fetchAdoption(adoptionId);
 
-            if (foundAdoption == null){
+            if (foundAdoption == null) {
                 return new ResponseEntity<>(updatedAdoption, HttpStatus.NOT_FOUND);
             }
 
@@ -408,7 +438,7 @@ public class AdoptMePlusController {
     }
 
     @GetMapping("/adoptions/{id}")
-    public ResponseEntity<Adoption> fetchAdoptionsById(@PathVariable("id") int id){
+    public ResponseEntity<Adoption> fetchAdoptionsById(@PathVariable("id") int id) {
         try {
             Adoption adoptions = adoptionService.fetchAdoption(id);
             HttpHeaders headers = new HttpHeaders();
@@ -420,7 +450,7 @@ public class AdoptMePlusController {
     }
 
     @DeleteMapping("/adoptions/delete/{id}")
-    public ResponseEntity<String> deleteAdoption(@PathVariable("id") int id){
+    public ResponseEntity<String> deleteAdoption(@PathVariable("id") int id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -451,7 +481,7 @@ public class AdoptMePlusController {
      * @param customer The JSON representation of the customer to be added.
      * @return A ResponseEntity containing either the newly created customer or an error response.
      */
-    @PostMapping(value="/customer/add", consumes="application/json", produces="application/json")
+    @PostMapping(value = "/customer/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         Customer newCustomer;
         HttpHeaders headers = new HttpHeaders();
@@ -493,10 +523,10 @@ public class AdoptMePlusController {
 
     @GetMapping("customers/customerNamesAutocomplete")
     @ResponseBody
-    public List<LabelValue> customerNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
+    public List<LabelValue> customerNamesAutocomplete(@RequestParam(value = "term", required = false, defaultValue = "") String term) throws IOException {
         List<LabelValue> allEmails = new ArrayList<>();
         List<Customer> customers = customerService.findAutocompleteByEmail(term);
-        for (Customer customer: customers) {
+        for (Customer customer : customers) {
             LabelValue labelValue = new LabelValue();
             labelValue.setLabel(customer.getEmail() + " (" + customer.getLastName() + ", " + customer.getFirstName() + ")");
             labelValue.setValue(customer.getCustomerId());
@@ -517,7 +547,7 @@ public class AdoptMePlusController {
         return "customers";
     }
 
-    @PostMapping(value="/customers/add")
+    @PostMapping(value = "/customers/add")
     public String addCustomer(@ModelAttribute Customer customer, RedirectAttributes redirectAttributes) {
         try {
             Customer newCustomer = customerService.save(customer);
@@ -573,25 +603,27 @@ public class AdoptMePlusController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("dogs/dogNamesAutocomplete")
     @ResponseBody
-    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) throws IOException {
+    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value = "term", required = false, defaultValue = "") String term) throws IOException {
         List<LabelValue> allDogBreeds = new ArrayList<>();
         try {
-        List<Dog> dogs = dogService.findAutocompleteByBreed(term);
-        for (Dog dog: dogs) {
-            LabelValue labelValue = new LabelValue();
-            labelValue.setLabel(dog.getBreed() + " (Name: " + dog.getFullName() + ", Age: " + dog.getAge() + ", Location: " + dog.getLocation() + ")");
-            labelValue.setValue(dog.getDogId());
-            allDogBreeds.add(labelValue);
-            allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
-        }
+            List<Dog> dogs = dogService.findAutocompleteByBreed(term);
+            for (Dog dog : dogs) {
+                LabelValue labelValue = new LabelValue();
+                labelValue.setLabel(dog.getBreed() + " (Name: " + dog.getFullName() + ", Age: " + dog.getAge() + ", Location: " + dog.getLocation() + ")");
+                labelValue.setValue(dog.getDogId());
+                allDogBreeds.add(labelValue);
+                allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
-            }
+        }
         return allDogBreeds;
     }
+
     /**
      * Updates an existing Customer resource with the provided information.
      * This method handles a PUT request to update a Customer by its unique identifier. It retrieves the existing Customer from the database,
@@ -599,7 +631,7 @@ public class AdoptMePlusController {
      * with updated values are modified, and the others remain unchanged. If the Customer is not found, a 404 Not Found response is returned.
      * If an error occurs during the update, a 500 Internal Server Error response is returned.
      *
-     * @param customerId The unique identifier of the Customer to be updated.
+     * @param customerId      The unique identifier of the Customer to be updated.
      * @param updatedCustomer The JSON representation of the Customer with updated fields.
      * @return A ResponseEntity containing either the updated Customer resource or an error response.
      */
@@ -608,14 +640,14 @@ public class AdoptMePlusController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        try{
+        try {
             Customer foundCustomer = customerService.fetchCustomer(customerId);
 
-            if (foundCustomer == null){
+            if (foundCustomer == null) {
                 return new ResponseEntity<>(updatedCustomer, HttpStatus.NOT_FOUND);
             }
 
-            if(!updatedCustomer.getEmail().equals(foundCustomer.getEmail())) {
+            if (!updatedCustomer.getEmail().equals(foundCustomer.getEmail())) {
                 Customer existingCustomer = customerService.findByEmail(updatedCustomer.getEmail());
 
                 if (existingCustomer != null) {
@@ -725,17 +757,19 @@ public class AdoptMePlusController {
     }
 
     @PostMapping("/adoptions/update/{adoptionId}/{dogId}/{customerId}")
-    public String updateAdoption(@PathVariable("adoptionId") int adoptionId, @PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId, @ModelAttribute Adoption adoption) {
+    public String updateAdoption(
+            @PathVariable("adoptionId") int adoptionId,
+            @PathVariable(value = "dogId") int dogId,
+            @PathVariable(value = "customerId") int customerId,
+            @ModelAttribute Adoption adoption
+    ) {
         try {
-
             Dog getDog = dogService.fetchDog(dogId);
             Customer getCustomer = customerService.fetchCustomer(customerId);
             Adoption existingAdoption = adoptionService.fetchAdoption(adoptionId);
 
-
             existingAdoption.setCustomer(getCustomer);
             existingAdoption.setDog(getDog);
-
 
             adoptionService.save(existingAdoption);
 
@@ -746,14 +780,11 @@ public class AdoptMePlusController {
         }
     }
 
-    @PostMapping("/adoptions/adoptionupdate/{adoptionId}")
+    @PostMapping("/adoptions/adoption-update/{adoptionId}")
     public String updateAdoption(@PathVariable("adoptionId") int adoptionId, Model model) {
         try {
-
             Adoption existingAdoption = adoptionService.fetchAdoption(adoptionId);
-
             model.addAttribute("adoption", existingAdoption);
-
             return "/updateadoptions";
         } catch (Exception e) {
             e.printStackTrace();
