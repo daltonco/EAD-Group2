@@ -662,24 +662,29 @@ public class AdoptMePlusController {
         }
     }
 
-    @GetMapping("/deletecustomer/{customerId}")
-    public String deleteCustomerPage(@PathVariable(value = "customerId") int customerId, Model model, RedirectAttributes redirectAttributes) throws Exception {
+    @GetMapping("/delete-customer/{customerId}")
+    public String deleteCustomerPage(
+            @PathVariable(value = "customerId") int customerId,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            Customer customer = customerService.fetchCustomer(customerId);
 
-        Customer customer = customerService.fetchCustomer(customerId);
+            if (customer == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Customer not found");
+                return "redirect:/customers";
+            }
 
-        model.addAttribute("customer", customer);
-        if (customer == null) {
+            customerService.delete(customer);
+            redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully");
 
-            redirectAttributes.addFlashAttribute("errorMessage", "Customer not found");
+            return "redirect:/customers";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete customer");
             return "redirect:/customers";
         }
-
-        customerService.delete(customer);
-
-
-        redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully");
-        return "redirect:/customers";
-
     }
 
     @GetMapping(value="/adoptions/add/{dogId}/{customerId}")
