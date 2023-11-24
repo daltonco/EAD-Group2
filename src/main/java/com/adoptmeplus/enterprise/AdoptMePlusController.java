@@ -4,7 +4,6 @@ import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Customer;
 import com.adoptmeplus.enterprise.dto.Dog;
 import com.adoptmeplus.enterprise.dto.LabelValue;
-import com.adoptmeplus.enterprise.service.DogService;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
@@ -175,11 +174,9 @@ public class AdoptMePlusController {
      * @return A ResponseEntity containing either the updated Dog resource or an error response.
      */
     @PostMapping("/dogs/update/{dogId}")
-    public String updateDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog) {
+    public ResponseEntity<Dog> updateDog(@PathVariable("dogId") int dogId, @ModelAttribute Dog dog) {
         try {
-
             Dog existingDog = dogService.fetchDog(dogId);
-
 
             existingDog.setFullName(dog.getFullName());
             existingDog.setAge(dog.getAge());
@@ -187,13 +184,13 @@ public class AdoptMePlusController {
             existingDog.setLocation(dog.getLocation());
             existingDog.setTags(dog.getTags());
 
+            Dog updatedDog = dogService.save(existingDog);
 
-            dogService.save(existingDog);
-
-            return "redirect:/dogs";
+            return ResponseEntity.ok(updatedDog);
         } catch (Exception e) {
             e.printStackTrace();
-            return "error-page";
+            // Handle the exception and return an appropriate ResponseEntity
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
