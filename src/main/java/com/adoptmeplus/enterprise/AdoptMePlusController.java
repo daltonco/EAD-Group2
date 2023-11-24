@@ -687,35 +687,41 @@ public class AdoptMePlusController {
         }
     }
 
-    @GetMapping(value="/adoptions/add/{dogId}/{customerId}")
-    public String addAdoption(@PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId, RedirectAttributes redirectAttributes) {
+    @GetMapping("/adoptions/add/{dogId}/{customerId}")
+    public String addAdoption(
+            @PathVariable(value = "dogId") int dogId,
+            @PathVariable(value = "customerId") int customerId,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
-
-            Dog saveDog = dogService.fetchDog(dogId);
-            Customer saveCustomer = customerService.fetchCustomer(customerId);
+            Dog fetchedDog = dogService.fetchDog(dogId);
+            Customer fetchedCustomer = customerService.fetchCustomer(customerId);
 
             Adoption newAdoption = new Adoption();
-            newAdoption.setCustomer(saveCustomer);
-            newAdoption.setDog(saveDog);
+            newAdoption.setCustomer(fetchedCustomer);
+            newAdoption.setDog(fetchedDog);
 
             adoptionService.save(newAdoption);
 
-
-            redirectAttributes.addFlashAttribute("successMessage", "Adoption added successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Adoption added successfully");
+            return "redirect:/adoptions";
         } catch (Exception e) {
             e.printStackTrace();
-
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add dog.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add adoption");
+            return "redirect:/adoptions";
         }
-
-        return "adoptions";
     }
 
     @GetMapping("/adoptions/edit")
     public String adoptionsEdit(RedirectAttributes redirectAttributes, Model model) {
-        List<Adoption> adoptionsList = adoptionService.findAll();
-        model.addAttribute("adoptionsList", adoptionsList);
-        return "editadoptions";
+        try {
+            List<Adoption> adoptionsList = adoptionService.findAll();
+            model.addAttribute("adoptionsList", adoptionsList);
+            return "editadoptions";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error-page";
+        }
     }
 
     @PostMapping("/adoptions/update/{adoptionId}/{dogId}/{customerId}")
