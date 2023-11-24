@@ -749,4 +749,23 @@ public class AdoptMePlusController {
             return "error-page";
         }
     }
+    @PostMapping(value="/api/adoptions/add", consumes="application/json", produces="application/json")
+    @ResponseBody
+    public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            Customer customer = customerService.findByEmail(customerEmail);
+            if (customer != null) {
+                adoption.setCustomer(customer);
+                Adoption newAdoption = adoptionService.save(adoption);
+                return ResponseEntity.ok(newAdoption);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

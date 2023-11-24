@@ -45,12 +45,13 @@ public class AdoptMePlusControllerTest {
         Dog dog = new Dog();
         when(dogService.findAll()).thenReturn(Collections.singletonList(dog));
 
-        ResponseEntity<List<Dog>> response = adoptMePlusController.findAllDogs();
+        ResponseEntity<List<Dog>> response = adoptMePlusController.findAllDogs(null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
         verify(dogService, times(1)).findAll();
     }
+
 
     @Test
     public void testAddDog() throws Exception {
