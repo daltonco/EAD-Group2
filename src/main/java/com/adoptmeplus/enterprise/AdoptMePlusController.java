@@ -4,7 +4,6 @@ import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Customer;
 import com.adoptmeplus.enterprise.dto.Dog;
 import com.adoptmeplus.enterprise.dto.LabelValue;
-import com.adoptmeplus.enterprise.service.DogService;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
