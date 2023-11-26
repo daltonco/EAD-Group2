@@ -4,14 +4,12 @@ import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * The `DogService` class provides the implementation of the `IDogService` interface
  * for managing dog-related operations in the AdoptMePlus enterprise system.
- *
  * This class is responsible for saving and fetching dog records using an underlying `IDogDAO`
  * data access object. It is marked as a Spring service to enable dependency injection.
  *
@@ -68,16 +66,9 @@ public class DogService implements IDogService {
      *
      * @param breed The breed of dogs to fetch.
      * @return A list of dog records matching the given breed.
-     * @throws IOException If an I/O error occurs during the fetch operation.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) throws IOException {
-        return dogDAO.fetchByBreed(breed);
-    }
-
-    public List<Dog> findAutocompleteByBreed(String breed) throws IOException {
-
-
+    public List<Dog> findAutocompleteByBreed(String breed) {
         return dogDAO.findAutocompleteByBreed(breed);
 
     }

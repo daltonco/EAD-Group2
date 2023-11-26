@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * The IDogDAO interface defines the contract for data access operations related to Dog entities
  * in the AdoptMePlus application.
- *
  * Implementing classes should provide methods for saving, retrieving, and querying Dog records.
  *
  * @author AdoptMePlusDevTeam
@@ -22,7 +21,6 @@ public interface IDogDAO {
      * Retrieves a list of all Dog records
      *
      * @return A List of Dog objects representing all available dogs
-     * @throws IOException if there's an issue with the data retrieval operation.
      */
     List<Dog> findAll();
 
@@ -39,7 +37,6 @@ public interface IDogDAO {
      * Deletes a Dog record.
      *
      * @param dog The Dog object to be deleted.
-     * @return The deleted Dog object.
      * @throws Exception if there is an issue with the data access operation.
      */
     void delete(Dog dog) throws Exception;
@@ -58,9 +55,6 @@ public interface IDogDAO {
      *
      * @param breed The breed of dogs to retrieve.
      * @return A List of Dog objects representing all available dogs of the specified breed.
-     * @throws IOException if there's an issue with the data retrieval operation.
      */
-    List<Dog> fetchByBreed(String breed) throws IOException;
-
     List<Dog> findAutocompleteByBreed(String breed);
 }

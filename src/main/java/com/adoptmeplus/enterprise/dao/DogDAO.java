@@ -1,11 +1,8 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Dog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import retrofit2.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -20,8 +17,11 @@ import java.util.List;
 @Profile("dev")
 public class DogDAO implements IDogDAO {
 
-    @Autowired
-    private DogRepository dogRepository;
+    private final DogRepository dogRepository;
+
+    public DogDAO(DogRepository dogRepository) {
+        this.dogRepository = dogRepository;
+    }
 
     /**
      * Fetches a list of all Dog records.
@@ -71,17 +71,6 @@ public class DogDAO implements IDogDAO {
      * @param breed The breed of dogs to retrieve.
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
-        @Override
-        public List<Dog> fetchByBreed(String breed) throws IOException {
-            Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
-            IDogRetrofitDAO dogRetrofitDAO = retrofitInstance.create(IDogRetrofitDAO.class);
-            Call<List<Dog>> allDogs = dogRetrofitDAO.getDogs(breed);
-            Response<List<Dog>> execute = allDogs.execute();
-            List<Dog> dogs = execute.body();
-            return dogs;
-
-        }
-
     @Override
     public List<Dog> findAutocompleteByBreed(String breed) {
         List<Dog> dogs = findAll();

@@ -3,14 +3,11 @@ package com.adoptmeplus.enterprise.dao;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
  * The DogDAO class is responsible for managing and interacting with the data sources
  * for Dog entities in the AdoptMePlus application.
- *
  * This class implements the IDogDAO interface and provides methods for saving and retrieving Dog records.
  *
  * @author AdoptMePlusDevTeam
@@ -45,22 +42,18 @@ public class DogDAOStub implements IDogDAO {
      * Deletes a Dog record from the data source.
      *
      * @param dog The Dog object to be deleted.
-     * @return The delete Dog object.
      */
 
     @Override
-    public void delete(Dog dog){
-        return;
-    }
+    public void delete(Dog dog){}
 
     /**
      * Fetches a Dog by its unique identifier.
      *
      * @param dogId The unique identifier of the Dog to be fetched.
      * @return The Dog object with the specified dogId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
      */
-    public Dog fetchDog(int dogId) throws IOException {
+    public Dog fetchDog(int dogId) {
         return null;
     }
 
@@ -70,11 +63,6 @@ public class DogDAOStub implements IDogDAO {
      * @param breed The breed of dogs to retrieve.
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
-    @Override
-    public List<Dog> fetchByBreed(String breed) {
-        return null;
-    }
-
     @Override
     public List<Dog> findAutocompleteByBreed(String breed) {
         return null;

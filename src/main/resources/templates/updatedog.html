@@ -12,11 +12,9 @@
     <div class="border border-2 rounded bg-light shadow-lg p-5 mt-5">
       <div class="pb-2">
         <h2>Dog Information</h2>
-        <i>Input information to update: <span th:text="${dog.fullName}"></span></i>
+        <i>Updating information for: <span th:text="${dog.fullName}"></span></i>
       </div>
-      <form method="post" th:action="@{'/dogs/update/' + ${dog.dogId}}" th:object="${dog}">
-        <input type="hidden" th:field="*{dogId}" />
-
+      <form th:method="post" id="postForm" name="postForm" th:action="@{'/dogs/update/updateDog'(dogId=${dogId})}" th:object="${dog}">
         <div class="form-group my-2">
           <label for="fullName">Name:</label>
           <input type="text" class="form-control" th:field="*{fullName}" placeholder="Dog 1" id="fullName">
@@ -37,11 +35,14 @@
           <label for="tags">Tags:</label>
           <input type="text" class="form-control" th:field="*{tags}" placeholder="friendly" id="tags">
         </div>
-
-        <div class="d-flex flex-row justify-content-end gap-2 pt-3">
-          <button class="btn btn-sm btn-primary" type="submit">Submit</button>
-        </div>
       </form>
+      <form id="deleteForm" name="deleteForm" th:action="@{'/dogs/update/delete'(dogId=${dogId})}" th:method="delete" th:object="${dog}">
+        <input type="hidden" th:field="*{dogId}" />
+      </form>
+      <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+        <button class="btn btn-sm btn-primary" type="submit" form="postForm">Submit</button>
+        <button class="btn btn-sm btn-danger" type="submit" form="deleteForm" th:method="delete">Delete</button>
+      </div>
     </div>
   </div>
 </div>
