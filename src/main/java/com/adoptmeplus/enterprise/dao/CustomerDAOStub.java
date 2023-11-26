@@ -46,13 +46,10 @@ public class CustomerDAOStub implements ICustomerDAO {
      * Deletes a Customer record from the data source.
      *
      * @param customer The Customer object to be deleted.
-     * @return The delete Customer object.
      */
 
     @Override
-    public void delete(Customer customer){
-        return;
-    }
+    public void delete(Customer customer){}
 
     /**
      * Fetches a Customer by its unique identifier.
@@ -61,21 +58,9 @@ public class CustomerDAOStub implements ICustomerDAO {
      * @return The Customer object with the specified customerId, or null if not found.
      * @throws IOException if there's an issue with the network communication.
      */
-    public Customer fetchCustomer(int customerId) throws IOException {
+    public Customer fetchCustomer(int customerId) {
         return null;
 
-    }
-
-    /**
-     * Fetches a list of Customer records based on a specified email.
-     *
-     * @param email The email of customers to retrieve.
-     * @return A List of Customer objects representing all available customers of the specified email.
-     */
-    @Override
-    public Customer findByEmail(String email) {
-
-        return null;
     }
 
     @Override

@@ -1,18 +1,15 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The CustomerSQLDAO class is responsible for managing and interacting with a SQL database
  * for Customer entities in the AdoptMePlus application.
- *
  * This class implements the ICustomerDAO interface and provides methods for saving, retrieving, and querying Customer records from the database.
  *
  * @author AdoptMePlusDevTeam
@@ -22,18 +19,22 @@ import java.util.List;
 @Profile("dev")
 public class CustomerSQLDAO implements ICustomerDAO{
 
-    @Autowired
+    final
     CustomerRepository customerRepository;
+
+    public CustomerSQLDAO(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     /**
      * Saves a Customer record to the SQL database.
      *
      * @param customer The Customer object to be saved.
      * @return The saved Customer object.
-     * @throws Exception if there is an issue with the database operation.
      */
     @Override
-    public Customer save (Customer customer) throws Exception {
+    public Customer save (Customer customer) {
+
         return customerRepository.save(customer);
     }
 
@@ -41,8 +42,6 @@ public class CustomerSQLDAO implements ICustomerDAO{
      * Deletes a Customer record from the SQL database.
      *
      * @param customer The Customer object to be deleted.
-     * @return The deleted Customer object.
-     * @throws Exception if there is an issue with the database operation.
      */
     @Override
     public void delete(Customer customer) throws Exception {
@@ -55,16 +54,18 @@ public class CustomerSQLDAO implements ICustomerDAO{
      * @param email The email of customers to retrieve.
      * @return A List of Customer objects representing all available customers of the specified email.
      */
-    @Override
-    public Customer findByEmail(String email) {
-        return customerRepository.findByEmail(email);
-    }
 
     @Override
     public List<Customer> findAutocompleteByEmail(String email) {
-        return null;
+        List<Customer> customers = findAll();
+        List<Customer> filteredCustomers = new ArrayList<>();
+        for (Customer customer: customers) {
+            if (customer.getEmail().toLowerCase().startsWith(email.toLowerCase())) {
+                filteredCustomers.add(customer);
+            }
+        }
+        return filteredCustomers;
     }
-
 
     /**
      * Fetches a list of all Customer records
@@ -89,7 +90,6 @@ public class CustomerSQLDAO implements ICustomerDAO{
      */
     @Override
     public Customer fetchCustomer(int customerId) {
-
         return customerRepository.findById(customerId).get();
     }
 }

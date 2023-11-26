@@ -12,28 +12,28 @@
     <div class="border border-2 rounded bg-light shadow-lg p-5 mt-5">
       <div class="pb-2">
         <h2>Dog Information</h2>
-        <i>Updating information for: <span th:text="${dog.fullName}"></span></i>
+        <i>Updating information for: <span class="fw-bold" th:text="${dog.fullName}"></span></i>
       </div>
       <form th:method="post" id="postForm" name="postForm" th:action="@{'/dogs/update/updateDog'(dogId=${dogId})}" th:object="${dog}">
         <div class="form-group my-2">
           <label for="fullName">Name:</label>
-          <input type="text" class="form-control" th:field="*{fullName}" placeholder="Dog 1" id="fullName">
+          <input type="text" class="form-control" th:field="*{fullName}" id="fullName">
         </div>
         <div class="form-group my-2">
           <label for="age">Age:</label>
-          <input type="text" class="form-control" th:field="*{age}" placeholder="5" id="age">
+          <input type="text" class="form-control" th:field="*{age}" id="age">
         </div>
         <div class="form-group my-2">
           <label for="breed">Breed:</label>
-          <input type="text" class="form-control" th:field="*{breed}" placeholder="Golden Retriever" id="breed">
+          <input type="text" class="form-control" th:field="*{breed}" id="breed">
         </div>
         <div class="form-group my-2">
           <label for="location">Location:</label>
-          <input type="text" class="form-control" th:field="*{location}" placeholder="123 Dog Street" id="location">
+          <input type="text" class="form-control" th:field="*{location}" id="location">
         </div>
         <div class="form-group my-2">
           <label for="tags">Tags:</label>
-          <input type="text" class="form-control" th:field="*{tags}" placeholder="friendly" id="tags">
+          <input type="text" class="form-control" th:field="*{tags}" id="tags">
         </div>
       </form>
       <form id="deleteForm" name="deleteForm" th:action="@{'/dogs/update/delete'(dogId=${dogId})}" th:method="delete" th:object="${dog}">

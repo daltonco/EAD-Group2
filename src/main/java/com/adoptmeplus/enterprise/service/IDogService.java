@@ -52,8 +52,7 @@ public interface IDogService {
      * Deletes a dog record from the underlying data source by its unique identifier.
      *
      * @param dog The unique identifier of the dog to be deleted.
-     * @throws IOException If an I/O error occurs during the deletion operation.
      * @throws Exception If an error occurs during the deletion operation.
      */
-    void delete(Dog dog) throws IOException, Exception;
+    void delete(Dog dog) throws Exception;
 }

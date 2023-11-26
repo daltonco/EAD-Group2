@@ -18,7 +18,8 @@ import java.util.List;
 @Profile("dev")
 public class DogSQLDAO implements IDogDAO{
 
-    final DogRepository dogRepository;
+    final
+    DogRepository dogRepository;
 
     public DogSQLDAO(DogRepository dogRepository) {
         this.dogRepository = dogRepository;
@@ -65,7 +66,6 @@ public class DogSQLDAO implements IDogDAO{
         return filteredDogs;
     }
 
-
     /**
      * Fetches a list of all Dog records
      *
@@ -89,7 +89,6 @@ public class DogSQLDAO implements IDogDAO{
      */
     @Override
     public Dog fetchDog(int dogId) {
-
         return dogRepository.findById(dogId).get();
     }
 }
