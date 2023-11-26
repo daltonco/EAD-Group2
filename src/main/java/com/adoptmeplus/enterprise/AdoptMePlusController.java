@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -125,26 +124,6 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a GET request to fetch information about a specific dog by its unique identifier.
-     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
-     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
-     * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
-     * HTTP status of 500 (INTERNAL_SERVER_ERROR).
-     *
-     * @param dogId The unique identifier of the dog to fetch.
-     * @return A ResponseEntity containing either the fetched dog's information or an error response.
-     */
-    @GetMapping("/dogs/update/{dogId}")
-    public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) throws IOException {
-
-        Dog dog = dogService.fetchDog(dogId);
-
-        model.addAttribute("dog", dog);
-
-        return "updatedog";
-    }
-
-    /**
      * Handles a POST request to add a new dog to the system.
      * This method receives a JSON representation of a dog object in the request body and attempts to save it using the `dogService`.
      * If the dog is successfully added, it returns a response containing the newly created dog with an HTTP status of 200 (OK).
@@ -162,6 +141,26 @@ public class AdoptMePlusController {
         }
 
         return "redirect:/dogs";
+    }
+
+    /**
+     * Handles a GET request to fetch information about a specific dog by its unique identifier.
+     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
+     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
+     * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
+     * HTTP status of 500 (INTERNAL_SERVER_ERROR).
+     *
+     * @param dogId The unique identifier of the dog to fetch.
+     * @return A ResponseEntity containing either the fetched dog's information or an error response.
+     */
+    @GetMapping("/dogs/update/{dogId}")
+    public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) throws IOException {
+
+        Dog dog = dogService.fetchDog(dogId);
+
+        model.addAttribute("dog", dog);
+
+        return "updatedog";
     }
 
     /**
