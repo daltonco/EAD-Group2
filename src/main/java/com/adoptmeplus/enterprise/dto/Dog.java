@@ -8,7 +8,6 @@ import java.util.Date;
 
 /**
  * The `Dog` class represents a dog available for adoption in the AdoptMePlus enterprise system.
- *
  * This class stores information about dogs, including their identification, full name, breed, age,
  * tags, location, arrival date, and an associated adoption record, if applicable.
  *

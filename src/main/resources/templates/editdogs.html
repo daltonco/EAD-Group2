@@ -7,23 +7,20 @@
     <title>AdoptMe+ - Editing Dogs</title>
     <script type="text/javascript">
         $(function() {
-            var selectedDogId = null;
+            let selectedDogId = null;
 
             $("#breed").autocomplete({
-                source: "dogNamesAutocomplete",
+                source: "edit/dogNamesAutocomplete",
                 minLength: 1,
                 select: function(event, ui) {
                     this.value = ui.item.label;
                     selectedDogId = ui.item.value;
                     $("#dogId").val(selectedDogId);
-                    const deleteButton = document.getElementById("deleteButton");
                     const submitButton = document.getElementById("submitButton");
                     if (selectedDogId !== null) {
-                        submitButton.href = "/updatedog/" + selectedDogId;
-                        deleteButton.href = "/deletedog/" + selectedDogId;
+                        submitButton.href = "/dogs/update/" + selectedDogId;
                     } else {
                         submitButton.href = "#";
-                        deleteButton.href = "#";
                     }
 
                     return false;
@@ -57,9 +54,6 @@
             <div class="d-flex flex-row justify-content-end gap-2 pt-3">
                 <a class="nav-link" aria-current="page" href="#" id="submitButton">
                     <button class="btn btn-sm btn-primary" type="button">Submit</button>
-                </a>
-                <a class="nav-link" aria-current="page" href="#" id="deleteButton">
-                    <button class="btn btn-sm btn-danger" type="button">Delete</button>
                 </a>
             </div>
         </div>

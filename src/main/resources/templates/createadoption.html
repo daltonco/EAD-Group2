@@ -7,11 +7,11 @@
     <title>AdoptMe+ - Create Adoption</title>
     <script type="text/javascript">
         $(function() {
-            var selectedDogId = null;
-            var selectedCustomerId = null;
+            let selectedDogId = null;
+            let selectedCustomerId = null;
             $("#breed").autocomplete({
 
-                source: "../../dogs/dogNamesAutocomplete",
+                source: "../../dogs/edit/dogNamesAutocomplete",
                 minLength: 1,
                 select: function(event, ui) {
                     this.value = ui.item.label;
@@ -23,7 +23,7 @@
             });
             $("#email").autocomplete({
 
-                source: "../../customers/customerNamesAutocomplete",
+                source: "../../customers/edit/customerNamesAutocomplete",
                 minLength: 1,
                 select: function(event, ui) {
                     this.value = ui.item.label;
@@ -31,9 +31,7 @@
                     $("#customerId").val(selectedCustomerId);
                     const submitButton = document.getElementById("submitButton");
                     if (selectedDogId !== null && selectedCustomerId !== null) {
-                        selectedDogId = parseInt(selectedDogId);
-                        selectedCustomerId = parseInt(selectedCustomerId);
-                        submitButton.href = "/adoptions/add/"+selectedDogId+"/"+selectedCustomerId;
+                        submitButton.href = "/adoptions/add/" + selectedDogId + "/" + selectedCustomerId;
                     } else {
                         submitButton.href = "#";
                     }
@@ -55,26 +53,24 @@
             <div class="pb-2">
                 <h2>Adoption Information</h2>
                 <i>Select customer and dogs for new adoption.</i>
+                <br><br>
+                <h5 class="text-center text-danger"><u>WARNING:</u></h5>
+                <p class="text-center text-danger"><i>You will not be able to delete the corresponding customer, dog or adoption.</i></p>
             </div>
             <form>
             <hr>
             <div class="p-2 pt-3 px-3 d-flex flex-row-3 justify-content-center">
-                <div class="px-3 pb-5 col-sm">
-                    <label for="breed" class="h3">Search By Dog Breed</label>
-
-                    <div class="px-5 pb-2 col-sm">
-                        <label for="breed">Breed:</label>
+                <div class="pb-5 col-sm">
+                    <div class="pb-2 col-sm">
+                        <label for="breed">Dog Breed:</label>
                         <input id="breed" type="text" class="form-control" name="breed">
                         <input id="dogId" type="hidden" class="form-control" name="dogId">
                     </div>
-
                 </div>
-
                 <div class="vr mx-5"></div>
-                <div class="px-3 pb-5 col-sm">
-                    <label for="email" class="h3">Search By Customer Email</label>
-                    <div class="px-5 pb-2 col-sm">
-                        <label for="email">Email:</label>
+                <div class="pb-5 col-sm">
+                    <div class="b-2 col-sm">
+                        <label for="email">Customer Email:</label>
                         <input id="email" type="text" class="form-control" name="email">
                         <input id="customerId" type="hidden" class="form-control" name="customerId">
                     </div>

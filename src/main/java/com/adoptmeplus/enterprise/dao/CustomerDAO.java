@@ -68,18 +68,6 @@ public class CustomerDAO implements ICustomerDAO {
 
     }
 
-    /**
-     * Fetches a list of Customer records based on a specified email.
-     *
-     * @param email The email of customers to retrieve.
-     * @return A List of Customer objects representing all available customers of the specified email.
-     */
-    @Override
-    public Customer findByEmail(String email) {
-
-        return customerRepository.findByEmail(email);
-    }
-
     @Override
     public List<Customer> findAutocompleteByEmail(String email) {
         List<Customer> customers = findAll();

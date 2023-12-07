@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * The ICustomerDAO interface defines the contract for data access operations related to Customer entities
  * in the AdoptMePlus application.
- *
  * Implementing classes should provide methods for saving, retrieving, and querying Customer records.
  *
  * @author AdoptMePlusDevTeam
@@ -22,7 +21,6 @@ public interface ICustomerDAO {
      * Retrieves a list of all Customer records
      *
      * @return A List of Customer objects representing all available customers
-     * @throws IOException if there's an issue with the data retrieval operation.
      */
     List<Customer> findAll();
 
@@ -31,7 +29,6 @@ public interface ICustomerDAO {
      *
      * @param customer The Customer object to be saved.
      * @return The saved Customer object.
-     * @throws Exception if there is an issue with the data access operation.
      */
     Customer save(Customer customer) throws Exception;
 
@@ -39,8 +36,6 @@ public interface ICustomerDAO {
      * Deletes a Customer record.
      *
      * @param customer The Customer object to be deleted.
-     * @return The deleted Customer object.
-     * @throws Exception if there is an issue with the data access operation.
      */
     void delete(Customer customer) throws Exception;
 
@@ -56,11 +51,8 @@ public interface ICustomerDAO {
     /**
      * Retrieves a list of Customer records based on a specified breed.
      *
-     * @param email The email of customers to retrieve.
-     * @return A List of Customer objects representing all available customers of the specified email.
-     * @throws IOException if there's an issue with the data retrieval operation.
+     * @param email The breed of dogs to retrieve.
+     * @return A List of Customer objects representing all available dogs of the specified breed.
      */
-    Customer findByEmail(String email) throws IOException;
-
     List<Customer> findAutocompleteByEmail(String email);
 }

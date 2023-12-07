@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Profile("!test")
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
-    Customer findByEmail(String email);
     void delete(Customer customer);
     Customer save(Customer customer);
     List<Customer> findAll();
