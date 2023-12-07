@@ -1,22 +1,20 @@
 package com.adoptmeplus.enterprise.service;
+
 import com.adoptmeplus.enterprise.dao.IAdoptionDAO;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The `AdoptionService` class provides the implementation of the `IAdoptionService` interface
- * for managing adoption records in the AdoptMePlus enterprise system.
- *
- * This class is responsible for saving and fetching adoption records using an underlying `IAdoptionDAO`
- * data access object. It is marked as a Spring service to enable dependency injection.
+ * The `IAdoptionService` interface defines the contract for managing adoption-related operations in the AdoptMePlus enterprise system.
+ * This interface outlines the methods for saving and fetching adoption records, as well as fetching a specific adoption by its unique identifier.
  *
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 @Service
 public class AdoptionService implements IAdoptionService{
 
@@ -65,19 +63,5 @@ public class AdoptionService implements IAdoptionService{
     @Override
     public Adoption fetchAdoption(int adoptionId) throws IOException {
         return adoptionDAO.fetchAdoption(adoptionId);
-    }
-
-    @Override
-    public void delete(Adoption adoption) throws Exception {
-        if (adoption != null) {
-            adoptionDAO.delete(adoption);
-        } else {
-            throw new Exception("Adoption not found");
-        }
-    }
-
-    @Override
-    public Adoption findById(int adoptionId) throws IOException {
-        return adoptionDAO.findById(adoptionId);
     }
 }

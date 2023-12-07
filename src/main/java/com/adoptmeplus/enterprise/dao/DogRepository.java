@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The DogRepository interface is responsible for defining the data access methods to interact with the data source
- * for Dog entities in the AdoptMePlus application.
+ * for Dogs in the AdoptMePlus application.
  * It extends the CrudRepository interface, providing basic CRUD (Create, Read, Update, Delete) operations for Dog entities.
  *
  * @author AdoptMePlusDevTeam

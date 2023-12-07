@@ -37,8 +37,4 @@ public interface IAdoptionService {
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
     Adoption fetchAdoption(int adoptionId) throws IOException;
-
-    void delete(Adoption adoption) throws Exception;
-
-    Adoption findById(int adoptionId) throws IOException;
 }

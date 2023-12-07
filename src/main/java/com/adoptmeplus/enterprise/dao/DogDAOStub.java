@@ -6,13 +6,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The DogDAO class is responsible for managing and interacting with the data sources
+ * The DogDAO STUB is a placeholder for managing and interacting with the data sources
  * for Dog entities in the AdoptMePlus application.
- * This class implements the IDogDAO interface and provides methods for saving and retrieving Dog records.
+ * This implements the IDogDAO interface and provides methods for saving and retrieving Dog records.
  *
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 @Repository("dogDAO")
 @Profile("test")
 public class DogDAOStub implements IDogDAO {
@@ -43,7 +44,6 @@ public class DogDAOStub implements IDogDAO {
      *
      * @param dog The Dog object to be deleted.
      */
-
     @Override
     public void delete(Dog dog){}
 

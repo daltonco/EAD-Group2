@@ -1,4 +1,5 @@
 package com.adoptmeplus.enterprise.service;
+
 import com.adoptmeplus.enterprise.dao.IDogDAO;
 import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 @Service
 public class DogService implements IDogService {
 
@@ -44,6 +46,12 @@ public class DogService implements IDogService {
         return dogDAO.save(dog);
     }
 
+    /**
+     * Retrieves a list of all dog records
+     *
+     * @return A list of dog records matching the given breed.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
     @Override
     public List<Dog> findAll() throws IOException {
         return dogDAO.findAll();
@@ -72,6 +80,13 @@ public class DogService implements IDogService {
         return dogDAO.findAutocompleteByBreed(breed);
 
     }
+
+    /**
+     * Deletes a dog record from the underlying data source by its unique identifier.
+     *
+     * @param dog The unique identifier of the dog to be deleted.
+     * @throws Exception If an error occurs during the deletion operation.
+     */
     @Override
     public void delete(Dog dog) throws Exception {
         if (dog != null) {

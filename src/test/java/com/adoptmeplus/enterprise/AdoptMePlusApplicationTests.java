@@ -160,7 +160,7 @@ class AdoptMePlusApplicationTests {
         adoptionService.save(adoption);
 
         // When
-        Adoption retrievedAdoption = adoptionService.findById(adoptionId);
+        Adoption retrievedAdoption = adoptionService.fetchAdoption(adoptionId);
 
         // Then
         assertEquals(adoption, retrievedAdoption);

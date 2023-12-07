@@ -8,11 +8,9 @@ import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.*;
 
@@ -44,11 +42,8 @@ public class AdoptMePlusController {
         this.customerService = customerService;
     }
 
-    /*
+    // Everything in this section is for page / route mapping
 
-    Everything under this section is for page mapping.
-
-     */
     @RequestMapping("/")
     public String index() { return "index"; }
 
@@ -82,21 +77,13 @@ public class AdoptMePlusController {
     @RequestMapping("/customers/update")
     public String updatecustomers() { return "updatecustomer"; }
 
-    /*
+// Everything in this section is for REST services
 
-    Everything under this section is for REST services!!
 
-     */
-
-            /*
-
-            Dog Rest services
-
-             */
+// Dog REST services
 
     /**
-     * Handles a GET request to fetch a list of all dogs.
-     *
+     * Handles a GET request to fetch a list of all dogs and adds it to a model.
      * @return The dogs page.
      */
 
@@ -112,10 +99,12 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a POST request to add a new dog to the system.
-     * @param dog The JSON representation of the dog to be added.
-     * @return The dogs page.
+     * Handles a POST request to add a new Dog to the database via a form
+     *
+     * @param dog The object representation of the Dog to be added.
+     * @return A redirect to the /dogs page.
      */
+
     @PostMapping(value="/dogs/add")
     public String addDog(@ModelAttribute Dog dog) {
         try {
@@ -128,14 +117,15 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Updates an existing Dog with the provided information.
-     * This method handles a POST request to update a Dog by its unique identifier. It retrieves the existing Dog from the database,
-     * and if the Dog is found, it updates the specified fields with the new values provided in the request body. Only the fields
-     * with updated values are modified, and the others remain unchanged.
+     * Handles a POST request to update a Dog by data passed from /dogs/update. It retrieves an existing Dog from the database
+     * based on its unique identifier, and if the Dog is found, it updates the specified fields with the new values provided.
+     * Only the fields with updated values are modified, and the others remain unchanged.
      *
      * @param dogId The unique identifier of the Dog to be updated.
+     * @param dog The object representation of the Dog to be updated.
      * @return A redirect to the /dogs page.
      */
+
     @PostMapping("/dogs/update/updateDog")
     public String updateDog(@RequestParam("dogId") int dogId, @ModelAttribute Dog dog) {
         try {
@@ -160,15 +150,14 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a GET request to fetch information about a specific dog by its unique identifier.
-     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
-     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
-     * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
-     * HTTP status of 500 (INTERNAL_SERVER_ERROR).
+     * Handles a GET request to fetch information about a specific Dog by its unique identifier.
+     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding Dog's information
+     * using the dogService fetchDog method. If a Dog is found, it adds the data to a model of a Dog object.
      *
-     * @param dogId The unique identifier of the dog to fetch.
-     * @return A ResponseEntity containing either the fetched dog's information or an error response.
+     * @param dogId The unique identifier of the Dog to fetch.
+     * @return updateDog route with appropriate data added to 'Dog' object model.
      */
+
     @GetMapping("/dogs/update/{dogId}")
     public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) {
         try {
@@ -185,14 +174,15 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Deletes a Dog resource by its unique identifier.
-     * This method handles a DELETE request to delete a Dog by its unique identifier. It attempts to retrieve the existing Dog from
-     * the database and, if found, deletes the Dog. If the Dog is not found, a 404 Not Found response is returned. If an error occurs
-     * during the deletion, a 500 Internal Server Error response is returned.
+     * Handles a DELETE request of a Dog by the Dog's unique identifier.
+     * This method handles a DELETE request to delete a Dog by its unique identifier via form request.
+     * It attempts to retrieve the existing Dog from the database and, if found, deletes the Dog.
      *
      * @param dogId The unique identifier of the Dog to be deleted.
-     * @return A ResponseEntity indicating the success of the deletion or an error response.
+     * @param dog The object representation of the Dog to be added.
+     * @return A redirect to the /dogs page.
      */
+
     @DeleteMapping("/dogs/update/delete")
     public String deleteDog(@RequestParam("dogId") int dogId, @ModelAttribute Dog dog) {
         try {
@@ -208,6 +198,14 @@ public class AdoptMePlusController {
         }
     }
 
+    /**
+     * Handles Autocomplete for the dogs/edit page.
+     * Uses dogService method findAutocompletebyBreed to create a list of Dogs by breed based on a term the user types.
+     * Adds the information to labelValue to be displayed by frontend and sorts the information by label using Comparator.
+     *
+     * @param term Term that user types to be used for searching for breeds.
+     * @return allDogBreeds, a List<LabelValue> containing all Dogs found by breed and their corresponding unique identifiers.
+     */
     @GetMapping("dogs/edit/dogNamesAutocomplete")
     @ResponseBody
     public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
@@ -228,14 +226,10 @@ public class AdoptMePlusController {
         return allDogBreeds;
     }
 
-            /*
-
-            Customer REST services
-
-             */
+// Customer REST services.
 
     /**
-     * Handles a GET request to fetch a list of all customers.
+     * Handles a GET request to fetch a list of all Customers and adds it to a model.
      *
      * @return The customers page.
      */
@@ -251,9 +245,10 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a POST request to add a new customer to the system.
-     * @param customer The customer to be added.
-     * @return The customers page.
+     * Handles a POST request to add a new Customer to the database via a form.
+     *
+     * @param customer The object representation of the Customer to be added.
+     * @return A redirect to the /customers page.
      */
     @PostMapping(value="/customers/add")
     public String addCustomer(@ModelAttribute Customer customer) {
@@ -267,12 +262,12 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Updates an existing Customer with the provided information.
-     * This method handles a POST request to update a Dog by its unique identifier. It retrieves the existing Customer from the database,
-     * and if the Customer is found, it updates the specified fields with the new values provided in the request body. Only the fields
-     * with updated values are modified, and the others remain unchanged.
+     * Handles a POST request to update a Customer by data passed from /customers/update. It retrieves an existing Customer from the database
+     * based on its unique identifier, and if the Customer is found, it updates the specified fields with the new values provided.
+     * Only the fields with updated values are modified, and the others remain unchanged.
      *
      * @param customerId The unique identifier of the Customer to be updated.
+     * @param customer The object representation of the Customer to be updated.
      * @return A redirect to the /customers page.
      */
     @PostMapping("/customers/update/updateCustomer")
@@ -297,14 +292,12 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Handles a GET request to fetch information about a specific dog by its unique identifier.
-     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
-     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
-     * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
-     * HTTP status of 500 (INTERNAL_SERVER_ERROR).
+     * Handles a GET request to fetch information about a specific Customer by its unique identifier.
+     * This method takes the `customerId` as a path variable and attempts to retrieve the corresponding Customer's information
+     * using the customerService fetchCustomer method. If a Customer is found, it adds the data to a model of a Customer object.
      *
-     * @param customerId The unique identifier of the dog to fetch.
-     * @return A ResponseEntity containing either the fetched dog's information or an error response.
+     * @param customerId The unique identifier of the Customer to fetch.
+     * @return updateDog route with appropriate data added to 'Customer' object model.
      */
     @GetMapping("/customers/update/{customerId}")
     public String updateCustomerPage(@PathVariable(value = "customerId") int customerId, Model model) {
@@ -322,12 +315,13 @@ public class AdoptMePlusController {
     }
 
     /**
-     * Deletes a Customer resource by its unique identifier.
-     * This method handles a DELETE request to delete a Customer by its unique identifier. It attempts to retrieve the existing Customer from
-     * the database and, if found, deletes the Customer. If an error occurs during the deletion the user is redirected to an error page.
+     * Handles a DELETE request of a Customer by the Customer's unique identifier.
+     * This method handles a DELETE request to delete a Customer by its unique identifier via form request.
+     * It attempts to retrieve the existing Customer from the database and, if found, deletes the Customer.
      *
      * @param customerId The unique identifier of the Customer to be deleted.
-     * @return A ResponseEntity indicating the success of the deletion or an error response.
+     * @param customer The object representation of the Customer to be added.
+     * @return A redirect to the /customers page.
      */
     @DeleteMapping("/customers/update/delete")
     public String deleteCustomer(@RequestParam("customerId") int customerId, @ModelAttribute Customer customer) {
@@ -344,6 +338,14 @@ public class AdoptMePlusController {
         }
     }
 
+    /**
+     * Handles Autocomplete for the customers/edit page.
+     * Uses customerService method findAutocompletebyEmail to create a list of Customers by e-mail based on a term the user types.
+     * Adds the information to labelValue to be displayed by frontend and sorts the information by label using Comparator.
+     *
+     * @param term Term that user types to be used for searching for breeds.
+     * @return allDogBreeds, a List<LabelValue> containing all Dogs found by breed and their corresponding unique identifiers.
+     */
     @GetMapping("customers/edit/customerNamesAutocomplete")
     @ResponseBody
     public List<LabelValue> customerNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
@@ -364,12 +366,13 @@ public class AdoptMePlusController {
         return allCustomerEmails;
     }
 
-            /*
+// Adoption REST services.
 
-            Adoption REST services
-
-             */
-
+    /**
+     * Handles a GET request to fetch a list of all Adoptions and adds it to a model.
+     *
+     * @return The adoptions page.
+     */
     @GetMapping("/adoptions")
     public String showAdoptions(Model model) {
         try {
@@ -380,6 +383,17 @@ public class AdoptMePlusController {
         }
         return "adoptions";
     }
+
+    /**
+     * Handles a POST request to add a new Adoption to the database via path variables.
+     * Uses dogService fetchDog method and customerService fetchCustomer method to fetch a Dog and a Customer
+     * to be added to an Adoption. Since this joins both objects together by column and utilizes the primary keys of the corresponding
+     * Dog and Customer, it is not currently possible to edit or delete an Adoption.
+     *
+     * @param dogId The unique identifier of the Dog to be added to the adoption.
+     * @param customerId  The unique identifier of the Customer to be added to the adoption.
+     * @return A redirect to the /adoptions page.
+     */
 
     @GetMapping("/adoptions/add/{dogId}/{customerId}")
     public String addAdoption(@PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId) {

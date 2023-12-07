@@ -1,7 +1,6 @@
 package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Dog;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -48,6 +47,7 @@ public interface IDogService {
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
     Dog fetchDog(int dogId) throws IOException;
+
     /**
      * Deletes a dog record from the underlying data source by its unique identifier.
      *

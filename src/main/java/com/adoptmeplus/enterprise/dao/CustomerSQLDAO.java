@@ -3,12 +3,11 @@ package com.adoptmeplus.enterprise.dao;
 import com.adoptmeplus.enterprise.dto.Customer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The CustomerSQLDAO class is responsible for managing and interacting with a SQL database
+ * The CustomerSQLDAO class is responsible for managing and interacting with the SQL database
  * for Customer entities in the AdoptMePlus application.
  * This class implements the ICustomerDAO interface and provides methods for saving, retrieving, and querying Customer records from the database.
  *
@@ -54,7 +53,6 @@ public class CustomerSQLDAO implements ICustomerDAO{
      * @param email The email of customers to retrieve.
      * @return A List of Customer objects representing all available customers of the specified email.
      */
-
     @Override
     public List<Customer> findAutocompleteByEmail(String email) {
         List<Customer> customers = findAll();
