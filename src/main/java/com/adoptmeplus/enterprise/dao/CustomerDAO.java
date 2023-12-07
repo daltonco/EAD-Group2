@@ -20,8 +20,11 @@ import java.util.List;
 @Profile("dev")
 public class CustomerDAO implements ICustomerDAO {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+
+    public CustomerDAO(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     /**
      * Fetches a list of all Customer records.
