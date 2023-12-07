@@ -65,4 +65,16 @@ public class AdoptionDAOStub implements IAdoptionDAO{
     public Adoption fetchAdoption(int adoptionId) throws IOException {
         return null;
     }
+
+    /**
+     * Retrieves a Adoption record by its unique identifier.
+     *
+     * @param adoptionId The unique identifier of the adoption to be fetched.
+     * @return The Adoption object with the specified adoptionId, or null if not found.
+     * @throws IOException if there's an issue with the data retrieval operation.
+     */
+    @Override
+    public Adoption findById(int adoptionId) throws IOException {
+        return null;
+    }
 }

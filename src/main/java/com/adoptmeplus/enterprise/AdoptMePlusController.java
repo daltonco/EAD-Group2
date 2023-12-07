@@ -3,6 +3,7 @@ package com.adoptmeplus.enterprise;
 import com.adoptmeplus.enterprise.dto.Adoption;
 import com.adoptmeplus.enterprise.dto.Customer;
 import com.adoptmeplus.enterprise.dto.Dog;
+import com.adoptmeplus.enterprise.dto.LabelValue;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
@@ -10,14 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 /**
  * The `AdoptMePlusController` class serves as the controller for managing the AdoptMePlus enterprise system's web application.
- *
  * This class handles requests related to adoptions, dog management, searching, and general pages such as the index, contact, and search pages.
  *
  * @author AdoptMePlusDevTeam
@@ -50,136 +52,108 @@ public class AdoptMePlusController {
     Everything under this section is for page mapping.
 
      */
-    @GetMapping("/")
+    @RequestMapping("/")
     public String index() { return "index"; }
 
-    @GetMapping("/dogs")
+    @RequestMapping("/dogs")
     public String dogs() { return "dogs"; }
 
-    @GetMapping("/customers")
+    @RequestMapping("/customers")
     public String customers() { return "customers"; }
 
-    @GetMapping("/adoptions")
+    @RequestMapping("/adoptions")
     public String adoptions(){ return "adoptions"; }
 
-    @GetMapping("/dogs/create")
+    @RequestMapping("/dogs/create")
     public String createdog() { return "createdog"; }
 
-    @GetMapping("/customers/create")
+    @RequestMapping("/customers/create")
     public String createcustomer() { return "createcustomer"; }
 
-    @GetMapping("/adoptions/create")
+    @RequestMapping("/adoptions/create")
     public String createadoption() { return "createadoption"; }
 
-    @GetMapping("/dogs/edit")
+    @RequestMapping("/dogs/edit")
     public String editdogs() { return "editdogs"; }
 
-    @GetMapping("/customers/edit")
+    @RequestMapping("/customers/edit")
     public String editcustomers() { return "editcustomers"; }
 
-    @GetMapping("/adoptions/selectcustomer")
-    public String selectcustomer() { return "selectcustomer"; }
+    @RequestMapping("/dogs/update")
+    public String updatedogs() { return "updatedog"; }
 
-    @GetMapping("/dogs/update")
-    public String updatedogs() { return "updatedogs"; }
-
-    @GetMapping("/customers/update")
-    public String updatecustomers() { return "updatecustomers"; }
-
-    @GetMapping("/adoptions/edit")
-    public String editadoptions() { return "editadoptions"; }
-
-    @GetMapping("/adoptions/update")
-    public String updateadoptions() { return "updateadoptions"; }
-
-    @GetMapping("/adoptions/modify")
-    public String modifyadoption() { return "modifyadoption"; }
+    @RequestMapping("/customers/update")
+    public String updatecustomers() { return "updatecustomer"; }
 
     /*
 
-    Everything under this section is for REST services.
+    Everything under this section is for REST services!!
 
      */
+
+            /*
+
+            Dog Rest services
+
+             */
 
     /**
      * Handles a GET request to fetch a list of all dogs.
      *
-     * @return A ResponseEntity containing a list of all dogs with an HTTP status of 200 (OK).
+     * @return The dogs page.
      */
-    @GetMapping("/dogs/all")
-    @ResponseBody
-    public ResponseEntity<List<Dog>> findAllDogs() {
-        List<Dog> allDogs = null;
+
+    @GetMapping("/dogs")
+    public String showDogs(Model model) {
         try {
-            allDogs = dogService.findAll();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            List<Dog> dogsList = dogService.findAll();
+            model.addAttribute("dogsList", dogsList);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(allDogs, headers, HttpStatus.OK);
+        return "dogs";
     }
 
     /**
      * Handles a POST request to add a new dog to the system.
-     *
-     * This method receives a JSON representation of a dog object in the request body and attempts to save it using the `dogService`.
-     *
-     * If the dog is successfully added, it returns a response containing the newly created dog with an HTTP status of 200 (OK).
-     * If an error occurs during the addition process, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
-     *
      * @param dog The JSON representation of the dog to be added.
-     * @return A ResponseEntity containing either the newly created dog or an error response.
+     * @return The dogs page.
      */
-    @PostMapping(value="/dogs/add", consumes="application/json", produces="application/json")
-    public ResponseEntity addDog(@RequestBody Dog dog) {
-        Dog newDog = null;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping(value="/dogs/add")
+    public String addDog(@ModelAttribute Dog dog) {
         try {
-            newDog = dogService.save(dog);
+            dogService.save(dog);
         } catch (Exception e) {
             log.error("Unable save dog with id " + dog.getDogId(), e);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(newDog, headers, HttpStatus.OK);
+        return "redirect:/dogs";
     }
 
     /**
-     * Updates an existing Dog resource with the provided information.
-     *
-     * This method handles a PUT request to update a Dog by its unique identifier. It retrieves the existing Dog from the database,
+     * Updates an existing Dog with the provided information.
+     * This method handles a POST request to update a Dog by its unique identifier. It retrieves the existing Dog from the database,
      * and if the Dog is found, it updates the specified fields with the new values provided in the request body. Only the fields
-     * with updated values are modified, and the others remain unchanged. If the Dog is not found, a 404 Not Found response is returned.
-     * If an error occurs during the update, a 500 Internal Server Error response is returned.
+     * with updated values are modified, and the others remain unchanged.
      *
      * @param dogId The unique identifier of the Dog to be updated.
-     * @param updatedDog The JSON representation of the Dog with updated fields.
-     * @return A ResponseEntity containing either the updated Dog resource or an error response.
+     * @return A redirect to the /dogs page.
      */
-    @PutMapping("/dogs/update/{dogId}")
-    public ResponseEntity updateDog(@PathVariable("dogId") int dogId, @RequestBody Dog updatedDog) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        try{
-            Dog foundDog = dogService.fetchDog(dogId);
-
-            if (foundDog == null){
-                return new ResponseEntity("Dog not found", HttpStatus.NOT_FOUND);
+    @PostMapping("/dogs/update/updateDog")
+    public String updateDog(@RequestParam("dogId") int dogId, @ModelAttribute Dog dog) {
+        try {
+            Dog existingDog = dogService.fetchDog(dogId);
+            if (existingDog == null) {
+                return "redirect:/error";
             }
+            existingDog.setDogId((dog.getDogId()));
+            existingDog.setFullName(dog.getFullName());
+            existingDog.setAge(dog.getAge());
+            existingDog.setBreed(dog.getBreed());
+            existingDog.setLocation(dog.getLocation());
+            existingDog.setTags(dog.getTags());
 
-            foundDog.setAge(updatedDog.getAge());
-            foundDog.setBreed(updatedDog.getBreed());
-            foundDog.setFullName(updatedDog.getFullName());
-            foundDog.setDateArrived(updatedDog.getDateArrived());
-            foundDog.setLocation(updatedDog.getLocation());
-            foundDog.setTags(updatedDog.getTags());
-
-            Dog updated = dogService.save(foundDog);
-
+            dogService.save(existingDog);
 
             return new ResponseEntity(updated, headers, HttpStatus.OK);
         } catch (IOException e) {
@@ -193,18 +167,16 @@ public class AdoptMePlusController {
 
     /**
      * Handles a GET request to fetch information about a specific dog by its unique identifier.
-     *
      * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
-     * using the `dogService`. If the dog is found, it returns a response containing the dog's information with an
+     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
      * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
      * HTTP status of 500 (INTERNAL_SERVER_ERROR).
      *
      * @param dogId The unique identifier of the dog to fetch.
      * @return A ResponseEntity containing either the fetched dog's information or an error response.
      */
-    @GetMapping("/dogs/{dogId}")
-    @ResponseBody
-    public ResponseEntity fetchDog(@PathVariable("dogId")int dogId) {
+    @GetMapping("/dogs/update/{dogId}")
+    public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) {
         try {
             Dog foundDog = dogService.fetchDog(dogId);
             HttpHeaders headers = new HttpHeaders();
@@ -214,11 +186,11 @@ public class AdoptMePlusController {
             log.error("IOException trying to fetch dog with id " + dogId, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return "updatedog";
     }
 
     /**
      * Deletes a Dog resource by its unique identifier.
-     *
      * This method handles a DELETE request to delete a Dog by its unique identifier. It attempts to retrieve the existing Dog from
      * the database and, if found, deletes the Dog. If the Dog is not found, a 404 Not Found response is returned. If an error occurs
      * during the deletion, a 500 Internal Server Error response is returned.
@@ -226,19 +198,13 @@ public class AdoptMePlusController {
      * @param dogId The unique identifier of the Dog to be deleted.
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
-    @DeleteMapping("/dogs/delete/{dogId}")
-    public ResponseEntity deleteDog(@PathVariable("dogId") int dogId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
+    @DeleteMapping("/dogs/update/delete")
+    public String deleteDog(@RequestParam("dogId") int dogId, @ModelAttribute Dog dog) {
         try {
             Dog existingDog = dogService.fetchDog(dogId);
-
             if (existingDog == null) {
-                return new ResponseEntity("Dog not found", HttpStatus.NOT_FOUND);
+                return "redirect:/error";
             }
-
-            // Delete the Dog
             dogService.delete(existingDog);
 
             return new ResponseEntity("Dog deleted successfully", headers, HttpStatus.OK);
@@ -251,17 +217,7 @@ public class AdoptMePlusController {
         }
     }
 
-    /**
-     * Handles a POST request to create a new adoption record.
-     *
-     * This method receives a JSON representation of an adoption object in the request body and attempts to save it using
-     * the `adoptionService`. If the adoption record is successfully created, it returns the newly created adoption object
-     * with an HTTP status of 200 (OK). If an error occurs during the creation process, it returns an error response.
-     *
-     * @param adoption The JSON representation of the adoption object to be created.
-     * @return A ResponseEntity containing either the newly created adoption object or an error response.
-     */
-    @PostMapping(value="/adoptions/add", consumes="application/json", produces="application/json")
+    @GetMapping("dogs/edit/dogNamesAutocomplete")
     @ResponseBody
     public ResponseEntity createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
         Adoption newAdoption = null;
@@ -280,96 +236,39 @@ public class AdoptMePlusController {
                 log.error("Error creating adoption for email: " + customerEmail);
                 return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
         catch (Exception e){
             log.error("Exception creating adoption for email: " + customerEmail);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-
     /**
-     * Updates an existing Adoption resource with the provided information.
+     * Handles a GET request to fetch a list of all customers.
      *
-     * This method handles a PUT request to update an Adoption by its unique identifier. It retrieves the existing Adoption from the database,
-     * and if an Adoption is found, it updates the specified fields with the new values provided in the request body. Only the fields
-     * with updated values are modified, and the others remain unchanged. If an Adoption is not found, a 404 Not Found response is returned.
-     * If an error occurs during the update, a 500 Internal Server Error response is returned.
-     *
-     * @param adoptionId The unique identifier of the Adoption to be updated.
-     * @param updatedAdoption The JSON representation of an Adoption with updated fields.
-     * @return A ResponseEntity containing either the updated Adoption resource or an error response.
+     * @return The customers page.
      */
-    @PutMapping("/adoption/update/{adoptionId}")
-    public ResponseEntity updateAdoption(@PathVariable("adoptionId") int adoptionId, @RequestBody Adoption updatedAdoption) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        try{
-            Adoption foundAdoption = adoptionService.fetchAdoption(adoptionId);
-
-            if (foundAdoption == null){
-                return new ResponseEntity("Adoption not found", HttpStatus.NOT_FOUND);
-            }
-
-            foundAdoption.setDog(updatedAdoption.getDog());
-            foundAdoption.setCustomer(updatedAdoption.getCustomer());
-
-            Adoption updated = adoptionService.save(foundAdoption);
-
-
-            return new ResponseEntity(updated, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            log.error("IOException updating adoption with adoptionId " + adoptionId, e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/customers")
+    public String showCustomer(Model model) {
+        try {
+            List<Customer> customerList = customerService.findAll();
+            model.addAttribute("customerList", customerList);
         } catch (Exception e) {
-            log.error("Exception updating adoption with adoptionId " + adoptionId, e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
         }
+        return "customers";
     }
 
     /**
-     * Handles a GET request to fetch a list of all adoptions.
-     *
-     * @return A ResponseEntity containing a list of all adoptions with an HTTP status of 200 (OK).
+     * Handles a POST request to add a new customer to the system.
+     * @param customer The customer to be added.
+     * @return The customers page.
      */
-    @GetMapping("/adoptions/all")
-    @ResponseBody
-    public ResponseEntity<List<Adoption>> findAllAdoptions() {
-        List<Adoption> allAdoptions = null;
-
-        allAdoptions = adoptionService.findAll();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(allAdoptions, headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/adoptions/{id}")
-    public ResponseEntity fetchAdoptionsById(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/adoptions/delete/{id}")
-    public ResponseEntity deleteAdoption(@PathVariable("id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    /**
-     * Handles a GET request to search for dogs based on a provided search term.
-     *
-     * This method allows users to search for dogs based on a specified breed. The search term is passed as a query
-     * parameter, and the method attempts to retrieve a list of dogs that match the search criteria using the `dogService`.
-     * If dogs are found, it returns a response containing the list of dogs with an HTTP status of 200 (OK). If an error
-     * occurs during the search operation, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
-     *
-     * @param breed The search term used to filter and find matching dogs (default is "None" if not provided).
-     * @return A ResponseEntity containing either the list of matching dogs or an error response.
-     */
-    @GetMapping("/dogs/{breed}")
-    public ResponseEntity searchDogsByBreed(@PathVariable String breed) {
+    @PostMapping(value="/customers/add")
+    public String addCustomer(@ModelAttribute Customer customer) {
         try {
             List<Dog> dogs = dogService.fetchByBreed(breed);
             HttpHeaders headers = new HttpHeaders();
@@ -379,82 +278,79 @@ public class AdoptMePlusController {
             log.error("IOException searching breed " + breed, e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        return "redirect:/customers";
     }
 
     /**
-     * Handles a POST request to add a new customer to the system.
+     * Updates an existing Customer with the provided information.
+     * This method handles a POST request to update a Dog by its unique identifier. It retrieves the existing Customer from the database,
+     * and if the Customer is found, it updates the specified fields with the new values provided in the request body. Only the fields
+     * with updated values are modified, and the others remain unchanged.
      *
-     * This method receives a JSON representation of a customer object in the request body and attempts to save it using the `customerService`.
-     *
-     * If the customer is successfully added, it returns a response containing the newly created customer with an HTTP status of 200 (OK).
-     * If an error occurs during the addition process, it returns an error response with an HTTP status of 500 (INTERNAL_SERVER_ERROR).
-     *
-     * @param customer The JSON representation of the customer to be added.
-     * @return A ResponseEntity containing either the newly created customer or an error response.
+     * @param customerId The unique identifier of the Customer to be updated.
+     * @return A redirect to the /customers page.
      */
-    @PostMapping(value="/customer/add", consumes="application/json", produces="application/json")
-    public ResponseEntity addCustomer(@RequestBody Customer customer) {
-        Customer newCustomer = null;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @PostMapping("/customers/update/updateCustomer")
+    public String updateCustomer(@RequestParam("customerId") int customerId, @ModelAttribute Customer customer) {
         try {
-
-            Customer existingCustomer = customerService.findByEmail(customer.getEmail());
-
-            if (existingCustomer != null) {
-                return new ResponseEntity("Customer with the same email already exists", HttpStatus.BAD_REQUEST);
+            Customer existingCustomer = customerService.fetchCustomer(customerId);
+            if (existingCustomer == null) {
+                return "redirect:/error";
             }
+            existingCustomer.setCustomerId((customer.getCustomerId()));
+            existingCustomer.setFirstName(customer.getFirstName());
+            existingCustomer.setLastName(customer.getLastName());
+            existingCustomer.setEmail(customer.getEmail());
 
-            newCustomer = customerService.save(customer);
+            customerService.save(existingCustomer);
 
+            return "redirect:/customers";
         } catch (Exception e) {
             log.error("Exception adding customer with ID " + customer.getCustomerId(), e);
             return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(newCustomer, headers, HttpStatus.OK);
     }
 
     /**
-     * Handles a GET request to fetch a list of all customers.
+     * Handles a GET request to fetch information about a specific dog by its unique identifier.
+     * This method takes the `dogId` as a path variable and attempts to retrieve the corresponding dog's information
+     * using `dogService`. If the dog is found, it returns a response containing the dog's information with an
+     * HTTP status of 200 (OK). If an error occurs during the fetch operation, it returns an error response with an
+     * HTTP status of 500 (INTERNAL_SERVER_ERROR).
      *
-     * @return A ResponseEntity containing a list of all customers with an HTTP status of 200 (OK).
+     * @param customerId The unique identifier of the dog to fetch.
+     * @return A ResponseEntity containing either the fetched dog's information or an error response.
      */
-    @GetMapping("/customers/all")
-    @ResponseBody
-    public ResponseEntity<List<Customer>> findAllCustomers() throws IOException {
-        List<Customer> allCustomers = null;
-
-        allCustomers = customerService.findAll();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return new ResponseEntity<>(allCustomers, headers, HttpStatus.OK);
+    @GetMapping("/customers/update/{customerId}")
+    public String updateCustomerPage(@PathVariable(value = "customerId") int customerId, Model model) {
+        try {
+            Customer customer = customerService.fetchCustomer(customerId);
+            if (customer == null) {
+                return "redirect:/error";
+            }
+            model.addAttribute("customer", customer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+        return "updatecustomer";
     }
 
     /**
      * Deletes a Customer resource by its unique identifier.
-     *
      * This method handles a DELETE request to delete a Customer by its unique identifier. It attempts to retrieve the existing Customer from
-     * the database and, if found, deletes the Customer. If the Customer is not found, a 404 Not Found response is returned. If an error occurs
-     * during the deletion, a 500 Internal Server Error response is returned.
+     * the database and, if found, deletes the Customer. If an error occurs during the deletion the user is redirected to an error page.
      *
      * @param customerId The unique identifier of the Customer to be deleted.
      * @return A ResponseEntity indicating the success of the deletion or an error response.
      */
-    @DeleteMapping("/customers/delete/{customerId}")
-    public ResponseEntity deleteCustomer(@PathVariable("customerId") int customerId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
+    @DeleteMapping("/customers/update/delete")
+    public String deleteCustomer(@RequestParam("customerId") int customerId, @ModelAttribute Customer customer) {
         try {
             Customer existingCustomer = customerService.fetchCustomer(customerId);
-
             if (existingCustomer == null) {
-                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+                return "redirect:/error";
             }
-
             customerService.delete(existingCustomer);
 
             return new ResponseEntity("Customer deleted successfully", headers, HttpStatus.OK);
@@ -467,54 +363,56 @@ public class AdoptMePlusController {
         }
     }
 
-    /**
-     * Updates an existing Customer resource with the provided information.
-     *
-     * This method handles a PUT request to update a Customer by its unique identifier. It retrieves the existing Customer from the database,
-     * and if the Customer is found, it updates the specified fields with the new values provided in the request body. Only the fields
-     * with updated values are modified, and the others remain unchanged. If the Customer is not found, a 404 Not Found response is returned.
-     * If an error occurs during the update, a 500 Internal Server Error response is returned.
-     *
-     * @param customerId The unique identifier of the Customer to be updated.
-     * @param updatedCustomer The JSON representation of the Customer with updated fields.
-     * @return A ResponseEntity containing either the updated Customer resource or an error response.
-     */
-    @PutMapping("/customers/update/{customerId}")
-    public ResponseEntity updateCustomer(@PathVariable("customerId") int customerId, @RequestBody Customer updatedCustomer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        try{
-            Customer foundCustomer = customerService.fetchCustomer(customerId);
-
-            if (foundCustomer == null){
-                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+    @GetMapping("customers/edit/customerNamesAutocomplete")
+    @ResponseBody
+    public List<LabelValue> customerNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
+        List<LabelValue> allCustomerEmails = new ArrayList<>();
+        try {
+            List<Customer> customers = customerService.findAutocompleteByEmail(term);
+            for (Customer customer : customers) {
+                LabelValue labelValue = new LabelValue();
+                labelValue.setLabel(customer.getEmail() + " (" + customer.getLastName() + ", " + customer.getFirstName() + ")");
+                labelValue.setValue(customer.getCustomerId());
+                allCustomerEmails.add(labelValue);
+                allCustomerEmails.sort(Comparator.comparing(LabelValue::getLabel));
             }
-
-            if(!updatedCustomer.getEmail().equals(foundCustomer.getEmail())) {
-                Customer existingCustomer = customerService.findByEmail(updatedCustomer.getEmail());
-
-                if (existingCustomer != null) {
-                    return new ResponseEntity("Customer with the same email already exists", HttpStatus.BAD_REQUEST);
-                }
-            }
-
-            foundCustomer.setFirstName(updatedCustomer.getFirstName());
-            foundCustomer.setLastName(updatedCustomer.getLastName());
-            foundCustomer.setEmail(updatedCustomer.getEmail());
-            foundCustomer.setAddress(updatedCustomer.getAddress());
-
-
-            Customer updated = customerService.save(foundCustomer);
-
-
-            return new ResponseEntity(updated, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            log.error("IOException updating customer with ID " + customerId, e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            log.error("Exception updating customer with ID " + customerId, e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return allCustomerEmails;
+    }
+
+            /*
+
+            Adoption REST services
+
+             */
+
+    @GetMapping("/adoptions")
+    public String showAdoptions(Model model) {
+        try {
+            List<Adoption> adoptionsList = adoptionService.findAll();
+            model.addAttribute("adoptionsList", adoptionsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "adoptions";
+    }
+
+    @GetMapping("/adoptions/add/{dogId}/{customerId}")
+    public String addAdoption(@PathVariable(value = "dogId") int dogId, @PathVariable(value = "customerId") int customerId) {
+        try {
+            Dog getDog = dogService.fetchDog(dogId);
+            Customer getCustomer = customerService.fetchCustomer(customerId);
+            Adoption newAdoption = new Adoption();
+            newAdoption.setCustomer(getCustomer);
+            newAdoption.setDog(getDog);
+            adoptionService.save(newAdoption);
+            return "redirect:/adoptions";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error";
         }
     }
 }

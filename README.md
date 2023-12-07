@@ -2,6 +2,25 @@
 
 AdoptMe! Is a nationwide animal shelter that provides their locations with a web service to maintain their animals. They have created a web service called AdoptMe+ to host shelter functions. Each animal is required to have an ID but can be given pictures and notes on the characteristics, which each location can input. Animal data is obtained from SQL data generation. AdoptMe+ will provide functionality using REST endpoints or through a UI.
 
+# Instructions to Run Project
+1. Install Docker
+2. Open the command line within IntelliJ and run:
+
+   ```docker pull mysql:latest```
+   
+3. In the command line, also run:
+   
+   ```docker run --name eadgroup2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=eadgroup2 -e MYSQL_USER=eadgroup2 -e MYSQL_PASSWORD=eadgroup2 -e MYSQL_DATABASE=adoptmeplus -d mysql```
+   
+4. Connect to the database within IntelliJ Idea with the following:
+5. 
+     Username: eadgroup2
+   
+     Password: eadgroup2
+   
+     Database: adoptmeplus
+   
+
 # Storyboard
 
 <img src="README%20Assets/AdoptMe.png" width=575px alt="homepage mockup">

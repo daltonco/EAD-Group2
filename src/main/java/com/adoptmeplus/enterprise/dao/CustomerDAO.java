@@ -1,16 +1,16 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Customer;
+import com.adoptmeplus.enterprise.dto.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import retrofit2.*;
-import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.List;
 /**
  * The CustomerDAO class is responsible for managing and interacting with the data sources
  * for Customer entities in the AdoptMePlus application.
- *
  * This class implements the ICustomerDAO interface and provides methods for saving and retrieving Customer records.
  *
  * @author AdoptMePlusDevTeam
@@ -51,7 +51,7 @@ public class CustomerDAO implements ICustomerDAO {
      * Deletes a Customer record from the data source.
      *
      * @param customer The Customer object to be deleted.
-     * @return The delete Customer object.
+     *
      */
 
     @Override
@@ -64,23 +64,22 @@ public class CustomerDAO implements ICustomerDAO {
      *
      * @param customerId The unique identifier of the Customer to be fetched.
      * @return The Customer object with the specified customerId, or null if not found.
-     * @throws IOException if there's an issue with the network communication.
+     *
      */
-    public Customer fetchCustomer(int customerId) throws IOException {
-        Customer customer = customerRepository.findById(customerId).get();
-        return customer;
+    public Customer fetchCustomer(int customerId) {
+        return customerRepository.findById(customerId).get();
 
     }
 
-    /**
-     * Fetches a list of Customer records based on a specified email.
-     *
-     * @param email The email of customers to retrieve.
-     * @return A List of Customer objects representing all available customers of the specified email.
-     */
     @Override
-    public Customer findByEmail(String email) {
-
-        return customerRepository.findByEmail(email);
+    public List<Customer> findAutocompleteByEmail(String email) {
+        List<Customer> customers = findAll();
+        List<Customer> filteredCustomers = new ArrayList<>();
+        for (Customer customer : customers) {
+            if (customer.getEmail().toLowerCase().startsWith(email.toLowerCase())) {
+                filteredCustomers.add(customer);
+            }
+        }
+        return filteredCustomers;
     }
 }

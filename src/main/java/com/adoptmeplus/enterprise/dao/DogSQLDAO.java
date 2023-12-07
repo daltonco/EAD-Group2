@@ -1,17 +1,14 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Dog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The DogSQLDAO class is responsible for managing and interacting with a SQL database
  * for Dog entities in the AdoptMePlus application.
- *
  * This class implements the IDogDAO interface and provides methods for saving, retrieving, and querying Dog records from the database.
  *
  * @author AdoptMePlusDevTeam
@@ -20,8 +17,6 @@ import java.util.List;
 @Repository
 @Profile("dev")
 public class DogSQLDAO implements IDogDAO{
-
-
     private final DogRepository dogRepository;
 
     @Autowired
@@ -45,7 +40,6 @@ public class DogSQLDAO implements IDogDAO{
      * Deletes a Dog record from the SQL database.
      *
      * @param dog The Dog object to be deleted.
-     * @return The deleted Dog object.
      * @throws Exception if there is an issue with the database operation.
      */
     @Override
@@ -60,15 +54,16 @@ public class DogSQLDAO implements IDogDAO{
      * @return A List of Dog objects representing all available dogs of the specified breed.
      */
     @Override
-    public List<Dog> fetchByBreed(String breed) {
-        List<Dog> allDogs = new ArrayList<>();
-        Iterable<Dog> dogs = dogRepository.findAll();
-        for (Dog dog: dogs) {
-            allDogs.add(dog);
+    public List<Dog> findAutocompleteByBreed(String breed) {
+        List<Dog> dogs = findAll();
+        List<Dog> filteredDogs = new ArrayList<>();
+        for (Dog dog : dogs) {
+            if (dog.getBreed().toLowerCase().startsWith(breed.toLowerCase())) {
+                filteredDogs.add(dog);
+            }
         }
-        return allDogs;
+        return filteredDogs;
     }
-
 
     /**
      * Fetches a list of all Dog records
@@ -93,7 +88,6 @@ public class DogSQLDAO implements IDogDAO{
      */
     @Override
     public Dog fetchDog(int dogId) {
-
         return dogRepository.findById(dogId).get();
     }
 }

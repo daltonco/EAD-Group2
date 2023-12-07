@@ -51,7 +51,6 @@ public class CustomerDAOStub implements ICustomerDAO {
      * Deletes a Customer record from the data source.
      *
      * @param customer The Customer object to be deleted.
-     * @return The delete Customer object.
      */
 
     @Override
@@ -70,15 +69,8 @@ public class CustomerDAOStub implements ICustomerDAO {
         return Customers.get(customerId);
     }
 
-    /**
-     * Fetches a list of Customer records based on a specified email.
-     *
-     * @param email The email of customers to retrieve.
-     * @return A List of Customer objects representing all available customers of the specified email.
-     */
     @Override
-    public Customer findByEmail(String email) {
-
+    public List<Customer> findAutocompleteByEmail(String email) {
         return null;
     }
 }

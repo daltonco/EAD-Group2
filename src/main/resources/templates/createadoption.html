@@ -5,7 +5,47 @@
 <head>
     <meta charset="UTF-8">
     <title>AdoptMe+ - Create Adoption</title>
+    <script type="text/javascript">
+        $(function() {
+            let selectedDogId = null;
+            let selectedCustomerId = null;
+            $("#breed").autocomplete({
+
+                source: "../../dogs/edit/dogNamesAutocomplete",
+                minLength: 1,
+                select: function(event, ui) {
+                    this.value = ui.item.label;
+                    selectedDogId = ui.item.value;
+                    $("#dogId").val(selectedDogId);
+                    return false;
+                }
+
+            });
+            $("#email").autocomplete({
+
+                source: "../../customers/edit/customerNamesAutocomplete",
+                minLength: 1,
+                select: function(event, ui) {
+                    this.value = ui.item.label;
+                    selectedCustomerId = ui.item.value;
+                    $("#customerId").val(selectedCustomerId);
+                    const submitButton = document.getElementById("submitButton");
+                    if (selectedDogId !== null && selectedCustomerId !== null) {
+                        submitButton.href = "/adoptions/add/" + selectedDogId + "/" + selectedCustomerId;
+                    } else {
+                        submitButton.href = "#";
+                    }
+
+                    return false;
+                }
+
+            });
+
+
+        });
+    </script>
 </head>
+
 <body>
 <div layout:fragment="content">
     <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
@@ -13,33 +53,37 @@
             <div class="pb-2">
                 <h2>Adoption Information</h2>
                 <i>Select customer and dogs for new adoption.</i>
+                <br><br>
+                <h5 class="text-center text-danger"><u>WARNING:</u></h5>
+                <p class="text-center text-danger"><i>You will not be able to delete the corresponding customer, dog or adoption.</i></p>
             </div>
             <form>
             <hr>
             <div class="p-2 pt-3 px-3 d-flex flex-row-3 justify-content-center">
-                <div class="px-3 pb-5 col-sm">
-                    <label for="customerList" class="h3">Customer</label>
-                    <select class="form-select text-center" size="3" aria-label="Customer select" name="customer" id="customerList">
-                        <option value="1">Customer 1</option>
-                        <option value="2">Customer 2</option>
-                        <option value="3">Customer 3</option>
-                    </select>
+                <div class="pb-5 col-sm">
+                    <div class="pb-2 col-sm">
+                        <label for="breed">Dog Breed:</label>
+                        <input id="breed" type="text" class="form-control" name="breed">
+                        <input id="dogId" type="hidden" class="form-control" name="dogId">
+                    </div>
                 </div>
                 <div class="vr mx-5"></div>
-                <div class="px-3 pb-5 col-sm">
-                    <label for="dogList" class="h3">Dogs</label>
-                    <select class="form-select text-center" multiple size="3" aria-label="Dog select" name="dog" id="dogList">
-                        <option value="1">Dog 1</option>
-                        <option value="2">Dog 2</option>
-                        <option value="3">Dog 3</option>
-                    </select>
+                <div class="pb-5 col-sm">
+                    <div class="b-2 col-sm">
+                        <label for="email">Customer Email:</label>
+                        <input id="email" type="text" class="form-control" name="email">
+                        <input id="customerId" type="hidden" class="form-control" name="customerId">
+                    </div>
                 </div>
             </div>
+            </form>
             <hr>
             <div class="d-flex flex-row justify-content-end gap-2 pt-3">
-                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+                <a class="nav-link" aria-current="page" href="#" id="submitButton">
+                    <button class="btn btn-sm btn-primary" type="button">Adopt</button>
+                </a>
             </div>
-            </form>
+
         </div>
     </div>
 </div>

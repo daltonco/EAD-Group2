@@ -14,37 +14,37 @@
                 <h2>Dog Information</h2>
                 <i>Input information for new dog.</i>
             </div>
-            <form>
-                <hr>
-                <div class="p-2 pt-3 px-5 d-flex flex-row-3 justify-content-center">
-                    <div class="px-5 pb-2 col-sm">
+            <hr>
+            <div class="p-2 pt-3 px-5 d-flex flex-row-3 justify-content-center">
+                <div class="px-5 pb-2 col-sm">
+                    <form method="post" th:action="@{/dogs/add}">
                         <div class="form-group my-2">
-                            <label for="dog">Name:</label>
-                            <input type="text" class="form-control" name="dog" id="dog">
+                            <label for="fullName">Name:</label>
+                            <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Dog 1">
                         </div>
                         <div class="form-group my-2">
                             <label for="age">Age:</label>
-                            <input type="text" class="form-control" name="age" id="age">
+                            <input type="text" class="form-control" name="age" id="age" placeholder="5">
                         </div>
                         <div class="form-group my-2">
                             <label for="breed">Breed:</label>
-                            <input type="text" class="form-control" name="breed" id="breed">
+                            <input type="text" class="form-control" name="breed" id="breed" placeholder="Golden Retriever">
                         </div>
                         <div class="form-group my-2">
                             <label for="location">Location:</label>
-                            <input type="text" class="form-control" name="location" id="location">
+                            <input type="text" class="form-control" name="location" id="location" placeholder="123 Dog Street">
                         </div>
                         <div class="form-group my-2">
                             <label for="tags">Tags:</label>
-                            <input type="text" class="form-control" name="tags" id="tags">
+                            <input type="text" class="form-control" name="tags" id="tags" placeholder="friendly">
                         </div>
-                    </div>
+                        <div class="d-flex flex-row justify-content-end gap-2 pt-3">
+                            <button class="btn btn-sm btn-primary" type="submit">Create</button>
+                        </div>
+                    </form>
                 </div>
-                <hr>
-            </form>
-            <div class="d-flex flex-row justify-content-end gap-2 pt-3">
-                    <button class="btn btn-sm btn-primary" type="submit">Submit</button>
             </div>
+            <hr>
         </div>
     </div>
 </div>

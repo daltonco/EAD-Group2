@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * The `CustomerService` class provides the implementation of the `ICustomerService` interface
  * for managing customer-related operations in the AdoptMePlus enterprise system.
- *
  * This class is responsible for saving and fetching customer records using an underlying `ICustomerDAO`
  * data access object. It is marked as a Spring service to enable dependency injection.
  *
@@ -29,6 +28,7 @@ public class CustomerService implements ICustomerService {
      */
     @Autowired
     public CustomerService(ICustomerDAO customerDAO){
+
         this.customerDAO = customerDAO;
     }
 
@@ -37,7 +37,6 @@ public class CustomerService implements ICustomerService {
      *
      * @param customer The customer record to be saved.
      * @return The saved customer record.
-     * @throws Exception If an error occurs during the save operation.
      */
     @Override
     public Customer save(Customer customer) throws Exception {
@@ -50,23 +49,10 @@ public class CustomerService implements ICustomerService {
     }
 
     /**
-     * Retrieves a customer record based on a specified email.
-     *
-     * @param email The email of a customer to fetch.
-     * @return A customer record matching the given email.
-     * @throws IOException If an I/O error occurs during the fetch operation.
-     */
-    @Override
-    public Customer findByEmail(String email) throws IOException {
-        return customerDAO.findByEmail(email);
-    }
-
-    /**
      * Retrieves a specific customer record by its unique identifier.
      *
      * @param customerId The unique identifier of the customer to fetch.
      * @return The customer record with the specified identifier.
-     * @throws IOException If an I/O error occurs during the fetch operation.
      */
     @Override
     public Customer fetchCustomer(int customerId) throws IOException {
@@ -80,5 +66,11 @@ public class CustomerService implements ICustomerService {
         } else {
             throw new Exception("Customer not found");
         }
+    }
+
+
+    public List<Customer> findAutocompleteByEmail(String email) {
+        return customerDAO.findAutocompleteByEmail(email);
+
     }
 }

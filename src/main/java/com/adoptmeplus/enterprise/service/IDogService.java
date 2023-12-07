@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * The `IDogService` interface defines the contract for managing dog-related operations in the AdoptMePlus enterprise system.
- *
  * This interface outlines the methods for saving and fetching dog records, as well as fetching a specific dog by its unique identifier.
  *
  * @author AdoptMePlusDevTeam
@@ -39,7 +38,7 @@ public interface IDogService {
      * @return A list of dog records matching the given breed.
      * @throws IOException If an I/O error occurs during the fetch operation.
      */
-    List<Dog> fetchByBreed(String breed) throws IOException;
+    List<Dog> findAutocompleteByBreed(String breed) throws IOException;
 
     /**
      * Retrieves a specific dog record by its unique identifier.
@@ -53,8 +52,7 @@ public interface IDogService {
      * Deletes a dog record from the underlying data source by its unique identifier.
      *
      * @param dog The unique identifier of the dog to be deleted.
-     * @throws IOException If an I/O error occurs during the deletion operation.
      * @throws Exception If an error occurs during the deletion operation.
      */
-    void delete(Dog dog) throws IOException, Exception;
+    void delete(Dog dog) throws Exception;
 }

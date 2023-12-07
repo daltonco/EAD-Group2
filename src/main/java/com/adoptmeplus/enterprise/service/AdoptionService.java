@@ -28,7 +28,7 @@ public class AdoptionService implements IAdoptionService{
      * @param adoptionDAO The data access object for managing adoption records.
      */
     @Autowired
-    public AdoptionService(IAdoptionDAO adoptionDAO){
+    public AdoptionService(IAdoptionDAO adoptionDAO) {
         this.adoptionDAO = adoptionDAO;
     }
 
@@ -74,5 +74,10 @@ public class AdoptionService implements IAdoptionService{
         } else {
             throw new Exception("Adoption not found");
         }
+    }
+
+    @Override
+    public Adoption findById(int adoptionId) throws IOException {
+        return adoptionDAO.findById(adoptionId);
     }
 }
