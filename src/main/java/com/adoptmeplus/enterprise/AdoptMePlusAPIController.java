@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * The `AdoptMePlusController` class serves as the controller for managing the AdoptMePlus enterprise system's web application.
- * This class handles requests related to adoptions, dog management, searching, and general pages such as the index, contact, and search pages.
+ * The `AdoptMePlusAPIController` class serves as the controller for managing the AdoptMePlus enterprise system's API.
+ * This class handles requests related to dog and customer management.
  *
  * @author AdoptMePlusDevTeam
  * @version 1.0
@@ -32,9 +32,9 @@ public class AdoptMePlusAPIController {
     private final ICustomerService customerService;
 
     /**
-     * Constructs an `AdoptMePlusController` with the specified services for adoption and dog management.
+     * Constructs an `AdoptMePlusAPIController` with the specified services for customer and dog management.
      *
-     * @param adoptionService The service for managing adoption records.
+     * @param customerService The service for managing customer operations.
      * @param dogService The service for managing dog-related operations.
      */
     @Autowired
