@@ -142,12 +142,6 @@ public class AdoptMePlusAPIController {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-//            newDog.setFullName(dog.getFullName());
-//            newDog.setLocation(dog.getLocation());
-//            newDog.setTags(dog.getTags());
-//            newDog.setAge(dog.getAge());
-//            newDog.setBreed(dog.getBreed());
-//            newDog.setDateArrived(dog.getDateArrived());
             newDog = dogService.save(dog);
 
 
