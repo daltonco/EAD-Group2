@@ -1,7 +1,6 @@
 package com.adoptmeplus.enterprise.service;
 
 import com.adoptmeplus.enterprise.dto.Customer;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 public interface ICustomerService {
 
     /**
@@ -29,6 +29,13 @@ public interface ICustomerService {
      */
     List<Customer> findAll() throws IOException;
 
+    /**
+     * Retrieves a list of Customer records based on a specified e-mail.
+     *
+     * @param term The email of Customers to fetch.
+     * @return A list of customer records matching the given e-mail.
+     * @throws IOException If an I/O error occurs during the fetch operation.
+     */
     List<Customer> findAutocompleteByEmail(String term) throws IOException;
 
     /**
@@ -38,6 +45,7 @@ public interface ICustomerService {
      * @return The customer record with the specified identifier.
      */
     Customer fetchCustomer(int customerId) throws IOException;
+
     /**
      * Deletes a customer record from the underlying data source by its unique identifier.
      *
@@ -45,5 +53,4 @@ public interface ICustomerService {
      * @throws Exception If an error occurs during the deletion operation.
      */
     void delete(Customer customer) throws Exception;
-
 }

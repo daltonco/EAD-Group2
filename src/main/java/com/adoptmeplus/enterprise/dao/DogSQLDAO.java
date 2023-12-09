@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The DogSQLDAO class is responsible for managing and interacting with a SQL database
+ * The DogSQLDAO class is responsible for managing and interacting with the SQL database
  * for Dog entities in the AdoptMePlus application.
  * This class implements the IDogDAO interface and provides methods for saving, retrieving, and querying Dog records from the database.
  *

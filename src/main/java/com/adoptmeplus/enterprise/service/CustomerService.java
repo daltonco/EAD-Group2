@@ -1,4 +1,5 @@
 package com.adoptmeplus.enterprise.service;
+
 import com.adoptmeplus.enterprise.dao.ICustomerDAO;
 import com.adoptmeplus.enterprise.dto.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 @Service
 public class CustomerService implements ICustomerService {
 
@@ -43,6 +45,11 @@ public class CustomerService implements ICustomerService {
         return customerDAO.save(customer);
     }
 
+    /**
+     * Retrieves a list of all customer records
+     *
+     * @return A list of customer records matching the given breed.
+     */
     @Override
     public List<Customer> findAll() throws IOException {
         return customerDAO.findAll();
@@ -59,6 +66,12 @@ public class CustomerService implements ICustomerService {
         return customerDAO.fetchCustomer(customerId);
     }
 
+    /**
+     * Deletes a customer record from the underlying data source by its unique identifier.
+     *
+     * @param customer The unique identifier of the customer to be deleted.
+     * @throws Exception If an error occurs during the deletion operation.
+     */
     @Override
     public void delete(Customer customer) throws Exception {
         if (customer != null) {
@@ -68,7 +81,12 @@ public class CustomerService implements ICustomerService {
         }
     }
 
-
+    /**
+     * Retrieves a list of Customer records based on a specified e-mail.
+     *
+     * @param email The email of Customers to fetch.
+     * @return A list of customer records matching the given e-mail.
+     */
     public List<Customer> findAutocompleteByEmail(String email) {
         return customerDAO.findAutocompleteByEmail(email);
 

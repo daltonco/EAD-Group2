@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The CustomerRepository interface is responsible for defining the data access methods to interact with the data source
- * for Customer entities in the AdoptMePlus application.
+ * for Customers in the AdoptMePlus application.
  * It extends the CrudRepository interface, providing basic CRUD (Create, Read, Update, Delete) operations for Customer entities.
  *
  * @author AdoptMePlusDevTeam

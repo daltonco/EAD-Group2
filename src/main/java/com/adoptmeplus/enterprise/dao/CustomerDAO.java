@@ -1,21 +1,20 @@
 package com.adoptmeplus.enterprise.dao;
 
 import com.adoptmeplus.enterprise.dto.Customer;
-import com.adoptmeplus.enterprise.dto.Dog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * The CustomerDAO class is responsible for managing and interacting with the data sources
+ * The CustomerDAO class is responsible for managing and interacting with the data source
  * for Customer entities in the AdoptMePlus application.
  * This class implements the ICustomerDAO interface and provides methods for saving and retrieving Customer records.
  *
  * @author AdoptMePlusDevTeam
  * @version 1.0
  */
+
 @Repository
 @Profile("dev")
 public class CustomerDAO implements ICustomerDAO {
@@ -53,7 +52,6 @@ public class CustomerDAO implements ICustomerDAO {
      * @param customer The Customer object to be deleted.
      *
      */
-
     @Override
     public void delete(Customer customer){
         customerRepository.delete(customer);
@@ -71,6 +69,12 @@ public class CustomerDAO implements ICustomerDAO {
 
     }
 
+    /**
+     * Fetches a list of Customer records based on a specified email.
+     *
+     * @param email The email of Customers to retrieve.
+     * @return A List of Customer objects representing all available Customers of the specified email, formatted to lowercase.
+     */
     @Override
     public List<Customer> findAutocompleteByEmail(String email) {
         List<Customer> customers = findAll();
