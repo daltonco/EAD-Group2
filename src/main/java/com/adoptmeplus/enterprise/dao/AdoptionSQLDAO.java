@@ -1,6 +1,6 @@
 package com.adoptmeplus.enterprise.dao;
-
 import com.adoptmeplus.enterprise.dto.Adoption;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
@@ -9,8 +9,14 @@ import java.util.List;
 @Repository
 @Profile("dev")
 public class AdoptionSQLDAO implements IAdoptionDAO{
-    final
-    AdoptionRepository adoptionRepository;
+
+    final AdoptionRepository adoptionRepository;
+
+    @Autowired
+    public AdoptionSQLDAO(AdoptionRepository adoptionRepository) {
+        this.adoptionRepository = adoptionRepository;
+    }
+
 
     public AdoptionSQLDAO(AdoptionRepository adoptionRepository) {
         this.adoptionRepository = adoptionRepository;

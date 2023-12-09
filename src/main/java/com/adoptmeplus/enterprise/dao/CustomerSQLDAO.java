@@ -18,9 +18,9 @@ import java.util.List;
 @Profile("dev")
 public class CustomerSQLDAO implements ICustomerDAO{
 
-    final
-    CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
+    @Autowired
     public CustomerSQLDAO(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }

@@ -7,6 +7,8 @@ import com.adoptmeplus.enterprise.dto.LabelValue;
 import com.adoptmeplus.enterprise.service.ICustomerService;
 import com.adoptmeplus.enterprise.service.IDogService;
 import com.adoptmeplus.enterprise.service.IAdoptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class AdoptMePlusController {
     private final IAdoptionService adoptionService;
     private final IDogService dogService;
     private final ICustomerService customerService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Constructs an `AdoptMePlusController` with the specified services for adoption and dog management.
@@ -110,8 +113,8 @@ public class AdoptMePlusController {
         try {
             dogService.save(dog);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            log.error("Unable save dog with id " + dog.getDogId(), e);
+            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return "redirect:/dogs";
     }
@@ -142,10 +145,13 @@ public class AdoptMePlusController {
 
             dogService.save(existingDog);
 
-            return "redirect:/dogs";
+            return new ResponseEntity(updated, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("IOException trying to update dog with id " + updatedDog.getDogId(), e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            log.error("Exception trying to update dog with id " + updatedDog.getDogId(), e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -161,14 +167,13 @@ public class AdoptMePlusController {
     @GetMapping("/dogs/update/{dogId}")
     public String updateDogPage(@PathVariable(value = "dogId") int dogId, Model model) {
         try {
-            Dog dog = dogService.fetchDog(dogId);
-            if (dog == null) {
-                return "redirect:/error";
-            }
-            model.addAttribute("dog", dog);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            Dog foundDog = dogService.fetchDog(dogId);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity(foundDog, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("IOException trying to fetch dog with id " + dogId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return "updatedog";
     }
@@ -191,10 +196,14 @@ public class AdoptMePlusController {
                 return "redirect:/error";
             }
             dogService.delete(existingDog);
-            return "redirect:/dogs";
+
+            return new ResponseEntity("Dog deleted successfully", headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("IOException deleting dog with id " + dogId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            log.error("Exception deleting dog with id " + dogId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -208,23 +217,33 @@ public class AdoptMePlusController {
      */
     @GetMapping("dogs/edit/dogNamesAutocomplete")
     @ResponseBody
-    public List<LabelValue> dogNamesAutocomplete(@RequestParam(value="term", required = false, defaultValue="") String term) {
-        List<LabelValue> allDogBreeds = new ArrayList<>();
-        try {
-            List<Dog> dogs = dogService.findAutocompleteByBreed(term);
-            for (Dog dog: dogs) {
-                LabelValue labelValue = new LabelValue();
-                labelValue.setLabel(dog.getBreed() + " (Name: " + dog.getFullName() + ", Age: " + dog.getAge() + ", Location: " + dog.getLocation() + ")");
-                labelValue.setValue(dog.getDogId());
-                allDogBreeds.add(labelValue);
-                allDogBreeds.sort(Comparator.comparing(LabelValue::getLabel));
+    public ResponseEntity createAdoption(@RequestBody Adoption adoption, @RequestParam("customerEmail") String customerEmail){
+        Adoption newAdoption = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        try{
+            Customer customer = customerService.findByEmail(customerEmail);
+            if (customer != null) {
+
+                adoption.setCustomer(customer);
+
+                newAdoption = adoptionService.save(adoption);
+
+                return new ResponseEntity(newAdoption, headers, HttpStatus.OK);
+            } else {
+                log.error("Error creating adoption for email: " + customerEmail);
+                return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
             }
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
-        return allDogBreeds;
+        catch (Exception e){
+            log.error("Exception creating adoption for email: " + customerEmail);
+            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
 // Customer REST services.
 
@@ -253,10 +272,13 @@ public class AdoptMePlusController {
     @PostMapping(value="/customers/add")
     public String addCustomer(@ModelAttribute Customer customer) {
         try {
-            customerService.save(customer);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            List<Dog> dogs = dogService.fetchByBreed(breed);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity(dogs, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("IOException searching breed " + breed, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return "redirect:/customers";
     }
@@ -286,8 +308,8 @@ public class AdoptMePlusController {
 
             return "redirect:/customers";
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            log.error("Exception adding customer with ID " + customer.getCustomerId(), e);
+            return new ResponseEntity(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -331,10 +353,14 @@ public class AdoptMePlusController {
                 return "redirect:/error";
             }
             customerService.delete(existingCustomer);
-            return "redirect:/customers";
+
+            return new ResponseEntity("Customer deleted successfully", headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("IOException deleting customer with ID " + customerId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error";
+            log.error("Exception deleting customer with ID " + customerId, e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -3,6 +3,8 @@ package com.adoptmeplus.enterprise.dao;
 import com.adoptmeplus.enterprise.dto.Customer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ import java.util.List;
 @Profile("test")
 public class CustomerDAOStub implements ICustomerDAO {
 
+    List<Customer> Customers = new ArrayList<>();
     /**
      * Fetches a list of all Customer records.
      *
@@ -25,7 +28,8 @@ public class CustomerDAOStub implements ICustomerDAO {
      */
     @Override
     public List<Customer> findAll(){
-        return null;
+
+        return Customers;
     }
 
     /**
@@ -36,7 +40,9 @@ public class CustomerDAOStub implements ICustomerDAO {
      */
     @Override
     public Customer save (Customer customer) {
-        return null;
+
+        Customers.add(customer);
+        return customer;
     }
 
     /**
@@ -46,7 +52,9 @@ public class CustomerDAOStub implements ICustomerDAO {
      */
 
     @Override
-    public void delete(Customer customer){}
+    public void delete(Customer customer){
+        Customers.remove(customer);
+    }
 
     /**
      * Fetches a Customer by its unique identifier.
@@ -54,9 +62,8 @@ public class CustomerDAOStub implements ICustomerDAO {
      * @param customerId The unique identifier of the Customer to be fetched.
      * @return The Customer object with the specified customerId, or null if not found.
      */
-    public Customer fetchCustomer(int customerId) {
-        return null;
-
+    public Customer fetchCustomer(int customerId) throws IOException {
+        return Customers.get(customerId);
     }
 
     /**
