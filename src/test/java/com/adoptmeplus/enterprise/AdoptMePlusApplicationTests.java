@@ -2,11 +2,9 @@ package com.adoptmeplus.enterprise;
 
 import com.adoptmeplus.enterprise.service.IAdoptionService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.adoptmeplus.enterprise.dto.*;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.io.IOException;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The `AdoptMePlusApplicationTests` class contains unit tests for various aspects of the AdoptMePlus application.
- *
  * It uses JUnit 5 for testing and Spring Boot's `@SpringBootTest` annotation for testing within a Spring Boot context.
  * The tests cover adoption properties, adding and removing adoptions, and more.
  */
